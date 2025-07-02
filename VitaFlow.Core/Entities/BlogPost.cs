@@ -1,0 +1,21 @@
+using System;
+using System.Collections.Generic;
+
+namespace VitaFlow.Core.Entities
+{
+    /// <summary>
+    /// Represents a blog post.
+    /// </summary>
+    public class BlogPost
+    {
+        public int Id { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
+        public int AuthorId { get; set; }
+        public User Author { get; set; } = new User();
+        public DateTime PublishedDate { get; set; }
+        public string ImageUrl { get; set; } = string.Empty;
+        public bool IsPublished { get; set; }
+        public List<string> Tags { get; set; } = new List<string>();
+    }
+}
