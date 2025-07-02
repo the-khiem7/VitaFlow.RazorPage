@@ -1,7 +1,17 @@
+using Microsoft.EntityFrameworkCore;
+using VitaFlow.Infrastructure.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+// Configure Entity Framework Core
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Register repositories and services for dependency injection
+// Example: builder.Services.AddScoped<IYourRepository, YourRepository>();
 
 var app = builder.Build();
 
