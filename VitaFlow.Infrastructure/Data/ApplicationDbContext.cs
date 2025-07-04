@@ -13,7 +13,14 @@ namespace VitaFlow.Infrastructure.Data
         }
 
         // DbSet properties for entities
-        public DbSet<YourEntity> YourEntities { get; set; } // Replace with actual entity
+        public DbSet<User> Users { get; set; }
+        public DbSet<Donor> Donors { get; set; }
+        public DbSet<Recipient> Recipients { get; set; }
+        public DbSet<BloodDonation> BloodDonations { get; set; }
+        public DbSet<BloodRequest> BloodRequests { get; set; }
+        public DbSet<BloodInventory> BloodInventories { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         /// <summary>
         /// Configures the entity relationships and other settings.
