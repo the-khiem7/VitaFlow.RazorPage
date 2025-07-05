@@ -4,14 +4,12 @@ using VitaFlow.Core.Enums;
 
 namespace VitaFlow.Core.Entities
 {
-    /// <summary>
-    /// Represents a blood request.
-    /// </summary>
+    // Represents a blood request.
     public class BloodRequest
     {
         public int Id { get; set; }
         public int RecipientId { get; set; }
-        public Recipient Recipient { get; set; }
+        public Recipient? Recipient { get; set; }
         public BloodType RequiredBloodType { get; set; }
         public double VolumeNeeded { get; set; }
         public bool IsWholeBloodNeeded { get; set; }
@@ -22,7 +20,7 @@ namespace VitaFlow.Core.Entities
         public DateTime RequestDate { get; set; }
         public DateTime? RequiredByDate { get; set; }
         public bool IsEmergency { get; set; }
-        public string MedicalNotes { get; set; }
-        public List<BloodDonation> AssignedDonations { get; set; }
+        public string? MedicalNotes { get; set; }
+        public List<BloodDonation>? AssignedDonations { get; set; }
     }
 }

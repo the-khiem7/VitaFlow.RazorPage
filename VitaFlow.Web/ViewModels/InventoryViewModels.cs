@@ -3,9 +3,7 @@ using VitaFlow.Core.Enums;
 
 namespace VitaFlow.Web.ViewModels
 {
-    /// <summary>
-    /// ViewModel for inventory overview.
-    /// </summary>
+    // ViewModel for inventory overview.
     public class InventoryOverviewViewModel
     {
         public Dictionary<BloodType, double>? TotalWholeBlood { get; set; }
@@ -13,9 +11,7 @@ namespace VitaFlow.Web.ViewModels
         public IEnumerable<InventoryItemViewModel>? ExpiringItems { get; set; }
     }
 
-    /// <summary>
-    /// ViewModel for individual inventory items.
-    /// </summary>
+    // ViewModel for individual inventory items.
     public class InventoryItemViewModel
     {
         public BloodType BloodType { get; set; }

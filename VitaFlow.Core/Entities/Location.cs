@@ -2,9 +2,7 @@ using System;
 
 namespace VitaFlow.Core.Entities
 {
-    /// <summary>
-    /// Represents a geographical location.
-    /// </summary>
+    // Represents a geographical location.
     public class Location
     {
         public int Id { get; set; }

@@ -4,9 +4,7 @@ using VitaFlow.Core.Entities;
 
 namespace VitaFlow.Core.Entities
 {
-    /// <summary>
-    /// Represents a recipient in the system.
-    /// </summary>
+    // Represents a recipient in the system.
     public class Recipient : User
     {
         public BloodType BloodType { get; set; }

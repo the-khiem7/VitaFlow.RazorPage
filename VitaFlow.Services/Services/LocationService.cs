@@ -8,9 +8,7 @@ using VitaFlow.Core.Interfaces.Services;
 
 namespace VitaFlow.Services.Services
 {
-    /// <summary>
-    /// Implementation of the ILocationService interface.
-    /// </summary>
+    // Implementation of the ILocationService interface.
     public class LocationService : ILocationService
     {
         private readonly ILogger<LocationService> _logger;

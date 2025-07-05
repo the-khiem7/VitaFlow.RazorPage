@@ -10,10 +10,8 @@ using VitaFlow.Core.Interfaces.Services;
 
 namespace VitaFlow.Services.Services
 {
-    /// <summary>
-    /// Implementation of the IDashboardService interface.
-    /// Provides analytical data for the dashboard.
-    /// </summary>
+    // Implementation of the IDashboardService interface.
+    // Provides analytical data for the dashboard.
     public class DashboardService : IDashboardService
     {
         private readonly IDonorRepository _donorRepository;
@@ -22,9 +20,7 @@ namespace VitaFlow.Services.Services
         private readonly IBloodInventoryRepository _inventoryRepository;
         private readonly ILogger<DashboardService> _logger;
 
-        /// <summary>
-        /// Constructor with dependency injection
-        /// </summary>
+        // Constructor with dependency injection
         public DashboardService(
             IDonorRepository donorRepository,
             IBloodRequestRepository requestRepository,
@@ -39,10 +35,8 @@ namespace VitaFlow.Services.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        /// <summary>
-        /// Gets the count of donors by blood type
-        /// </summary>
-        /// <returns>Dictionary mapping blood types to donor counts</returns>
+        // Gets the count of donors by blood type
+        // Returns: Dictionary mapping blood types to donor counts
         public Task<Dictionary<BloodType, int>> GetDonorCountsByBloodTypeAsync()
         {
             try
@@ -73,10 +67,8 @@ namespace VitaFlow.Services.Services
             }
         }
 
-        /// <summary>
-        /// Gets the count of blood requests by status
-        /// </summary>
-        /// <returns>Dictionary mapping request statuses to counts</returns>
+        // Gets the count of blood requests by status
+        // Returns: Dictionary mapping request statuses to counts
         public Task<Dictionary<RequestStatus, int>> GetRequestStatusSummaryAsync()
         {
             try
@@ -144,9 +136,8 @@ namespace VitaFlow.Services.Services
         }
 
         /// <summary>
-        /// Gets the current inventory levels by blood type
-        /// </summary>
-        /// <returns>Dictionary mapping blood types to their inventory volume in ml</returns>
+        // Gets the current inventory levels by blood type
+        // Returns: Dictionary mapping blood types to their inventory volume in ml
         public Task<Dictionary<BloodType, double>> GetInventoryLevelsByBloodTypeAsync()
         {
             try
@@ -177,10 +168,8 @@ namespace VitaFlow.Services.Services
             }
         }
 
-        /// <summary>
-        /// Gets the count of active emergency blood requests
-        /// </summary>
-        /// <returns>Count of active emergency requests</returns>
+        // Gets the count of active emergency blood requests
+        // Returns: Count of active emergency requests
         public Task<int> GetActiveEmergencyRequestCountAsync()
         {
             try

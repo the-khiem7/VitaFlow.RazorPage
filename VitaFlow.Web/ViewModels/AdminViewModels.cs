@@ -3,9 +3,7 @@ using VitaFlow.Core.Enums;
 
 namespace VitaFlow.Web.ViewModels
 {
-    /// <summary>
-    /// ViewModel for admin dashboard.
-    /// </summary>
+    // ViewModel for admin dashboard.
     public class AdminDashboardViewModel
     {
         public Dictionary<BloodType, int>? DonorCountsByBloodType { get; set; }

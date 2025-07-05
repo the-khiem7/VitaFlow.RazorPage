@@ -5,10 +5,8 @@ using VitaFlow.Core.Interfaces.Repositories;
 
 namespace VitaFlow.Infrastructure.Repositories
 {
-    /// <summary>
-    /// Generic implementation of the base repository interface.
-    /// </summary>
-    /// <typeparam name="T">The entity type.</typeparam>
+    // Generic implementation of the base repository interface.
+    // T: The entity type.
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         protected readonly DbContext _context;

@@ -4,9 +4,7 @@ using VitaFlow.Core.Enums;
 
 namespace VitaFlow.Core.Interfaces.Services
 {
-    /// <summary>
-    /// Service interface for blood compatibility operations.
-    /// </summary>
+        // Service interface for blood compatibility operations.
     public interface IBloodCompatibilityService
     {
         Task<bool> IsCompatibleAsync(BloodType donorType, BloodType recipientType);

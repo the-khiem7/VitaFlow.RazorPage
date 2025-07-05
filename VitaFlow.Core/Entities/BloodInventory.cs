@@ -3,9 +3,7 @@ using VitaFlow.Core.Enums;
 
 namespace VitaFlow.Core.Entities
 {
-    /// <summary>
-    /// Represents blood inventory.
-    /// </summary>
+    // Represents blood inventory.
     public class BloodInventory
     {
         public int Id { get; set; }

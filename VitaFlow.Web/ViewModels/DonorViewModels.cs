@@ -4,9 +4,7 @@ using VitaFlow.Core.Enums;
 
 namespace VitaFlow.Web.ViewModels
 {
-    /// <summary>
-    /// ViewModel for donor registration.
-    /// </summary>
+        // ViewModel for donor registration.
     public class DonorRegistrationViewModel
     {
         [Required]

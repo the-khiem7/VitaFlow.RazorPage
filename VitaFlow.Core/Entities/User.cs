@@ -3,9 +3,7 @@ using VitaFlow.Core.Enums;
 
 namespace VitaFlow.Core.Entities
 {
-    /// <summary>
-    /// Represents a user in the system.
-    /// </summary>
+    // Represents a user in the system.
     public class User
     {
         public int Id { get; set; }

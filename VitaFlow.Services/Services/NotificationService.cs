@@ -9,17 +9,13 @@ using VitaFlow.Core.Interfaces.Services;
 
 namespace VitaFlow.Services.Services
 {
-    /// <summary>
-    /// Implementation of the INotificationService interface.
-    /// </summary>
+    // Implementation of the INotificationService interface.
     public class NotificationService : INotificationService
     {
         private readonly ILogger<NotificationService> _logger;
         
-        /// <summary>
-        /// Constructor with dependency injection
-        /// </summary>
-        /// <param name="logger">The logger instance</param>
+        // Constructor with dependency injection
+        // logger: The logger instance
         public NotificationService(ILogger<NotificationService> logger)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -151,10 +147,8 @@ namespace VitaFlow.Services.Services
             }
         }
 
-        /// <summary>
-        /// Marks a notification as read.
-        /// </summary>
-        /// <param name="notificationId">The ID of the notification</param>
+        // Marks a notification as read.
+        // notificationId: The ID of the notification
         public Task MarkNotificationAsReadAsync(int notificationId)
         {
             try

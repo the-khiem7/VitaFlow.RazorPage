@@ -5,9 +5,7 @@ using VitaFlow.Core.Enums;
 
 namespace VitaFlow.Core.Interfaces.Services
 {
-    /// <summary>
-    /// Service interface for managing blood inventory.
-    /// </summary>
+        // Service interface for managing blood inventory.
     public interface IBloodInventoryService
     {
         Task<IEnumerable<BloodInventory>> GetCurrentInventoryAsync();

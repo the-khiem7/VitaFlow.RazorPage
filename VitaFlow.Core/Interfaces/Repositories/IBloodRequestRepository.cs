@@ -6,9 +6,7 @@ using VitaFlow.Core.Enums;
 
 namespace VitaFlow.Core.Interfaces.Repositories
 {
-    /// <summary>
-    /// Represents the repository interface for blood request-specific operations.
-    /// </summary>
+        // Represents the repository interface for blood request-specific operations.
     public interface IBloodRequestRepository : IBaseRepository<BloodRequest>
     {
         Task<IEnumerable<BloodRequest>> GetActiveRequestsAsync();

@@ -8,9 +8,7 @@ using VitaFlow.Core.Interfaces.Services;
 
 namespace VitaFlow.Services.Services
 {
-    /// <summary>
-    /// Implementation of the IBloodCompatibilityService interface.
-    /// </summary>
+        // Implementation of the IBloodCompatibilityService interface.
     public class BloodCompatibilityService : IBloodCompatibilityService
     {
         private readonly ILogger<BloodCompatibilityService> _logger;

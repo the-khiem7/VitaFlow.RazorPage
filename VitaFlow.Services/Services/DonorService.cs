@@ -12,9 +12,7 @@ using VitaFlow.Services.Interfaces;
 
 namespace VitaFlow.Services.Services
 {
-    /// <summary>
-    /// Concrete implementation of donor business logic with caching, logging, error handling, and performance monitoring.
-    /// </summary>
+    // Concrete implementation of donor business logic with caching, logging, error handling, and performance monitoring.
     public class DonorService : IDonorService
     {
         private readonly IDonorRepository _donorRepository;

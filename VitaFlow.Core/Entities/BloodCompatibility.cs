@@ -2,9 +2,7 @@ using VitaFlow.Core.Enums;
 
 namespace VitaFlow.Core.Entities
 {
-    /// <summary>
-    /// Represents blood compatibility information.
-    /// </summary>
+    // Represents blood compatibility information.
     public class BloodCompatibility
     {
         public int Id { get; set; }

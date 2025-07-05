@@ -5,9 +5,7 @@ using VitaFlow.Core.Enums;
 
 namespace VitaFlow.Core.Interfaces.Services
 {
-    /// <summary>
-    /// Service interface for managing donors.
-    /// </summary>
+    // Service interface for managing donors.
     public interface IDonorService
     {
         Task<Donor> GetDonorByIdAsync(int id);

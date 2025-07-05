@@ -7,9 +7,7 @@ using VitaFlow.Core.Interfaces.Repositories;
 
 namespace VitaFlow.Infrastructure.Repositories
 {
-    /// <summary>
-    /// Implementation of the blood donation repository interface.
-    /// </summary>
+        // Implementation of the blood donation repository interface.
     public class BloodDonationRepository : BaseRepository<BloodDonation>, IBloodDonationRepository
     {
         public BloodDonationRepository(DbContext context) : base(context)

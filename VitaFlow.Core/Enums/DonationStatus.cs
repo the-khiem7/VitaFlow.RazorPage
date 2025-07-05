@@ -1,8 +1,6 @@
 namespace VitaFlow.Core.Enums
 {
-    /// <summary>
-    /// Represents the status of a blood donation.
-    /// </summary>
+    // Represents the status of a blood donation.
     public enum DonationStatus
     {
         Scheduled,

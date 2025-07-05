@@ -3,9 +3,7 @@ using VitaFlow.Core.Entities;
 
 namespace VitaFlow.Infrastructure.Data
 {
-    /// <summary>
-    /// Represents the database context for the VitaFlow application.
-    /// </summary>
+    // Represents the database context for the VitaFlow application.
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)

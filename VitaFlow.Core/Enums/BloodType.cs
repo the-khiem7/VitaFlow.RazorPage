@@ -1,8 +1,6 @@
 namespace VitaFlow.Core.Enums
 {
-    /// <summary>
-    /// Represents blood types.
-    /// </summary>
+    // Represents blood types.
     public enum BloodType
     {
         APositive,

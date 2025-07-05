@@ -10,19 +10,15 @@ using VitaFlow.Core.Interfaces.Services;
 
 namespace VitaFlow.Services.Services
 {
-    /// <summary>
-    /// Implementation of the IBloodInventoryService interface.
-    /// </summary>
+    // Implementation of the IBloodInventoryService interface.
     public class BloodInventoryService : IBloodInventoryService
     {
         private readonly IBloodInventoryRepository _bloodInventoryRepository;
         private readonly ILogger<BloodInventoryService> _logger;
 
-        /// <summary>
-        /// Constructor with dependency injection
-        /// </summary>
-        /// <param name="bloodInventoryRepository">The blood inventory repository</param>
-        /// <param name="logger">The logger instance</param>
+        // Constructor with dependency injection
+        // bloodInventoryRepository: The blood inventory repository
+        // logger: The logger instance
         public BloodInventoryService(IBloodInventoryRepository bloodInventoryRepository, ILogger<BloodInventoryService> logger)
         {
             _bloodInventoryRepository = bloodInventoryRepository ?? throw new ArgumentNullException(nameof(bloodInventoryRepository));
@@ -138,10 +134,8 @@ namespace VitaFlow.Services.Services
             }
         }
 
-        /// <summary>
-        /// Gets a summary of current inventory levels by blood type
-        /// </summary>
-        /// <returns>Dictionary mapping blood types to their available volume</returns>
+        // Gets a summary of current inventory levels by blood type
+        // Returns: Dictionary mapping blood types to their available volume
         public Task<Dictionary<BloodType, double>> GetInventorySummaryAsync()
         {
             try

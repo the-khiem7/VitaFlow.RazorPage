@@ -1,8 +1,6 @@
 namespace VitaFlow.Core.Enums
 {
-    /// <summary>
-    /// Represents the status of a blood request.
-    /// </summary>
+    // Represents the status of a blood request.
     public enum RequestStatus
     {
         New,

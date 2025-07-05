@@ -4,9 +4,7 @@ using VitaFlow.Core.Enums;
 
 namespace VitaFlow.Core.Interfaces.Services
 {
-    /// <summary>
-    /// Service interface for dashboard operations.
-    /// </summary>
+    // Service interface for dashboard operations.
     public interface IDashboardService
     {
         Task<Dictionary<BloodType, int>> GetDonorCountsByBloodTypeAsync();

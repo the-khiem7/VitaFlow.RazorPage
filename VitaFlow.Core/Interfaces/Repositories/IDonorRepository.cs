@@ -6,9 +6,7 @@ using VitaFlow.Core.Enums;
 
 namespace VitaFlow.Core.Interfaces.Repositories
 {
-    /// <summary>
-    /// Represents the repository interface for donor-specific operations.
-    /// </summary>
+        // Represents the repository interface for donor-specific operations.
     public interface IDonorRepository : IBaseRepository<Donor>
     {
         Task<IEnumerable<Donor>> GetAvailableDonorsByBloodTypeAsync(BloodType bloodType);

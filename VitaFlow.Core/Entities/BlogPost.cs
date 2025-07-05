@@ -3,9 +3,7 @@ using System.Collections.Generic;
 
 namespace VitaFlow.Core.Entities
 {
-    /// <summary>
-    /// Represents a blog post.
-    /// </summary>
+    // Represents a blog post.
     public class BlogPost
     {
         public int Id { get; set; }
