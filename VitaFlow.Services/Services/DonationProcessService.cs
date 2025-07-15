@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using VitaFlow.Core.Entities;
 using VitaFlow.Core.Enums;
 using VitaFlow.Core.Interfaces.Services;
+using VitaFlow.Infrastructure.Repositories.Interfaces;
 
 namespace VitaFlow.Services.Services
 {
@@ -12,10 +13,10 @@ namespace VitaFlow.Services.Services
     /// </summary>
     public class DonationProcessService : IDonationProcessService
     {
-        // Constructor for dependency injection
-        public DonationProcessService()
+        private readonly IUnitOfWork _unitOfWork;
+        public DonationProcessService(IUnitOfWork unitOfWork)
         {
-            // Inject dependencies here
+            _unitOfWork = unitOfWork;
         }
 
         /// <inheritdoc />

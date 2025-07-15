@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using VitaFlow.Core.Entities;
 using VitaFlow.Core.Interfaces.Repositories;
 using VitaFlow.Core.Interfaces.Services;
+using VitaFlow.Infrastructure.Repositories.Interfaces;
 
 namespace VitaFlow.Services.Services
 {
@@ -13,33 +14,30 @@ namespace VitaFlow.Services.Services
     public class NotificationService : INotificationService
     {
         private readonly ILogger<NotificationService> _logger;
+        private readonly IUnitOfWork _unitOfWork;
         
         // Constructor with dependency injection
         // logger: The logger instance
-        public NotificationService(ILogger<NotificationService> logger)
+        public NotificationService(ILogger<NotificationService> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
         
         /// <summary>
         /// Sends a donation reminder to a donor.
         /// </summary>
         /// <param name="donorId">The ID of the donor</param>
-        public Task SendDonationReminderAsync(int donorId)
+        public async Task SendDonationReminderAsync(Guid donorId)
         {
             try
             {
                 _logger.LogInformation("Sending donation reminder to donor {DonorId}", donorId);
-                
-                // In a real implementation, we would:
-                // 1. Get the donor from the repository
-                // 2. Create a notification entity
-                // 3. Send the notification (email, SMS, push notification, etc.)
-                // 4. Save the notification to the database
-                
-                // This is a placeholder implementation
-                
-                return Task.CompletedTask;
+                await _unitOfWork.ProcessInTransactionAsync(async () =>
+                {
+                    var repo = _unitOfWork.GetRepository<Notification>();
+                    // TODO: Tạo notification entity và insert vào repo
+                });
             }
             catch (Exception ex)
             {

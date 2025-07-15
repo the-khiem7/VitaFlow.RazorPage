@@ -7,21 +7,22 @@ using VitaFlow.Core.Entities;
 using VitaFlow.Core.Enums;
 using VitaFlow.Core.Interfaces.Repositories;
 using VitaFlow.Core.Interfaces.Services;
+using VitaFlow.Infrastructure.Repositories.Interfaces;
 
 namespace VitaFlow.Services.Services
 {
     // Implementation of the IBloodInventoryService interface.
     public class BloodInventoryService : IBloodInventoryService
     {
-        private readonly IBloodInventoryRepository _bloodInventoryRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<BloodInventoryService> _logger;
 
         // Constructor with dependency injection
         // bloodInventoryRepository: The blood inventory repository
         // logger: The logger instance
-        public BloodInventoryService(IBloodInventoryRepository bloodInventoryRepository, ILogger<BloodInventoryService> logger)
+        public BloodInventoryService(IUnitOfWork unitOfWork, ILogger<BloodInventoryService> logger)
         {
-            _bloodInventoryRepository = bloodInventoryRepository ?? throw new ArgumentNullException(nameof(bloodInventoryRepository));
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         
@@ -34,10 +35,8 @@ namespace VitaFlow.Services.Services
             try
             {
                 _logger.LogInformation("Fetching current blood inventory");
-                // In a real implementation, we'd get this from the repository
-                // This is a placeholder implementation
-                // Assuming _bloodInventoryRepository has a GetAllAsync method or similar
-                return await Task.FromResult<IEnumerable<BloodInventory>>(new List<BloodInventory>());
+                var repo = _unitOfWork.GetRepository<BloodInventory>();
+                return await repo.GetListAsync();
             }
             catch (Exception ex)
             {
@@ -51,7 +50,7 @@ namespace VitaFlow.Services.Services
         /// </summary>
         /// <param name="inventory">The inventory item to add</param>
         /// <returns>The added inventory item</returns>
-        public Task<BloodInventory> AddToInventoryAsync(BloodInventory inventory)
+        public async Task<BloodInventory> AddToInventoryAsync(BloodInventory inventory)
         {
             try
             {
@@ -60,15 +59,12 @@ namespace VitaFlow.Services.Services
 
                 _logger.LogInformation("Adding to blood inventory: {BloodType}", inventory.BloodType);
                 
-                // In a real implementation, we'd add this to the repository and save changes
-                // This is a placeholder implementation
-                
-                // Simulate setting an ID and other values
-                inventory.Id = 1; // This would be auto-generated in a real database
-                // Set creation date if applicable
-                // inventory.DateCreated = DateTime.UtcNow;
-                
-                return Task.FromResult(inventory);
+                await _unitOfWork.ProcessInTransactionAsync(async () =>
+                {
+                    var repo = _unitOfWork.GetRepository<BloodInventory>();
+                    await repo.InsertAsync(inventory);
+                });
+                return inventory;
             }
             catch (Exception ex)
             {
@@ -77,7 +73,7 @@ namespace VitaFlow.Services.Services
             }
         }
 
-        public Task UpdateInventoryAsync(BloodInventory inventory)
+        public async Task UpdateInventoryAsync(BloodInventory inventory)
         {
             try
             {
@@ -86,10 +82,12 @@ namespace VitaFlow.Services.Services
 
                 _logger.LogInformation("Updating blood inventory item {Id}", inventory.Id);
                 
-                // In a real implementation, we'd update this in the repository and save changes
-                // This is a placeholder implementation
-                
-                return Task.CompletedTask;
+                await _unitOfWork.ProcessInTransactionAsync(async () =>
+                {
+                    var repo = _unitOfWork.GetRepository<BloodInventory>();
+                    repo.UpdateAsync(inventory);
+                });
+                // TODO: Kiểm tra lại logic cập nhật inventory nếu có nghiệp vụ đặc biệt
             }
             catch (Exception ex)
             {

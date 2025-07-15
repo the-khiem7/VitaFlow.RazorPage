@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using VitaFlow.Core.Entities;
 using VitaFlow.Core.Interfaces.Repositories;
 using VitaFlow.Core.Interfaces.Services;
+using VitaFlow.Infrastructure.Repositories.Interfaces;
 
 namespace VitaFlow.Services.Services
 {
@@ -12,14 +13,16 @@ namespace VitaFlow.Services.Services
     public class LocationService : ILocationService
     {
         private readonly ILogger<LocationService> _logger;
+        private readonly IUnitOfWork _unitOfWork;
         
         /// <summary>
         /// Constructor with dependency injection
         /// </summary>
         /// <param name="logger">The logger instance</param>
-        public LocationService(ILogger<LocationService> logger)
+        public LocationService(ILogger<LocationService> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
+            _unitOfWork = unitOfWork;
         }
         
         /// <summary>

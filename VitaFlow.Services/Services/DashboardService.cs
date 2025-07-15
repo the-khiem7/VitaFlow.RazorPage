@@ -7,6 +7,7 @@ using VitaFlow.Core.Entities;
 using VitaFlow.Core.Enums;
 using VitaFlow.Core.Interfaces.Repositories;
 using VitaFlow.Core.Interfaces.Services;
+using VitaFlow.Infrastructure.Repositories.Interfaces;
 
 namespace VitaFlow.Services.Services
 {
@@ -14,24 +15,13 @@ namespace VitaFlow.Services.Services
     // Provides analytical data for the dashboard.
     public class DashboardService : IDashboardService
     {
-        private readonly IDonorRepository _donorRepository;
-        private readonly IBloodRequestRepository _requestRepository;
-        private readonly IBloodDonationRepository _donationRepository;
-        private readonly IBloodInventoryRepository _inventoryRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<DashboardService> _logger;
 
         // Constructor with dependency injection
-        public DashboardService(
-            IDonorRepository donorRepository,
-            IBloodRequestRepository requestRepository,
-            IBloodDonationRepository donationRepository,
-            IBloodInventoryRepository inventoryRepository,
-            ILogger<DashboardService> logger)
+        public DashboardService(IUnitOfWork unitOfWork, ILogger<DashboardService> logger)
         {
-            _donorRepository = donorRepository ?? throw new ArgumentNullException(nameof(donorRepository));
-            _requestRepository = requestRepository ?? throw new ArgumentNullException(nameof(requestRepository));
-            _donationRepository = donationRepository ?? throw new ArgumentNullException(nameof(donationRepository));
-            _inventoryRepository = inventoryRepository ?? throw new ArgumentNullException(nameof(inventoryRepository));
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using VitaFlow.Core.Entities;
 using VitaFlow.Core.Enums;
 using VitaFlow.Core.Interfaces.Repositories;
+using VitaFlow.Infrastructure.Repositories.Interfaces;
 using VitaFlow.Services.Interfaces;
 
 namespace VitaFlow.Services.Services
@@ -15,22 +16,22 @@ namespace VitaFlow.Services.Services
     // Concrete implementation of donor business logic with caching, logging, error handling, and performance monitoring.
     public class DonorService : IDonorService
     {
-        private readonly IDonorRepository _donorRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMemoryCache _cache;
         private readonly ILogger<DonorService> _logger;
         private readonly IValidator<Donor> _validator;
         private const string DonorCacheKey = "Donor_{0}";
         private const string AllDonorsCacheKey = "AllDonors";
 
-        public DonorService(IDonorRepository donorRepository, IMemoryCache cache, ILogger<DonorService> logger, IValidator<Donor> validator)
+        public DonorService(IUnitOfWork unitOfWork, IMemoryCache cache, ILogger<DonorService> logger, IValidator<Donor> validator)
         {
-            _donorRepository = donorRepository;
+            _unitOfWork = unitOfWork;
             _cache = cache;
             _logger = logger;
             _validator = validator;
         }
 
-        public async Task<Donor> GetDonorByIdAsync(int id)
+        public async Task<Donor> GetDonorByIdAsync(Guid id)
         {
             var cacheKey = string.Format(DonorCacheKey, id);
             if (_cache.TryGetValue(cacheKey, out Donor? donor) && donor != null)
@@ -41,7 +42,8 @@ namespace VitaFlow.Services.Services
             var sw = Stopwatch.StartNew();
             try
             {
-                donor = await _donorRepository.GetByIdAsync(id);
+                var repo = _unitOfWork.GetRepository<Donor>();
+                donor = await repo.GetByIdAsync(id);
                 if (donor == null)
                 {
                     _logger.LogWarning($"Donor with id {id} not found.");
@@ -72,7 +74,8 @@ namespace VitaFlow.Services.Services
             var sw = Stopwatch.StartNew();
             try
             {
-                donors = await _donorRepository.GetAllAsync();
+                var repo = _unitOfWork.GetRepository<Donor>();
+                donors = await repo.GetListAsync();
                 _cache.Set(AllDonorsCacheKey, donors, TimeSpan.FromMinutes(10));
                 return donors;
             }
@@ -99,7 +102,13 @@ namespace VitaFlow.Services.Services
                     _logger.LogWarning("Validation failed for donor registration");
                     throw new ValidationException(validationResult.Errors);
                 }
-                var created = await _donorRepository.AddAsync(donor);
+                Donor created = null;
+                await _unitOfWork.ProcessInTransactionAsync(async () =>
+                {
+                    var repo = _unitOfWork.GetRepository<Donor>();
+                    await repo.InsertAsync(donor);
+                    created = donor;
+                });
                 _cache.Remove(AllDonorsCacheKey);
                 _logger.LogInformation($"Donor registered with id {created.Id}");
                 return created;
@@ -127,7 +136,11 @@ namespace VitaFlow.Services.Services
                     _logger.LogWarning("Validation failed for donor update");
                     throw new ValidationException(validationResult.Errors);
                 }
-                await _donorRepository.UpdateAsync(donor);
+                await _unitOfWork.ProcessInTransactionAsync(async () =>
+                {
+                    var repo = _unitOfWork.GetRepository<Donor>();
+                    repo.UpdateAsync(donor);
+                });
                 _cache.Remove(string.Format(DonorCacheKey, donor.Id));
                 _cache.Remove(AllDonorsCacheKey);
                 _logger.LogInformation($"Donor updated with id {donor.Id}");
@@ -150,7 +163,7 @@ namespace VitaFlow.Services.Services
             try
             {
                 // Example business rule: O- is universal donor
-                var donors = await _donorRepository.GetAvailableDonorsByBloodTypeAsync(recipientBloodType);
+                var donors = await _unitOfWork.GetRepository<Donor>().GetAvailableDonorsByBloodTypeAsync(recipientBloodType);
                 return donors;
             }
             catch (Exception ex)
@@ -170,7 +183,7 @@ namespace VitaFlow.Services.Services
             var sw = Stopwatch.StartNew();
             try
             {
-                var donors = await _donorRepository.GetDonorsByLocationAsync(latitude, longitude, radiusInKm);
+                var donors = await _unitOfWork.GetRepository<Donor>().GetDonorsByLocationAsync(latitude, longitude, radiusInKm);
                 return donors;
             }
             catch (Exception ex)
@@ -191,7 +204,7 @@ namespace VitaFlow.Services.Services
             try
             {
                 // Example: set next available date to 3 months from now
-                await _donorRepository.UpdateDonorAvailabilityAsync(donorId, DateTime.UtcNow.AddMonths(3));
+                await _unitOfWork.GetRepository<Donor>().UpdateDonorAvailabilityAsync(donorId, DateTime.UtcNow.AddMonths(3));
                 _cache.Remove(string.Format(DonorCacheKey, donorId));
                 _logger.LogInformation($"Donor availability updated for id {donorId}");
             }
