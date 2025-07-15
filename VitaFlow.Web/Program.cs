@@ -13,7 +13,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Register UnitOfWork for dependency injection
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<VitaFlow.Infrastructure.Repositories.Interfaces.IUnitOfWork, VitaFlow.Infrastructure.Repositories.Implements.UnitOfWork>();
+builder.Services.AddScoped(typeof(VitaFlow.Infrastructure.Repositories.Interfaces.IGenericRepository<>), typeof(VitaFlow.Infrastructure.Repositories.Implements.GenericRepository<>));
 
 var app = builder.Build();
 
