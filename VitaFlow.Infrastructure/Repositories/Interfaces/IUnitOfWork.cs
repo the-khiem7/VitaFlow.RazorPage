@@ -1,11 +1,23 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Threading.Tasks;
 
 namespace VitaFlow.Infrastructure.Repositories.Interfaces
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork : IGenericRepositoryFactory, IDisposable
     {
-        IGenericRepository<T> GetRepository<T>() where T : class;
-        Task<int> SaveChangesAsync();
+        Task<TOperation> ProcessInTransactionAsync<TOperation>(Func<Task<TOperation>> operation);
+        Task ProcessInTransactionAsync(Func<Task> operation);
+        int Commit();
+        Task<int> CommitAsync();
+        Task<IDbContextTransaction> BeginTransactionAsync();
+        Task CommitTransactionAsync(IDbContextTransaction transaction);
+        Task RollbackTransactionAsync(IDbContextTransaction transaction);
+    }
+
+    public interface IUnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
+    {
+        TContext Context { get; }
     }
 } 
