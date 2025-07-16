@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using VitaFlow.Infrastructure.Data;
-using VitaFlow.Infrastructure.Data.UnitOfWork;
+using VitaFlow.Infrastructure.Repositories.Implements;
+using VitaFlow.Infrastructure.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Register UnitOfWork for dependency injection
-builder.Services.AddScoped<VitaFlow.Infrastructure.Repositories.Interfaces.IUnitOfWork, VitaFlow.Infrastructure.Repositories.Implements.UnitOfWork>();
+builder.Services.AddScoped<IUnitOfWork<ApplicationDbContext>, UnitOfWork<ApplicationDbContext>>();
 builder.Services.AddScoped(typeof(VitaFlow.Infrastructure.Repositories.Interfaces.IGenericRepository<>), typeof(VitaFlow.Infrastructure.Repositories.Implements.GenericRepository<>));
 
 var app = builder.Build();

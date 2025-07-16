@@ -10,7 +10,6 @@ namespace VitaFlow.Services.Interfaces
     /// </summary>
     public interface IDonorService
     {
-        Task<Donor> GetDonorByIdAsync(int id);
         Task<IEnumerable<Donor>> GetAllDonorsAsync();
         Task<Donor> RegisterDonorAsync(Donor donor);
         Task UpdateDonorAsync(Donor donor);
