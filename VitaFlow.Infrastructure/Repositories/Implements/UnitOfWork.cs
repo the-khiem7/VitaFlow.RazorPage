@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace VitaFlow.Infrastructure.Repositories.Implements
 {
-    public class UnitOfWork : IUnitOfWork<IApplicationDbContext> where IApplicationDbContext : ApplicationDbContext
+    public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : ApplicationDbContext
     {
-        public ApplicationDbContext Context { get; }
+        public TContext Context { get; }
         private Dictionary<Type, object> _repositories;
 
-        public UnitOfWork(ApplicationDbContext context)
+        public UnitOfWork(TContext context)
         {
             Context = context;
         }
