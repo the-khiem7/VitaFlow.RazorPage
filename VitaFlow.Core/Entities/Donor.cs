@@ -8,6 +8,7 @@ namespace VitaFlow.Core.Entities
     // Represents a donor in the system.
     public class Donor : User
     {
+        public Guid Id { get; set; } = Guid.NewGuid();
         public BloodType BloodType { get; set; }
         public bool IsActive { get; set; }
         public DateTime? LastDonationDate { get; set; }

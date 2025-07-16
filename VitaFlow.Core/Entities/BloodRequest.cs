@@ -7,8 +7,8 @@ namespace VitaFlow.Core.Entities
     // Represents a blood request.
     public class BloodRequest
     {
-        public int Id { get; set; }
-        public int RecipientId { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid RecipientId { get; set; }
         public Recipient? Recipient { get; set; }
         public BloodType RequiredBloodType { get; set; }
         public double VolumeNeeded { get; set; }

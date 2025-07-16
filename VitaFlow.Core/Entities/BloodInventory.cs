@@ -6,7 +6,7 @@ namespace VitaFlow.Core.Entities
     // Represents blood inventory.
     public class BloodInventory
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public BloodType BloodType { get; set; }
         public double WholeBloodVolume { get; set; }
         public double RedCellsVolume { get; set; }
