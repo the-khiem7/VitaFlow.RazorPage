@@ -10,6 +10,7 @@ using VitaFlow.Core.Enums;
 using VitaFlow.Infrastructure.Repositories.Interfaces;
 using VitaFlow.Services.Interfaces;
 using System.Linq; // Added for .Where()
+using VitaFlow.Core.Common;
 
 namespace VitaFlow.Services.Services
 {
@@ -216,7 +217,7 @@ namespace VitaFlow.Services.Services
                 // Lọc donor có Location hợp lệ và trong bán kính radiusInKm
                 var nearbyDonors = donors.Where(d =>
                     d.Location != null &&
-                    HaversineDistance(latitude, longitude, d.Location.Latitude, d.Location.Longitude) <= radiusInKm
+                    GeoUtils.CalculateDistance(latitude, longitude, d.Location.Latitude, d.Location.Longitude) <= radiusInKm
                 );
                 return nearbyDonors;
             }
@@ -231,20 +232,6 @@ namespace VitaFlow.Services.Services
                 _logger.LogInformation($"FindNearbyDonorsAsync executed in {sw.ElapsedMilliseconds} ms");
             }
         }
-
-        // Hàm tính khoảng cách Haversine giữa hai điểm (km)
-        private double HaversineDistance(double lat1, double lon1, double lat2, double lon2)
-        {
-            double R = 6371; // Bán kính Trái Đất (km)
-            double dLat = ToRadians(lat2 - lat1);
-            double dLon = ToRadians(lon2 - lon1);
-            double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
-                       Math.Cos(ToRadians(lat1)) * Math.Cos(ToRadians(lat2)) *
-                       Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
-            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-            return R * c;
-        }
-        private double ToRadians(double angle) => angle * Math.PI / 180.0;
 
         // Cập nhật ngày donor sẵn sàng hiến máu tiếp theo (ví dụ: sau 3 tháng)
         public async Task UpdateDonorAvailabilityAsync(int donorId)

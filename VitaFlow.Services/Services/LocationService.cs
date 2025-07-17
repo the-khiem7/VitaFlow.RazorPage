@@ -6,6 +6,7 @@ using VitaFlow.Core.Entities;
 using VitaFlow.Core.Interfaces.Services;
 using VitaFlow.Infrastructure.Repositories.Interfaces;
 using System.Linq; // Added for .Where()
+using VitaFlow.Core.Common;
 
 namespace VitaFlow.Services.Services
 {
@@ -78,7 +79,7 @@ namespace VitaFlow.Services.Services
                 var allLocations = await repo.GetListAsync(predicate: null);
                 // Lọc các location có khoảng cách đến điểm trung tâm nhỏ hơn hoặc bằng bán kính
                 var locationsWithinRadius = allLocations.Where(location =>
-                    CalculateDistance(latitude, longitude, location.Latitude, location.Longitude) <= radiusInKm
+                    GeoUtils.CalculateDistance(latitude, longitude, location.Latitude, location.Longitude) <= radiusInKm
                 );
                 return locationsWithinRadius;
             }
@@ -87,21 +88,6 @@ namespace VitaFlow.Services.Services
                 _logger.LogError(ex, "Error finding locations within radius");
                 throw;
             }
-        }
-
-        // Hàm tính khoảng cách Haversine giữa hai điểm (km)
-        private double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
-        {
-            const double earthRadiusKm = 6371.0;
-            var dLat = DegreesToRadians(lat2 - lat1);
-            var dLon = DegreesToRadians(lon2 - lon1);
-            lat1 = DegreesToRadians(lat1);
-            lat2 = DegreesToRadians(lat2);
-            var a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
-                    Math.Sin(dLon / 2) * Math.Sin(dLon / 2) *
-                    Math.Cos(lat1) * Math.Cos(lat2);
-            var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-            return earthRadiusKm * c;
         }
     }
 }
