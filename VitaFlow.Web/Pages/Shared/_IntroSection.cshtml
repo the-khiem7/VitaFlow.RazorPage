@@ -1,48 +1,20 @@
-<section class="relative w-full flex flex-col items-center justify-center py-20 md:py-32 overflow-hidden mb-8 min-h-[70vh]">
-    <!-- Layered SVG blobs background -->
-    <div class="absolute -top-40 -left-40 w-[600px] h-[600px] opacity-40 z-0 animate-pulse pointer-events-none select-none">
-        <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <radialGradient id="blobGradient1" cx="50%" cy="50%" r="80%">
-                    <stop offset="0%" stop-color="#38bdf8"/>
-                    <stop offset="100%" stop-color="#f472b6"/>
-                </radialGradient>
-            </defs>
-            <path fill="url(#blobGradient1)" d="M537,368Q520,486,400,520Q280,554,180,500Q80,446,60,323Q40,200,120,120Q200,40,320,60Q440,80,520,160Q600,240,537,368Z"/>
-        </svg>
-    </div>
-    <div class="absolute -bottom-32 -right-32 w-[500px] h-[500px] opacity-30 z-0 animate-pulse pointer-events-none select-none">
-        <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <radialGradient id="blobGradient2" cx="50%" cy="50%" r="80%">
-                    <stop offset="0%" stop-color="#f472b6"/>
-                    <stop offset="100%" stop-color="#60a5fa"/>
-                </radialGradient>
-            </defs>
-            <path fill="url(#blobGradient2)" d="M437,308Q420,366,366,400Q312,434,250,429Q188,424,134,393Q80,362,70,306Q60,250,77,194Q94,138,144,110Q194,82,250,74Q306,66,355,99Q404,132,434,191Q464,250,437,308Z"/>
-        </svg>
-    </div>
-    <!-- Glassmorphism content box -->
-    <div class="relative flex flex-col md:flex-row items-center gap-12 w-full max-w-5xl px-4 z-10 bg-white/30 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/40 p-8 md:p-16">
-        <div class="flex-shrink-0 animate-fade-in-up">
-            <!-- Modern medical SVG illustration -->
-            <svg class="w-56 h-56 md:w-72 md:h-72" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <ellipse cx="150" cy="260" rx="110" ry="22" fill="#e0e7ff"/>
-                <path d="M150 40C150 40 60 160 60 220C60 260 110 280 150 280C190 280 240 260 240 220C240 160 150 40 150 40Z" fill="#f472b6"/>
-                <circle cx="150" cy="150" r="40" fill="#fff"/>
-                <circle cx="150" cy="150" r="22" fill="#38bdf8"/>
-                <ellipse cx="150" cy="150" rx="10" ry="16" fill="#fff"/>
-                <rect x="135" y="110" width="30" height="8" rx="4" fill="#f472b6"/>
-                <rect x="135" y="192" width="30" height="8" rx="4" fill="#f472b6"/>
-                <rect x="110" y="135" width="8" height="30" rx="4" fill="#f472b6"/>
-                <rect x="182" y="135" width="8" height="30" rx="4" fill="#f472b6"/>
-            </svg>
-        </div>
-        <div class="flex-1 text-center md:text-left animate-fade-in-up">
-            <h1 class="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-pink-500 to-blue-400 mb-4 drop-shadow-xl">VitaFlow</h1>
-            <p class="text-2xl md:text-3xl text-gray-800 mb-6 font-semibold drop-shadow">Hệ thống hỗ trợ hiến máu – Kết nối người hiến máu và người cần máu cho các cơ sở y tế.</p>
-            <p class="text-base md:text-lg text-gray-700 mb-8">Chúng tôi cam kết mang lại giải pháp quản lý, tra cứu và kết nối hiệu quả, góp phần cứu sống nhiều người bệnh cần truyền máu.</p>
-            <a href="/Donors/Register" class="inline-block px-10 py-4 bg-gradient-to-r from-pink-500 via-blue-500 to-pink-400 text-white rounded-full font-extrabold text-xl shadow-xl hover:scale-110 hover:shadow-2xl transition-transform duration-300 animate-bounce ring-2 ring-pink-200">Đăng ký hiến máu ngay</a>
-        </div>
-    </div>
+<section class="relative w-full min-h-[70vh] flex flex-col items-center justify-center py-16 md:py-24 bg-gradient-to-br from-blue-50 via-pink-50 to-white overflow-hidden">
+  <div class="flex flex-col items-center justify-center w-full max-w-2xl mx-auto px-4 text-center">
+    <!-- Main illustration -->
+    <svg class="w-40 h-40 md:w-56 md:h-56 mb-8" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="110" cy="200" rx="80" ry="15" fill="#e0e7ff"/>
+      <path d="M110 30C110 30 40 120 40 170C40 200 80 210 110 210C140 210 180 200 180 170C180 120 110 30 110 30Z" fill="#f472b6"/>
+      <circle cx="110" cy="120" r="32" fill="#fff"/>
+      <circle cx="110" cy="120" r="16" fill="#38bdf8"/>
+      <ellipse cx="110" cy="120" rx="7" ry="11" fill="#fff"/>
+      <!-- Heart icon -->
+      <path d="M110 128c-5-7-16-5-16 4 0 7 16 16 16 16s16-9 16-16c0-9-11-11-16-4z" fill="#f472b6"/>
+    </svg>
+    <!-- Headline -->
+    <h1 class="text-4xl md:text-5xl font-extrabold text-blue-700 mb-4 leading-tight">Hiến máu cứu người<br><span class="text-pink-500">Kết nối yêu thương</span></h1>
+    <!-- Tagline -->
+    <p class="text-lg md:text-xl text-gray-700 mb-8 font-medium">VitaFlow giúp kết nối cộng đồng hiến máu, hỗ trợ các cơ sở y tế và lan tỏa tinh thần nhân ái.</p>
+    <!-- CTA -->
+    <a href="/Donors/Register" class="inline-block px-8 py-3 bg-gradient-to-r from-pink-500 to-blue-500 text-white rounded-full font-bold text-lg shadow-lg hover:scale-105 hover:shadow-2xl transition-transform duration-300">Đăng ký hiến máu ngay</a>
+  </div>
 </section> 
