@@ -1,0 +1,20 @@
+<section class="w-full py-8 md:py-12 flex flex-col items-center mb-8 bg-pink-50 rounded-2xl">
+    <div class="max-w-4xl w-full">
+        <h3 class="text-2xl md:text-3xl font-bold text-pink-600 text-center mb-6">Blog - Chia sẻ kinh nghiệm</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            @for (int i = 1; i <= 10; i++) {
+                <div class="bg-white rounded-xl shadow-2xl border-2 border-transparent hover:border-pink-400 hover:shadow-pink-200 transition-all duration-300 p-4 flex flex-col justify-between transform hover:scale-105 animate-fade-in-up">
+                    <div class="flex items-center gap-2 mb-2">
+                        <svg class="w-6 h-6 text-blue-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2C10 2 4 9.5 4 13a6 6 0 0012 0c0-3.5-6-11-6-11z" /></svg>
+                        <h4 class="text-lg font-bold text-blue-700">Bài viết số @i: Kinh nghiệm hiến máu lần @i</h4>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-2">Chia sẻ về trải nghiệm hiến máu lần @i, những điều cần chuẩn bị và lưu ý cho người mới.</p>
+                    <div class="flex items-center justify-between mt-2">
+                        <span class="text-xs text-gray-400">Ngày đăng: @(DateTime.Now.AddDays(-i).ToString("dd/MM/yyyy"))</span>
+                        <button class="px-3 py-1 bg-gradient-to-r from-blue-100 to-pink-100 text-blue-700 rounded-full text-xs font-semibold hover:bg-blue-200 transition">Xem chi tiết</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section> 

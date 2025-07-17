@@ -1,0 +1,32 @@
+<section class="relative w-full flex flex-col items-center justify-center py-16 md:py-24 overflow-hidden mb-8">
+    <!-- SVG blob background -->
+    <div class="absolute -top-24 -left-32 w-[500px] h-[500px] opacity-30 z-0 animate-pulse pointer-events-none select-none">
+        <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <radialGradient id="blobGradient" cx="50%" cy="50%" r="80%">
+                    <stop offset="0%" stop-color="#60a5fa"/>
+                    <stop offset="100%" stop-color="#f472b6"/>
+                </radialGradient>
+            </defs>
+            <path fill="url(#blobGradient)" d="M437,308Q420,366,366,400Q312,434,250,429Q188,424,134,393Q80,362,70,306Q60,250,77,194Q94,138,144,110Q194,82,250,74Q306,66,355,99Q404,132,434,191Q464,250,437,308Z"/>
+        </svg>
+    </div>
+    <div class="relative flex flex-col md:flex-row items-center gap-12 w-full max-w-5xl px-4 z-10">
+        <div class="flex-shrink-0 animate-fade-in-up">
+            <!-- SVG minh họa y tế -->
+            <svg class="w-48 h-48 md:w-64 md:h-64" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="128" cy="220" rx="100" ry="20" fill="#e0e7ff"/>
+                <path d="M128 32C128 32 56 128 56 176C56 208 88 224 128 224C168 224 200 208 200 176C200 128 128 32 128 32Z" fill="#f472b6"/>
+                <circle cx="128" cy="120" r="32" fill="#fff"/>
+                <circle cx="128" cy="120" r="18" fill="#f472b6"/>
+                <ellipse cx="128" cy="120" rx="8" ry="12" fill="#fff"/>
+            </svg>
+        </div>
+        <div class="flex-1 text-center md:text-left animate-fade-in-up">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-blue-700 mb-4 drop-shadow-lg">VitaFlow</h1>
+            <p class="text-xl md:text-2xl text-gray-700 mb-6 font-medium">Hệ thống hỗ trợ hiến máu – Kết nối người hiến máu và người cần máu cho các cơ sở y tế.</p>
+            <p class="text-base text-gray-600 mb-8">Chúng tôi cam kết mang lại giải pháp quản lý, tra cứu và kết nối hiệu quả, góp phần cứu sống nhiều người bệnh cần truyền máu.</p>
+            <a href="/Donors/Register" class="inline-block px-8 py-3 bg-gradient-to-r from-pink-500 to-blue-500 text-white rounded-full font-bold text-lg shadow-lg hover:scale-105 hover:shadow-2xl transition-transform duration-300 animate-bounce">Đăng ký hiến máu ngay</a>
+        </div>
+    </div>
+</section> 
