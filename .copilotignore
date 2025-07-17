@@ -1,0 +1,170 @@
+# .copilotignore for ASP.NET Razor Pages Project
+# This file tells GitHub Copilot which files to ignore when providing code suggestions
+
+# Build output directories
+bin/
+obj/
+out/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio files
+.vs/
+*.user
+*.suo
+*.sln.docstates
+*.userprefs
+*.userosscache
+*.rsuser
+
+# Auto-generated files
+Generated\ Files/
+ScaffoldingReadMe.txt
+*.Designer.cs
+*.designer.cs
+*.generated.cs
+
+# Package/dependency directories
+packages/
+node_modules/
+bower_components/
+
+# NuGet files
+*.nupkg
+*.snupkg
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+
+# Entity Framework Migrations (auto-generated)
+Migrations/
+
+# ASP.NET Core compiled views
+*.precompiled.cshtml.cs
+
+# Compiled static files
+wwwroot/lib/
+wwwroot/css/*.min.css
+wwwroot/js/*.min.js
+
+# Cache and temporary files
+*.cache
+*.tmp
+*.tmp_proj
+*_wpftmp.csproj
+*.log
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+
+# Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+TestResult.xml
+nunit-*.xml
+*.VisualState.xml
+coverage*.json
+coverage*.xml
+coverage*.info
+*.coverage
+*.coveragexml
+
+# Database files
+*.mdf
+*.ldf
+*.ndf
+*.db
+*.sqlite
+*.sqlite3
+
+# Configuration files with sensitive data
+appsettings.Production.json
+appsettings.Staging.json
+*.secrets.json
+secrets.json
+
+# Backup files
+*.bak
+*~
+~$*
+Backup*/
+UpgradeLog*.XML
+UpgradeLog*.htm
+_UpgradeReport_Files/
+
+# IDE and editor files
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Documentation build outputs
+docs/_build/
+docs/api/
+
+# Profiling and analysis files
+*.psess
+*.vsp
+*.vspx
+*.sap
+*.e2e
+
+# Publishing profiles
+*.pubxml
+*.publishproj
+PublishScripts/
+
+# Azure files
+*.azurePubxml
+csx/
+*.build.csdef
+ecf/
+rcf/
+
+# Other generated content
+*.dll
+*.exe
+*.pdb
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+
+# License and readme files (usually not needed for code suggestions)
+LICENSE*
+license*
+*.md
+!README.md
+
+# Git files
+.git/
+.gitignore
+.gitattributes
+.gitkeep
+
+AgentBook/
