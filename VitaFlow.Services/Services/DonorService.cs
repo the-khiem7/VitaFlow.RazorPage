@@ -7,9 +7,9 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using VitaFlow.Core.Entities;
 using VitaFlow.Core.Enums;
-using VitaFlow.Core.Interfaces.Repositories;
 using VitaFlow.Infrastructure.Repositories.Interfaces;
 using VitaFlow.Services.Interfaces;
+using System.Linq; // Added for .Where()
 
 namespace VitaFlow.Services.Services
 {
@@ -157,14 +157,19 @@ namespace VitaFlow.Services.Services
             }
         }
 
+        // NOTE: Cần bổ sung property LocationId (Guid) và Location (Location) vào entity Donor để hỗ trợ lọc theo vị trí.
+
+        // Tìm donor phù hợp với blood type của người nhận theo quy tắc truyền máu quốc tế và còn hoạt động
         public async Task<IEnumerable<Donor>> FindCompatibleDonorsAsync(BloodType recipientBloodType)
         {
             var sw = Stopwatch.StartNew();
             try
             {
-                // Example business rule: O- is universal donor
-                var donors = await _unitOfWork.GetRepository<Donor>().GetAvailableDonorsByBloodTypeAsync(recipientBloodType);
-                return donors;
+                var repo = _unitOfWork.GetRepository<Donor>();
+                var donors = await repo.GetListAsync(predicate: d => d.IsActive);
+                // Lọc donor phù hợp theo quy tắc truyền máu quốc tế
+                var compatibleDonors = donors.Where(d => IsCompatible(d.BloodType, recipientBloodType));
+                return compatibleDonors;
             }
             catch (Exception ex)
             {
@@ -178,13 +183,42 @@ namespace VitaFlow.Services.Services
             }
         }
 
+        // Hàm kiểm tra compatibility theo quy tắc truyền máu quốc tế
+        private bool IsCompatible(BloodType donor, BloodType recipient)
+        {
+            // Tách nhóm máu và Rh
+            string donorType = donor.ToString();
+            string recipientType = recipient.ToString();
+            bool donorRh = donorType.EndsWith("+");
+            bool recipientRh = recipientType.EndsWith("+");
+            string donorABO = donorType.TrimEnd('+', '-');
+            string recipientABO = recipientType.TrimEnd('+', '-');
+
+            // Rh compatibility
+            if (donorRh && !recipientRh) return false; // Rh+ không cho Rh-
+
+            // ABO compatibility
+            if (donorABO == "O") return true;
+            if (donorABO == "A" && (recipientABO == "A" || recipientABO == "AB")) return true;
+            if (donorABO == "B" && (recipientABO == "B" || recipientABO == "AB")) return true;
+            if (donorABO == "AB" && recipientABO == "AB") return true;
+            return false;
+        }
+
+        // Tìm donor gần vị trí chỉ định (dùng công thức Haversine, chỉ donor còn hoạt động và có Location hợp lệ)
         public async Task<IEnumerable<Donor>> FindNearbyDonorsAsync(double latitude, double longitude, double radiusInKm)
         {
             var sw = Stopwatch.StartNew();
             try
             {
-                var donors = await _unitOfWork.GetRepository<Donor>().GetDonorsByLocationAsync(latitude, longitude, radiusInKm);
-                return donors;
+                var repo = _unitOfWork.GetRepository<Donor>();
+                var donors = await repo.GetListAsync(predicate: d => d.IsActive);
+                // Lọc donor có Location hợp lệ và trong bán kính radiusInKm
+                var nearbyDonors = donors.Where(d =>
+                    d.Location != null &&
+                    HaversineDistance(latitude, longitude, d.Location.Latitude, d.Location.Longitude) <= radiusInKm
+                );
+                return nearbyDonors;
             }
             catch (Exception ex)
             {
@@ -198,13 +232,40 @@ namespace VitaFlow.Services.Services
             }
         }
 
+        // Hàm tính khoảng cách Haversine giữa hai điểm (km)
+        private double HaversineDistance(double lat1, double lon1, double lat2, double lon2)
+        {
+            double R = 6371; // Bán kính Trái Đất (km)
+            double dLat = ToRadians(lat2 - lat1);
+            double dLon = ToRadians(lon2 - lon1);
+            double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                       Math.Cos(ToRadians(lat1)) * Math.Cos(ToRadians(lat2)) *
+                       Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+            return R * c;
+        }
+        private double ToRadians(double angle) => angle * Math.PI / 180.0;
+
+        // Cập nhật ngày donor sẵn sàng hiến máu tiếp theo (ví dụ: sau 3 tháng)
         public async Task UpdateDonorAvailabilityAsync(int donorId)
         {
             var sw = Stopwatch.StartNew();
             try
             {
-                // Example: set next available date to 3 months from now
-                await _unitOfWork.GetRepository<Donor>().UpdateDonorAvailabilityAsync(donorId, DateTime.UtcNow.AddMonths(3));
+                var repo = _unitOfWork.GetRepository<Donor>();
+                // Lấy donor theo id
+                var donor = await repo.GetByIdAsync(new Guid(donorId.ToString()));
+                if (donor == null)
+                {
+                    _logger.LogWarning($"Donor with id {donorId} not found.");
+                    throw new KeyNotFoundException($"Donor with id {donorId} not found.");
+                }
+                // Cập nhật ngày sẵn sàng hiến máu tiếp theo (ví dụ: 3 tháng kể từ hôm nay)
+                donor.NextAvailableDate = DateTime.UtcNow.AddMonths(3);
+                await _unitOfWork.ProcessInTransactionAsync(async () =>
+                {
+                    repo.UpdateAsync(donor);
+                });
                 _cache.Remove(string.Format(DonorCacheKey, donorId));
                 _logger.LogInformation($"Donor availability updated for id {donorId}");
             }
