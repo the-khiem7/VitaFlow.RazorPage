@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using VitaFlow.Web.ViewModels;
 using VitaFlow.Core.Interfaces.Services;
+using VitaFlow.Core.Entities;
+using VitaFlow.Core.Enums;
+using System.Threading.Tasks;
 
 namespace VitaFlow.Web.Pages.Donors
 {
@@ -15,6 +18,9 @@ namespace VitaFlow.Web.Pages.Donors
 
         [BindProperty]
         public DonorRegistrationViewModel DonorVM { get; set; }
+
+        [TempData]
+        public string SuccessMessage { get; set; }
 
         public RegisterModel(IDonorService donorService, ILocationService locationService)
         {
@@ -30,10 +36,31 @@ namespace VitaFlow.Web.Pages.Donors
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
+            {
                 return Page();
+            }
 
-            // Register donor logic
-            return RedirectToPage("Confirmation");
+            // Map ViewModel to Entity
+            var donor = new Donor
+            {
+                FirstName = DonorVM.FirstName,
+                LastName = DonorVM.LastName,
+                DateOfBirth = DonorVM.DateOfBirth,
+                Email = DonorVM.Email,
+                PhoneNumber = DonorVM.PhoneNumber,
+                Address = DonorVM.Address,
+                BloodType = DonorVM.BloodType,
+                IsEmergencyDonor = DonorVM.IsEmergencyDonor,
+                MedicalNotes = DonorVM.MedicalNotes,
+                IsActive = true,
+                Role = UserRole.Donor // Sử dụng đúng giá trị enum
+            };
+
+            // Lưu donor qua service
+            await _donorService.RegisterDonorAsync(donor);
+
+            SuccessMessage = "Đăng ký thành công! Cảm ơn bạn đã tham gia hiến máu.";
+            return RedirectToPage("Index"); // Nếu chưa có trang này, có thể chuyển về Index hoặc trang khác
         }
     }
 }

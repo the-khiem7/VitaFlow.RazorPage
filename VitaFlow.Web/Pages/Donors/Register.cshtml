@@ -1,9 +1,53 @@
 @page
 @model VitaFlow.Web.Pages.Donors.RegisterModel
 
-<h1>Register Donor</h1>
-
-<form method="post">
-    <!-- Form fields for donor registration -->
-    <button type="submit">Register</button>
-</form>
+<div class="max-w-xl mx-auto mt-10 p-8 bg-white rounded-lg shadow-lg">
+    <h1 class="text-2xl font-bold text-center text-blue-700 mb-6">Đăng ký người hiến máu</h1>
+    <form method="post" class="space-y-5">
+        <div class="flex gap-4">
+            <div class="w-1/2">
+                <label asp-for="DonorVM.FirstName" class="block font-medium mb-1">Họ <span class="text-red-500">*</span></label>
+                <input asp-for="DonorVM.FirstName" class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400" required />
+            </div>
+            <div class="w-1/2">
+                <label asp-for="DonorVM.LastName" class="block font-medium mb-1">Tên <span class="text-red-500">*</span></label>
+                <input asp-for="DonorVM.LastName" class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400" required />
+            </div>
+        </div>
+        <div>
+            <label asp-for="DonorVM.DateOfBirth" class="block font-medium mb-1">Ngày sinh <span class="text-red-500">*</span></label>
+            <input asp-for="DonorVM.DateOfBirth" type="date" class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400" required />
+        </div>
+        <div>
+            <label asp-for="DonorVM.Email" class="block font-medium mb-1">Email <span class="text-red-500">*</span></label>
+            <input asp-for="DonorVM.Email" type="email" class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400" required />
+        </div>
+        <div>
+            <label asp-for="DonorVM.PhoneNumber" class="block font-medium mb-1">Số điện thoại <span class="text-red-500">*</span></label>
+            <input asp-for="DonorVM.PhoneNumber" class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400" required />
+        </div>
+        <div>
+            <label asp-for="DonorVM.Address" class="block font-medium mb-1">Địa chỉ <span class="text-red-500">*</span></label>
+            <input asp-for="DonorVM.Address" class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400" required />
+        </div>
+        <div>
+            <label asp-for="DonorVM.BloodType" class="block font-medium mb-1">Nhóm máu <span class="text-red-500">*</span></label>
+            <select asp-for="DonorVM.BloodType" class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+                <option value="">-- Chọn nhóm máu --</option>
+                @foreach (var type in Enum.GetValues(typeof(VitaFlow.Core.Enums.BloodType)))
+                {
+                    <option value="@type">@type</option>
+                }
+            </select>
+        </div>
+        <div class="flex items-center">
+            <input asp-for="DonorVM.IsEmergencyDonor" type="checkbox" class="mr-2" />
+            <label asp-for="DonorVM.IsEmergencyDonor" class="font-medium">Sẵn sàng hiến máu khẩn cấp</label>
+        </div>
+        <div>
+            <label asp-for="DonorVM.MedicalNotes" class="block font-medium mb-1">Ghi chú y tế (tuỳ chọn)</label>
+            <textarea asp-for="DonorVM.MedicalNotes" class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400" rows="3"></textarea>
+        </div>
+        <button type="submit" class="w-full py-3 bg-gradient-to-r from-pink-500 to-blue-500 text-white font-bold rounded-lg shadow-lg hover:scale-105 hover:shadow-2xl transition-transform duration-300">Đăng ký</button>
+    </form>
+</div>

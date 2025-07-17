@@ -15,7 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\VitaFlow.Core\VitaFlow.Core.csproj" />
     <ProjectReference Include="..\VitaFlow.Infrastructure\VitaFlow.Infrastructure.csproj" />
+    <ProjectReference Include="..\VitaFlow.Services\VitaFlow.Services.csproj" />
   </ItemGroup>
 
 </Project>
