@@ -9,11 +9,11 @@ namespace VitaFlow.Core.Interfaces.Services
     /// </summary>
     public interface INotificationService
     {
-        Task SendDonationReminderAsync(int donorId);
-        Task SendEmergencyRequestAsync(IEnumerable<int> donorIds);
-        Task SendDonationCompletedNotificationAsync(int donorId, int donationId);
-        Task SendRequestStatusUpdateAsync(int recipientId, int requestId);
-        Task MarkNotificationAsReadAsync(int notificationId);
-        Task<IEnumerable<Notification>> GetUserNotificationsAsync(int userId);
+        Task SendDonationReminderAsync(Guid donorId);
+        Task SendEmergencyRequestAsync(IEnumerable<Guid> donorIds);
+        Task SendDonationCompletedNotificationAsync(Guid donorId, Guid donationId);
+        Task SendRequestStatusUpdateAsync(Guid recipientId, Guid requestId);
+        Task MarkNotificationAsReadAsync(Guid notificationId);
+        Task<IEnumerable<Notification>> GetUserNotificationsAsync(Guid userId);
     }
 }
