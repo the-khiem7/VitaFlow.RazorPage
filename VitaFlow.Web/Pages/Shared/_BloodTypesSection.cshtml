@@ -2,25 +2,93 @@
     <div class="max-w-4xl w-full">
         <h3 class="text-2xl md:text-3xl font-bold text-blue-700 text-center mb-6">Các nhóm máu</h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <!-- A+ -->
             <div class="flex flex-col items-center p-4 bg-white rounded-xl shadow-2xl border-2 border-transparent hover:border-blue-400 hover:shadow-blue-200 transition-all duration-300 transform hover:scale-105 animate-fade-in-up">
-                <svg class="w-8 h-8 text-red-400 mb-1" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2C10 2 4 9.5 4 13a6 6 0 0012 0c0-3.5-6-11-6-11z" /></svg>
-                <span class="text-3xl font-bold text-red-500">A</span>
-                <span class="text-gray-600">Nhóm máu A</span>
+                <span class="relative mb-1">
+                    <svg class="w-10 h-10 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C12 2 4 12.5 4 17a8 8 0 0016 0c0-4.5-8-15-8-15z"/>
+                    </svg>
+                    <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-lg font-bold select-none">+</span>
+                </span>
+                <span class="text-2xl font-bold text-red-600">A+</span>
+                <span class="text-gray-600 text-center text-sm mt-1">Cho: A+, AB+<br>Nhận: A+, A-, O+, O-</span>
             </div>
+            <!-- A- -->
             <div class="flex flex-col items-center p-4 bg-white rounded-xl shadow-2xl border-2 border-transparent hover:border-blue-400 hover:shadow-blue-200 transition-all duration-300 transform hover:scale-105 animate-fade-in-up">
-                <svg class="w-8 h-8 text-red-400 mb-1" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2C10 2 4 9.5 4 13a6 6 0 0012 0c0-3.5-6-11-6-11z" /></svg>
-                <span class="text-3xl font-bold text-red-500">B</span>
-                <span class="text-gray-600">Nhóm máu B</span>
+                <span class="relative mb-1">
+                    <svg class="w-10 h-10 text-red-300" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C12 2 4 12.5 4 17a8 8 0 0016 0c0-4.5-8-15-8-15z"/>
+                    </svg>
+                    <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-lg font-bold select-none">-</span>
+                </span>
+                <span class="text-2xl font-bold text-red-400">A-</span>
+                <span class="text-gray-600 text-center text-sm mt-1">Cho: A+, A-, AB+, AB-<br>Nhận: A-, O-</span>
             </div>
+            <!-- B+ -->
             <div class="flex flex-col items-center p-4 bg-white rounded-xl shadow-2xl border-2 border-transparent hover:border-blue-400 hover:shadow-blue-200 transition-all duration-300 transform hover:scale-105 animate-fade-in-up">
-                <svg class="w-8 h-8 text-red-400 mb-1" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2C10 2 4 9.5 4 13a6 6 0 0012 0c0-3.5-6-11-6-11z" /></svg>
-                <span class="text-3xl font-bold text-red-500">AB</span>
-                <span class="text-gray-600">Nhóm máu AB</span>
+                <span class="relative mb-1">
+                    <svg class="w-10 h-10 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C12 2 4 12.5 4 17a8 8 0 0016 0c0-4.5-8-15-8-15z"/>
+                    </svg>
+                    <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-lg font-bold select-none">+</span>
+                </span>
+                <span class="text-2xl font-bold text-red-600">B+</span>
+                <span class="text-gray-600 text-center text-sm mt-1">Cho: B+, AB+<br>Nhận: B+, B-, O+, O-</span>
             </div>
+            <!-- B- -->
             <div class="flex flex-col items-center p-4 bg-white rounded-xl shadow-2xl border-2 border-transparent hover:border-blue-400 hover:shadow-blue-200 transition-all duration-300 transform hover:scale-105 animate-fade-in-up">
-                <svg class="w-8 h-8 text-red-400 mb-1" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2C10 2 4 9.5 4 13a6 6 0 0012 0c0-3.5-6-11-6-11z" /></svg>
-                <span class="text-3xl font-bold text-red-500">O</span>
-                <span class="text-gray-600">Nhóm máu O</span>
+                <span class="relative mb-1">
+                    <svg class="w-10 h-10 text-red-300" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C12 2 4 12.5 4 17a8 8 0 0016 0c0-4.5-8-15-8-15z"/>
+                    </svg>
+                    <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-lg font-bold select-none">-</span>
+                </span>
+                <span class="text-2xl font-bold text-red-400">B-</span>
+                <span class="text-gray-600 text-center text-sm mt-1">Cho: B+, B-, AB+, AB-<br>Nhận: B-, O-</span>
+            </div>
+            <!-- AB+ -->
+            <div class="flex flex-col items-center p-4 bg-white rounded-xl shadow-2xl border-2 border-transparent hover:border-blue-400 hover:shadow-blue-200 transition-all duration-300 transform hover:scale-105 animate-fade-in-up">
+                <span class="relative mb-1">
+                    <svg class="w-10 h-10 text-pink-500" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C12 2 4 12.5 4 17a8 8 0 0016 0c0-4.5-8-15-8-15z"/>
+                    </svg>
+                    <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-lg font-bold select-none">+</span>
+                </span>
+                <span class="text-2xl font-bold text-pink-600">AB+</span>
+                <span class="text-gray-600 text-center text-sm mt-1">Cho: AB+<br>Nhận: Tất cả các nhóm máu</span>
+            </div>
+            <!-- AB- -->
+            <div class="flex flex-col items-center p-4 bg-white rounded-xl shadow-2xl border-2 border-transparent hover:border-blue-400 hover:shadow-blue-200 transition-all duration-300 transform hover:scale-105 animate-fade-in-up">
+                <span class="relative mb-1">
+                    <svg class="w-10 h-10 text-pink-300" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C12 2 4 12.5 4 17a8 8 0 0016 0c0-4.5-8-15-8-15z"/>
+                    </svg>
+                    <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-lg font-bold select-none">-</span>
+                </span>
+                <span class="text-2xl font-bold text-pink-400">AB-</span>
+                <span class="text-gray-600 text-center text-sm mt-1">Cho: AB+, AB-<br>Nhận: AB-, A-, B-, O-</span>
+            </div>
+            <!-- O+ -->
+            <div class="flex flex-col items-center p-4 bg-white rounded-xl shadow-2xl border-2 border-transparent hover:border-blue-400 hover:shadow-blue-200 transition-all duration-300 transform hover:scale-105 animate-fade-in-up">
+                <span class="relative mb-1">
+                    <svg class="w-10 h-10 text-orange-500" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C12 2 4 12.5 4 17a8 8 0 0016 0c0-4.5-8-15-8-15z"/>
+                    </svg>
+                    <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-lg font-bold select-none">+</span>
+                </span>
+                <span class="text-2xl font-bold text-orange-600">O+</span>
+                <span class="text-gray-600 text-center text-sm mt-1">Cho: O+, A+, B+, AB+<br>Nhận: O+, O-</span>
+            </div>
+            <!-- O- -->
+            <div class="flex flex-col items-center p-4 bg-white rounded-xl shadow-2xl border-2 border-transparent hover:border-blue-400 hover:shadow-blue-200 transition-all duration-300 transform hover:scale-105 animate-fade-in-up">
+                <span class="relative mb-1">
+                    <svg class="w-10 h-10 text-orange-300" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C12 2 4 12.5 4 17a8 8 0 0016 0c0-4.5-8-15-8-15z"/>
+                    </svg>
+                    <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-lg font-bold select-none">-</span>
+                </span>
+                <span class="text-2xl font-bold text-orange-400">O-</span>
+                <span class="text-gray-600 text-center text-sm mt-1">Cho: Tất cả các nhóm máu<br>Nhận: O-</span>
             </div>
         </div>
         <p class="text-sm text-gray-500 text-center mt-4">Mỗi nhóm máu có đặc điểm truyền nhận khác nhau. Hãy kiểm tra kỹ trước khi truyền máu!</p>
