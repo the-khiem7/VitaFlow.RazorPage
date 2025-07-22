@@ -13,6 +13,7 @@ namespace VitaFlow.Core.Interfaces.Services
         Task SendEmergencyRequestAsync(IEnumerable<int> donorIds);
         Task SendDonationCompletedNotificationAsync(int donorId, int donationId);
         Task SendRequestStatusUpdateAsync(int recipientId, int requestId);
+        Task SendBloodRequestStatusNotificationAsync(int recipientId, int requestId, string statusMessage, bool isUrgent = false);
         Task MarkNotificationAsReadAsync(int notificationId);
         Task<IEnumerable<Notification>> GetUserNotificationsAsync(int userId);
     }

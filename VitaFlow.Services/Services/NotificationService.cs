@@ -147,6 +147,64 @@ namespace VitaFlow.Services.Services
             }
         }
 
+        /// <summary>
+        /// Sends a specific blood request status notification to a recipient.
+        /// </summary>
+        /// <param name="recipientId">The ID of the recipient</param>
+        /// <param name="requestId">The ID of the blood request</param>
+        /// <param name="statusMessage">The specific status message to send</param>
+        /// <param name="isUrgent">Whether this is an urgent notification</param>
+        public Task SendBloodRequestStatusNotificationAsync(int recipientId, int requestId, string statusMessage, bool isUrgent = false)
+        {
+            try
+            {
+                var urgentFlag = isUrgent ? "[URGENT]" : "";
+                _logger.LogInformation("Sending {UrgentFlag} blood request status notification to recipient {RecipientId} for request {RequestId}: {StatusMessage}", 
+                    urgentFlag, recipientId, requestId, statusMessage);
+                
+                // In a real implementation, we would:
+                // 1. Get the recipient and request details from the repositories
+                // 2. Create a notification entity with the specific status message
+                // 3. Set priority based on isUrgent flag
+                // 4. Send the notification (email, SMS, push notification, etc.)
+                // 5. Save the notification to the database
+                // 6. For urgent notifications, use high-priority delivery methods
+                
+                // Example implementation structure:
+                // var notification = new Notification
+                // {
+                //     RecipientId = recipientId,
+                //     Title = isUrgent ? "URGENT: Blood Request Update" : "Blood Request Status Update",
+                //     Message = statusMessage,
+                //     Type = isUrgent ? NotificationType.Urgent : NotificationType.Normal,
+                //     RequestId = requestId,
+                //     CreatedAt = DateTime.UtcNow,
+                //     IsRead = false
+                // };
+                // 
+                // await _notificationRepository.AddAsync(notification);
+                // 
+                // if (isUrgent)
+                // {
+                //     await SendUrgentNotification(recipientId, notification);
+                // }
+                // else
+                // {
+                //     await SendStandardNotification(recipientId, notification);
+                // }
+                
+                // This is a placeholder implementation
+                
+                return Task.CompletedTask;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error sending blood request status notification to recipient {RecipientId} for request {RequestId}: {StatusMessage}", 
+                    recipientId, requestId, statusMessage);
+                throw;
+            }
+        }
+
         // Marks a notification as read.
         // notificationId: The ID of the notification
         public Task MarkNotificationAsReadAsync(int notificationId)
