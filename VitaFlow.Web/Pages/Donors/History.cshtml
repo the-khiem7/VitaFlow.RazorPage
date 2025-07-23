@@ -1,0 +1,351 @@
+@page "{id:guid}"
+@model VitaFlow.Web.Pages.Donors.HistoryModel
+@{
+    ViewData["Title"] = "Lịch sử hiến máu";
+}
+
+<div class="max-w-6xl mx-auto p-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h1 class="text-3xl font-bold text-blue-700">Lịch sử hiến máu</h1>
+            <nav class="text-sm text-gray-500 mt-2">
+                <a asp-page="Index" class="hover:text-blue-600">Danh sách người hiến máu</a>
+                <span class="mx-2">/</span>
+                <a asp-page="Details" asp-route-id="@Model.DonorId" class="hover:text-blue-600">@Model.DonorName</a>
+                <span class="mx-2">/</span>
+                <span>Lịch sử hiến máu</span>
+            </nav>
+        </div>
+        <div class="flex space-x-2">
+            <a asp-page="Details" asp-route-id="@Model.DonorId" 
+               class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
+                <i class="fas fa-user mr-2"></i>Chi tiết người hiến
+            </a>
+            <a asp-page="Index" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>Quay lại
+            </a>
+        </div>
+    </div>
+
+    <!-- Donor Summary Card -->
+    <div class="bg-white rounded-lg shadow-lg mb-6 overflow-hidden">
+        <div class="px-6 py-4 bg-blue-50 border-b">
+            <h2 class="text-xl font-semibold text-blue-700">
+                <i class="fas fa-user mr-2"></i>Thông tin người hiến máu
+            </h2>
+        </div>
+        <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-blue-600 mb-2">@Model.DonorName</div>
+                    <p class="text-gray-600">Người hiến máu</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-red-600 mb-2">@Model.BloodType</div>
+                    <p class="text-gray-600">Nhóm máu</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-green-600 mb-2">@Model.TotalDonations</div>
+                    <p class="text-gray-600">Tổng lần hiến</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-purple-600 mb-2">@Model.TotalVolumeML ml</div>
+                    <p class="text-gray-600">Tổng thể tích</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter and Search -->
+    <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+        <h3 class="text-lg font-medium mb-4">Lọc lịch sử</h3>
+        <form method="get" class="grid md:grid-cols-4 gap-4">
+            <div>
+                <label class="block font-medium mb-1">Từ ngày</label>
+                <input name="fromDate" type="date" value="@Model.FromDate?.ToString("yyyy-MM-dd")" 
+                       class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            </div>
+            
+            <div>
+                <label class="block font-medium mb-1">Đến ngày</label>
+                <input name="toDate" type="date" value="@Model.ToDate?.ToString("yyyy-MM-dd")" 
+                       class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            </div>
+            
+            <div>
+                <label class="block font-medium mb-1">Trạng thái</label>
+                <select name="status" class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    <option value="">Tất cả trạng thái</option>
+                    @foreach (var status in Enum.GetValues(typeof(VitaFlow.Core.Enums.DonationStatus)))
+                    {
+                        <option value="@status" selected="@(Model.SelectedStatus?.ToString() == status.ToString())">
+                            @Model.GetStatusText(status.ToString())
+                        </option>
+                    }
+                </select>
+            </div>
+            
+            <div class="flex items-end">
+                <button type="submit" class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
+                    <i class="fas fa-filter mr-2"></i>Lọc
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white p-4 rounded-lg shadow">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-green-100 text-green-500">
+                    <i class="fas fa-check-circle text-xl"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600">Hoàn thành</p>
+                    <p class="text-2xl font-semibold text-gray-900">@Model.CompletedDonations</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white p-4 rounded-lg shadow">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-blue-100 text-blue-500">
+                    <i class="fas fa-calendar text-xl"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600">Đã lên lịch</p>
+                    <p class="text-2xl font-semibold text-gray-900">@Model.ScheduledDonations</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white p-4 rounded-lg shadow">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-yellow-100 text-yellow-500">
+                    <i class="fas fa-clock text-xl"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600">Đang xử lý</p>
+                    <p class="text-2xl font-semibold text-gray-900">@Model.ProcessingDonations</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white p-4 rounded-lg shadow">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-red-100 text-red-500">
+                    <i class="fas fa-times-circle text-xl"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600">Đã hủy/Thất bại</p>
+                    <p class="text-2xl font-semibold text-gray-900">@Model.CancelledFailedDonations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Donation History -->
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h3 class="text-lg font-medium text-gray-900">
+                Lịch sử hiến máu (@Model.FilteredDonations.Count() lần)
+            </h3>
+        </div>
+        
+        @if (Model.FilteredDonations?.Any() == true)
+        {
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Ngày hiến máu
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Thể tích (ml)
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Trạng thái
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Ghi chú
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Hành động
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach (var donation in Model.FilteredDonations)
+                        {
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">
+                                        @donation.DonationDate.ToString("dd/MM/yyyy")
+                                    </div>
+                                    <div class="text-sm text-gray-500">
+                                        @donation.DonationDate.ToString("HH:mm")
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">
+                                        @(donation.Volume > 0 ? $"{donation.Volume} ml" : "Chưa xác định")
+                                    </div>
+                                    @if (donation.Volume > 0)
+                                    {
+                                        <div class="text-sm text-gray-500">
+                                            (@Model.GetVolumeCategory(donation.Volume))
+                                        </div>
+                                    }
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    @{
+                                        var statusClass = Model.GetStatusClass(donation.Status);
+                                        var statusText = Model.GetStatusText(donation.Status.ToString());
+                                    }
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium @statusClass">
+                                        @statusText
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-900">
+                                    @if (string.IsNullOrEmpty(donation.Notes))
+                                    {
+                                        <span class="text-gray-400">-</span>
+                                    }
+                                    else
+                                    {
+                                        <div class="max-w-xs truncate" title="@donation.Notes">
+                                            @donation.Notes
+                                        </div>
+                                    }
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex space-x-2">
+                                        @if (donation.Status == VitaFlow.Core.Enums.DonationStatus.Scheduled)
+                                        {
+                                            <button class="text-green-600 hover:text-green-900" title="Hoàn thành">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-900" title="Hủy">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        }
+                                        <button class="text-blue-600 hover:text-blue-900" title="Xem chi tiết">
+                                            <i class="fas fa-info-circle"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            @if (Model.TotalPages > 1)
+            {
+                <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+                    <div class="flex-1 flex justify-between sm:hidden">
+                        @if (Model.CurrentPage > 1)
+                        {
+                            <a href="?page=@(Model.CurrentPage - 1)&fromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&toDate=@Model.ToDate?.ToString("yyyy-MM-dd")&status=@Model.SelectedStatus" 
+                               class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                Trước
+                            </a>
+                        }
+                        @if (Model.CurrentPage < Model.TotalPages)
+                        {
+                            <a href="?page=@(Model.CurrentPage + 1)&fromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&toDate=@Model.ToDate?.ToString("yyyy-MM-dd")&status=@Model.SelectedStatus" 
+                               class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                Sau
+                            </a>
+                        }
+                    </div>
+                    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                        <div>
+                            <p class="text-sm text-gray-700">
+                                Hiển thị
+                                <span class="font-medium">@((Model.CurrentPage - 1) * Model.PageSize + 1)</span>
+                                đến
+                                <span class="font-medium">@Math.Min(Model.CurrentPage * Model.PageSize, Model.FilteredDonations.Count())</span>
+                                trong
+                                <span class="font-medium">@Model.FilteredDonations.Count()</span>
+                                kết quả
+                            </p>
+                        </div>
+                        <div>
+                            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+                                @for (int i = 1; i <= Model.TotalPages; i++)
+                                {
+                                    <a href="?page=@i&fromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&toDate=@Model.ToDate?.ToString("yyyy-MM-dd")&status=@Model.SelectedStatus" 
+                                       class="relative inline-flex items-center px-4 py-2 border text-sm font-medium @(i == Model.CurrentPage ? "z-10 bg-blue-50 border-blue-500 text-blue-600" : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50")">
+                                        @i
+                                    </a>
+                                }
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="px-6 py-12 text-center">
+                <i class="fas fa-history text-6xl text-gray-300 mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Chưa có lịch sử hiến máu</h3>
+                @if (Model.HasFilters)
+                {
+                    <p class="text-gray-500 mb-4">Không có lần hiến máu nào khớp với tiêu chí lọc của bạn.</p>
+                    <a href="?id=@Model.DonorId" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                        <i class="fas fa-times mr-2"></i>Xóa bộ lọc
+                    </a>
+                }
+                else
+                {
+                    <p class="text-gray-500 mb-4">Người hiến máu này chưa có lần hiến máu nào được ghi nhận.</p>
+                    <button class="inline-flex items-center px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                        <i class="fas fa-plus mr-2"></i>Lên lịch hiến máu
+                    </button>
+                }
+            </div>
+        }
+    </div>
+
+    <!-- Summary Timeline -->
+    @if (Model.FilteredDonations?.Any() == true && Model.FilteredDonations.Count() > 1)
+    {
+        <div class="bg-white rounded-lg shadow-lg mt-6">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">
+                    <i class="fas fa-chart-line mr-2"></i>Thống kê theo thời gian
+                </h3>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-blue-600 mb-2">
+                            @Model.GetAverageDonationInterval()
+                        </div>
+                        <p class="text-gray-600">Khoảng cách trung bình (ngày)</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-green-600 mb-2">
+                            @(Model.FilteredDonations.Where(d => d.Status == VitaFlow.Core.Enums.DonationStatus.Completed).Any() ? 
+                              Model.FilteredDonations.Where(d => d.Status == VitaFlow.Core.Enums.DonationStatus.Completed).Average(d => d.Volume).ToString("F0") : "0") ml
+                        </div>
+                        <p class="text-gray-600">Thể tích trung bình</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-purple-600 mb-2">
+                            @Model.GetDonationFrequencyPerYear()
+                        </div>
+                        <p class="text-gray-600">Tần suất hiến/năm</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

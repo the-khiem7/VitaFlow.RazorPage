@@ -1,0 +1,277 @@
+@page
+@model VitaFlow.Web.Pages.Donors.IndexModel
+@{
+    ViewData["Title"] = "Danh sách người hiến máu";
+}
+
+<div class="max-w-6xl mx-auto p-6">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-blue-700">Danh sách người hiến máu</h1>
+        <a asp-page="Register" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors">
+            <i class="fas fa-plus mr-2"></i>Đăng ký hiến máu
+        </a>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+        <h3 class="text-lg font-medium mb-4">Tìm kiếm & Lọc</h3>
+        <form method="get" class="grid md:grid-cols-4 gap-4">
+            <div>
+                <label class="block font-medium mb-1">Tìm kiếm</label>
+                <input name="search" value="@Model.SearchTerm" placeholder="Họ tên, email, số điện thoại..." 
+                       class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            </div>
+            
+            <div>
+                <label class="block font-medium mb-1">Nhóm máu</label>
+                <select name="bloodType" class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    <option value="">Tất cả nhóm máu</option>
+                    @foreach (var type in Enum.GetValues(typeof(VitaFlow.Core.Enums.BloodType)))
+                    {
+                        <option value="@type" selected="@(Model.SelectedBloodType?.ToString() == type.ToString())">@type</option>
+                    }
+                </select>
+            </div>
+            
+            <div>
+                <label class="block font-medium mb-1">Trạng thái</label>
+                <select name="status" class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    <option value="">Tất cả</option>
+                    <option value="active" selected="@(Model.SelectedStatus == "active")">Đang hoạt động</option>
+                    <option value="emergency" selected="@(Model.SelectedStatus == "emergency")">Sẵn sàng khẩn cấp</option>
+                    <option value="available" selected="@(Model.SelectedStatus == "available")">Có thể hiến máu</option>
+                </select>
+            </div>
+            
+            <div class="flex items-end">
+                <button type="submit" class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
+                    <i class="fas fa-search mr-2"></i>Tìm kiếm
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white p-4 rounded-lg shadow">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-blue-100 text-blue-500">
+                    <i class="fas fa-users text-xl"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600">Tổng người hiến</p>
+                    <p class="text-2xl font-semibold text-gray-900">@Model.TotalDonors</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white p-4 rounded-lg shadow">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-green-100 text-green-500">
+                    <i class="fas fa-heart text-xl"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600">Đang hoạt động</p>
+                    <p class="text-2xl font-semibold text-gray-900">@Model.ActiveDonors</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white p-4 rounded-lg shadow">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-red-100 text-red-500">
+                    <i class="fas fa-exclamation-triangle text-xl"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600">Sẵn sàng khẩn cấp</p>
+                    <p class="text-2xl font-semibold text-gray-900">@Model.EmergencyDonors</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white p-4 rounded-lg shadow">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-yellow-100 text-yellow-500">
+                    <i class="fas fa-clock text-xl"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600">Có thể hiến máu</p>
+                    <p class="text-2xl font-semibold text-gray-900">@Model.AvailableDonors</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Donors List -->
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h3 class="text-lg font-medium text-gray-900">
+                Kết quả tìm kiếm (@Model.Donors.Count() người hiến máu)
+            </h3>
+        </div>
+        
+        @if (Model.Donors?.Any() == true)
+        {
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Thông tin cá nhân
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Nhóm máu
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Lần hiến cuối
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Trạng thái
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Thao tác
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach (var donor in Model.Donors)
+                        {
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                                <span class="text-blue-500 font-medium">
+                                                    @donor.FirstName.Substring(0, 1)@donor.LastName.Substring(0, 1)
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">
+                                                @donor.FirstName @donor.LastName
+                                            </div>
+                                            <div class="text-sm text-gray-500">
+                                                @donor.Email
+                                            </div>
+                                            <div class="text-sm text-gray-500">
+                                                @donor.PhoneNumber
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                                        @donor.BloodType
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    @if (donor.LastDonationDate.HasValue)
+                                    {
+                                        @donor.LastDonationDate.Value.ToString("dd/MM/yyyy")
+                                    }
+                                    else
+                                    {
+                                        <span class="text-gray-500">Chưa hiến lần nào</span>
+                                    }
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex flex-col space-y-1">
+                                        @if (donor.IsActive)
+                                        {
+                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Đang hoạt động
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                Không hoạt động
+                                            </span>
+                                        }
+                                        
+                                        @if (donor.IsEmergencyDonor)
+                                        {
+                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                Sẵn sàng khẩn cấp
+                                            </span>
+                                        }
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex space-x-2">
+                                        <a asp-page="Details" asp-route-id="@donor.Id" 
+                                           class="text-blue-600 hover:text-blue-900">
+                                            <i class="fas fa-eye"></i> Xem
+                                        </a>
+                                        <a asp-page="History" asp-route-id="@donor.Id" 
+                                           class="text-green-600 hover:text-green-900">
+                                            <i class="fas fa-history"></i> Lịch sử
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            @if (Model.TotalPages > 1)
+            {
+                <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+                    <div class="flex-1 flex justify-between sm:hidden">
+                        @if (Model.CurrentPage > 1)
+                        {
+                            <a href="?page=@(Model.CurrentPage - 1)&search=@Model.SearchTerm&bloodType=@Model.SelectedBloodType&status=@Model.SelectedStatus" 
+                               class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                Trước
+                            </a>
+                        }
+                        @if (Model.CurrentPage < Model.TotalPages)
+                        {
+                            <a href="?page=@(Model.CurrentPage + 1)&search=@Model.SearchTerm&bloodType=@Model.SelectedBloodType&status=@Model.SelectedStatus" 
+                               class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                Sau
+                            </a>
+                        }
+                    </div>
+                    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                        <div>
+                            <p class="text-sm text-gray-700">
+                                Hiển thị
+                                <span class="font-medium">@((Model.CurrentPage - 1) * Model.PageSize + 1)</span>
+                                đến
+                                <span class="font-medium">@Math.Min(Model.CurrentPage * Model.PageSize, Model.TotalDonors)</span>
+                                trong
+                                <span class="font-medium">@Model.TotalDonors</span>
+                                kết quả
+                            </p>
+                        </div>
+                        <div>
+                            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+                                @for (int i = 1; i <= Model.TotalPages; i++)
+                                {
+                                    <a href="?page=@i&search=@Model.SearchTerm&bloodType=@Model.SelectedBloodType&status=@Model.SelectedStatus" 
+                                       class="relative inline-flex items-center px-4 py-2 border text-sm font-medium @(i == Model.CurrentPage ? "z-10 bg-blue-50 border-blue-500 text-blue-600" : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50")">
+                                        @i
+                                    </a>
+                                }
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="px-6 py-12 text-center">
+                <i class="fas fa-users text-6xl text-gray-300 mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Không tìm thấy người hiến máu</h3>
+                <p class="text-gray-500 mb-4">Không có người hiến máu nào khớp với tiêu chí tìm kiếm của bạn.</p>
+                <a asp-page="Register" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                    <i class="fas fa-plus mr-2"></i>Đăng ký người hiến máu mới
+                </a>
+            </div>
+        }
+    </div>
+</div>
