@@ -9,11 +9,11 @@ namespace VitaFlow.Core.Interfaces.Services
     /// </summary>
     public interface IDonationProcessService
     {
-        Task<BloodDonation> ScheduleDonationAsync(int donorId, DateTime scheduledDate);
-        Task<BloodDonation> CompleteDonationAsync(int donationId);
-        Task CancelDonationAsync(int donationId, string reason);
-        Task<BloodDonation> AssignDonationToRequestAsync(int donationId, int requestId);
+        Task<BloodDonation> ScheduleDonationAsync(Guid donorId, DateTime scheduledDate);
+        Task<BloodDonation> CompleteDonationAsync(Guid donationId);
+        Task CancelDonationAsync(Guid donationId, string reason);
+        Task<BloodDonation> AssignDonationToRequestAsync(Guid donationId, Guid requestId);
         Task<BloodRequest> CreateBloodRequestAsync(BloodRequest request);
-        Task<BloodRequest> FulfillRequestAsync(int requestId);
+        Task<BloodRequest> FulfillRequestAsync(Guid requestId);
     }
 }
