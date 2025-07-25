@@ -1,6 +1,239 @@
 @page
 @model VitaFlow.Web.Pages.Admin.DashboardModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
 
-<h1>Admin Dashboard</h1>
+<div class="max-w-7xl mx-auto p-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900">🩸 Admin Dashboard</h1>
+            <p class="text-gray-600 mt-2">Tổng quan hệ thống quản lý hiến máu VitaFlow</p>
+        </div>
+        <div class="flex space-x-3">
+            <a asp-page="Users" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                <i class="fas fa-users mr-2"></i>Quản lý người dùng
+            </a>
+            <a asp-page="Reports" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+                <i class="fas fa-chart-bar mr-2"></i>Báo cáo
+            </a>
+            <a asp-page="Settings" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
+                <i class="fas fa-cog mr-2"></i>Cài đặt
+            </a>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Total Users -->
+        <div class="bg-white p-6 rounded-lg shadow border-l-4 border-blue-500">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Tổng người dùng</p>
+                    <p class="text-3xl font-bold text-blue-600">@Model.Statistics.TotalUsers</p>
+                </div>
+                <div class="p-3 bg-blue-100 rounded-full">
+                    <i class="fas fa-users text-blue-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Donors -->
+        <div class="bg-white p-6 rounded-lg shadow border-l-4 border-green-500">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Người hiến máu</p>
+                    <p class="text-3xl font-bold text-green-600">@Model.Statistics.TotalDonors</p>
+                </div>
+                <div class="p-3 bg-green-100 rounded-full">
+                    <i class="fas fa-heart text-green-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Emergency Requests -->
+        <div class="bg-white p-6 rounded-lg shadow border-l-4 border-red-500">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Yêu cầu khẩn cấp</p>
+                    <p class="text-3xl font-bold text-red-600">@Model.Statistics.ActiveEmergencyRequests</p>
+                </div>
+                <div class="p-3 bg-red-100 rounded-full">
+                    <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blood Inventory -->
+        <div class="bg-white p-6 rounded-lg shadow border-l-4 border-purple-500">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Tổng máu tồn kho (ml)</p>
+                    <p class="text-3xl font-bold text-purple-600">@Model.Statistics.TotalBloodInventory.ToString("N0")</p>
+                </div>
+                <div class="p-3 bg-purple-100 rounded-full">
+                    <i class="fas fa-tint text-purple-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts and Data -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <!-- Blood Type Distribution -->
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                <i class="fas fa-chart-pie mr-2 text-blue-600"></i>
+                Phân bố người hiến theo nhóm máu
+            </h3>
+            @if (Model.DashboardData.DonorCountsByBloodType?.Any() == true)
+            {
+                <div class="space-y-3">
+                    @foreach (var item in Model.DashboardData.DonorCountsByBloodType)
+                    {
+                        var percentage = Model.Statistics.TotalDonors > 0 ? (double)item.Value / Model.Statistics.TotalDonors * 100 : 0;
+                        <div class="flex items-center justify-between">
+                            <span class="font-medium text-gray-700">@item.Key</span>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-24 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-blue-600 h-2 rounded-full" style="width: @percentage.ToString("F1")%"></div>
+                                </div>
+                                <span class="text-sm font-semibold text-gray-900 w-12 text-right">@item.Value</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-gray-500 text-center py-4">Chưa có dữ liệu</p>
+            }
+        </div>
+
+        <!-- Request Status Summary -->
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                <i class="fas fa-chart-bar mr-2 text-green-600"></i>
+                Trạng thái yêu cầu máu
+            </h3>
+            @if (Model.DashboardData.RequestStatusSummary?.Any() == true)
+            {
+                <div class="space-y-3">
+                    @foreach (var item in Model.DashboardData.RequestStatusSummary)
+                    {
+                        var statusClass = item.Key switch
+                        {
+                            VitaFlow.Core.Enums.RequestStatus.New => "bg-yellow-500",
+                            VitaFlow.Core.Enums.RequestStatus.InProgress => "bg-blue-500",
+                            VitaFlow.Core.Enums.RequestStatus.Completed => "bg-green-500",
+                            VitaFlow.Core.Enums.RequestStatus.Cancelled => "bg-red-500",
+                            _ => "bg-gray-500"
+                        };
+                        var statusText = item.Key switch
+                        {
+                            VitaFlow.Core.Enums.RequestStatus.New => "Mới",
+                            VitaFlow.Core.Enums.RequestStatus.InProgress => "Đang xử lý",
+                            VitaFlow.Core.Enums.RequestStatus.Completed => "Hoàn thành",
+                            VitaFlow.Core.Enums.RequestStatus.Cancelled => "Đã hủy",
+                            _ => item.Key.ToString()
+                        };
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-3 h-3 rounded-full @statusClass"></div>
+                                <span class="font-medium text-gray-700">@statusText</span>
+                            </div>
+                            <span class="text-lg font-semibold text-gray-900">@item.Value</span>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-gray-500 text-center py-4">Chưa có dữ liệu</p>
+            }
+        </div>
+    </div>
+
+    <!-- User Roles Summary -->
+    <div class="bg-white p-6 rounded-lg shadow mb-8">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">
+            <i class="fas fa-user-tag mr-2 text-indigo-600"></i>
+            Phân bố vai trò người dùng
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="text-center p-4 bg-blue-50 rounded-lg">
+                <div class="text-2xl font-bold text-blue-600">@Model.Statistics.TotalAdmins</div>
+                <div class="text-sm text-gray-600">Quản trị viên</div>
+            </div>
+            <div class="text-center p-4 bg-green-50 rounded-lg">
+                <div class="text-2xl font-bold text-green-600">@Model.Statistics.TotalStaff</div>
+                <div class="text-sm text-gray-600">Nhân viên</div>
+            </div>
+            <div class="text-center p-4 bg-red-50 rounded-lg">
+                <div class="text-2xl font-bold text-red-600">@Model.Statistics.TotalDonors</div>
+                <div class="text-sm text-gray-600">Người hiến máu</div>
+            </div>
+            <div class="text-center p-4 bg-purple-50 rounded-lg">
+                <div class="text-2xl font-bold text-purple-600">@Model.Statistics.TotalRecipients</div>
+                <div class="text-sm text-gray-600">Người nhận máu</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monthly Donations -->
+    @if (Model.DashboardData.DonationsPerMonth?.Any() == true)
+    {
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                <i class="fas fa-calendar-alt mr-2 text-orange-600"></i>
+                Số lượt hiến máu theo tháng (@DateTime.Now.Year)
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                @foreach (var item in Model.DashboardData.DonationsPerMonth)
+                {
+                    <div class="text-center p-3 bg-orange-50 rounded-lg">
+                        <div class="text-lg font-bold text-orange-600">@item.Value</div>
+                        <div class="text-xs text-gray-600">@item.Key</div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    <!-- Quick Actions -->
+    <div class="mt-8 bg-gray-50 p-6 rounded-lg">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Thao tác nhanh</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <a asp-page="Users" class="flex flex-col items-center p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow">
+                <i class="fas fa-users text-2xl text-blue-600 mb-2"></i>
+                <span class="text-sm font-medium text-gray-700">Quản lý Users</span>
+            </a>
+            <a asp-page="/Inventory/Index" class="flex flex-col items-center p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow">
+                <i class="fas fa-tint text-2xl text-red-600 mb-2"></i>
+                <span class="text-sm font-medium text-gray-700">Kho máu</span>
+            </a>
+            <a asp-page="/Donors/Index" class="flex flex-col items-center p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow">
+                <i class="fas fa-heart text-2xl text-green-600 mb-2"></i>
+                <span class="text-sm font-medium text-gray-700">Người hiến</span>
+            </a>
+            <a asp-page="Reports" class="flex flex-col items-center p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow">
+                <i class="fas fa-chart-line text-2xl text-purple-600 mb-2"></i>
+                <span class="text-sm font-medium text-gray-700">Báo cáo</span>
+            </a>
+            <a asp-page="Settings" class="flex flex-col items-center p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow">
+                <i class="fas fa-cog text-2xl text-gray-600 mb-2"></i>
+                <span class="text-sm font-medium text-gray-700">Cài đặt</span>
+            </a>
+            <a asp-page="/Notifications/Index" class="flex flex-col items-center p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow">
+                <i class="fas fa-bell text-2xl text-yellow-600 mb-2"></i>
+                <span class="text-sm font-medium text-gray-700">Thông báo</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Include FontAwesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <!-- Display dashboard statistics -->

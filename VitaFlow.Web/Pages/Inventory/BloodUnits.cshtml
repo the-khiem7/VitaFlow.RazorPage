@@ -1,0 +1,314 @@
+@page
+@model VitaFlow.Web.Pages.Inventory.BloodUnitsModel
+@{
+    ViewData["Title"] = "Danh sách đơn vị máu";
+}
+
+<div class="max-w-7xl mx-auto p-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h1 class="text-3xl font-bold text-blue-700">Danh sách đơn vị máu</h1>
+            <p class="text-gray-600 mt-2">Quản lý chi tiết từng đơn vị máu trong kho</p>
+        </div>
+        <div class="flex space-x-3">
+            <a asp-page="Index" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>Quay lại tổng quan
+            </a>
+            <a asp-page="Add" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
+                <i class="fas fa-plus mr-2"></i>Thêm đơn vị máu
+            </a>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+        <form method="get" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Nhóm máu</label>
+                <select name="bloodType" asp-for="FilterBloodType" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">Tất cả nhóm máu</option>
+                    @foreach (var type in Enum.GetValues(typeof(VitaFlow.Core.Enums.BloodType)))
+                    {
+                        <option value="@type" selected="@(Model.FilterBloodType == type.ToString())">@type</option>
+                    }
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Trạng thái</label>
+                <select name="status" asp-for="FilterStatus" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="available" selected="@(Model.FilterStatus == "available")">Sẵn sàng</option>
+                    <option value="expiring" selected="@(Model.FilterStatus == "expiring")">Sắp hết hạn</option>
+                    <option value="expired" selected="@(Model.FilterStatus == "expired")">Đã hết hạn</option>
+                    <option value="unavailable" selected="@(Model.FilterStatus == "unavailable")">Không khả dụng</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Tìm kiếm</label>
+                <input type="text" name="search" asp-for="SearchTerm" placeholder="Số lô, vị trí lưu trữ..." 
+                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+            
+            <div class="flex items-end">
+                <button type="submit" class="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                    <i class="fas fa-search mr-2"></i>Lọc
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Blood Units Table -->
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <div class="flex justify-between items-center">
+                <h3 class="text-lg font-semibold text-gray-800">
+                    Danh sách đơn vị máu (@Model.TotalItems kết quả)
+                </h3>
+                <div class="flex space-x-2">
+                    <button onclick="exportToExcel()" class="px-3 py-1 bg-green-500 text-white rounded text-sm hover:bg-green-600">
+                        <i class="fas fa-file-excel mr-1"></i>Xuất Excel
+                    </button>
+                    <button onclick="printList()" class="px-3 py-1 bg-gray-500 text-white rounded text-sm hover:bg-gray-600">
+                        <i class="fas fa-print mr-1"></i>In danh sách
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        @if (Model.BloodUnits?.Any() == true)
+        {
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Nhóm máu
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Số lô
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Thể tích
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Ngày thu thập
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Hạn sử dụng
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Vị trí
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Trạng thái
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Thao tác
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach (var unit in Model.BloodUnits)
+                        {
+                            var rowClass = "";
+                            var statusClass = "";
+                            var statusText = "";
+                            
+                            if (unit.DaysToExpiry <= 0)
+                            {
+                                rowClass = "bg-red-50";
+                                statusClass = "bg-red-100 text-red-800";
+                                statusText = "Đã hết hạn";
+                            }
+                            else if (unit.DaysToExpiry <= 3)
+                            {
+                                rowClass = "bg-yellow-50";
+                                statusClass = "bg-yellow-100 text-yellow-800";
+                                statusText = "Sắp hết hạn";
+                            }
+                            else if (!unit.IsAvailable)
+                            {
+                                rowClass = "bg-gray-50";
+                                statusClass = "bg-gray-100 text-gray-800";
+                                statusText = "Không khả dụng";
+                            }
+                            else
+                            {
+                                statusClass = "bg-green-100 text-green-800";
+                                statusText = "Sẵn sàng";
+                            }
+
+                            <tr class="@rowClass hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl font-bold text-red-500 mr-2">@unit.BloodType</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    <span class="font-mono">@unit.BatchNumber</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    <div>
+                                        <div class="font-semibold">@unit.TotalVolume.ToString("F0") ml</div>
+                                        <div class="text-xs text-gray-500">
+                                            @if (unit.WholeBloodVolume > 0)
+                                            {
+                                                <span>Toàn phần: @unit.WholeBloodVolume.ToString("F0")ml</span>
+                                            }
+                                            @if (unit.RedCellsVolume > 0)
+                                            {
+                                                <br><span>Hồng cầu: @unit.RedCellsVolume.ToString("F0")ml</span>
+                                            }
+                                            @if (unit.PlasmaVolume > 0)
+                                            {
+                                                <br><span>Huyết tương: @unit.PlasmaVolume.ToString("F0")ml</span>
+                                            }
+                                            @if (unit.PlateletsVolume > 0)
+                                            {
+                                                <br><span>Tiểu cầu: @unit.PlateletsVolume.ToString("F0")ml</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    @unit.CollectionDate.ToString("dd/MM/yyyy")
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    <div>
+                                        <div>@unit.ExpiryDate.ToString("dd/MM/yyyy")</div>
+                                        @if (unit.DaysToExpiry > 0)
+                                        {
+                                            <div class="text-xs text-gray-500">(@unit.DaysToExpiry ngày)</div>
+                                        }
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    @unit.StorageLocation
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full @statusClass">
+                                        @statusText
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex space-x-2">
+                                        <a href="/Inventory/Details/@unit.Id" class="text-blue-600 hover:text-blue-900">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="/Inventory/Edit/@unit.Id" class="text-green-600 hover:text-green-900">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        @if (unit.DaysToExpiry <= 0 || !unit.IsAvailable)
+                                        {
+                                            <button onclick="removeUnit('@unit.Id')" class="text-red-600 hover:text-red-900">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            @if (Model.TotalPages > 1)
+            {
+                <div class="px-6 py-4 border-t border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-700">
+                            Hiển thị @((Model.CurrentPage - 1) * Model.PageSize + 1) đến 
+                            @Math.Min(Model.CurrentPage * Model.PageSize, Model.TotalItems) 
+                            trong tổng số @Model.TotalItems kết quả
+                        </div>
+                        <nav class="flex space-x-2">
+                            @if (Model.CurrentPage > 1)
+                            {
+                                <a asp-page="BloodUnits" asp-route-page="@(Model.CurrentPage - 1)" 
+                                   asp-route-bloodType="@Model.FilterBloodType" 
+                                   asp-route-status="@Model.FilterStatus" 
+                                   asp-route-search="@Model.SearchTerm"
+                                   class="px-3 py-2 bg-white border border-gray-300 rounded-md text-sm text-gray-500 hover:bg-gray-50">
+                                    Trước
+                                </a>
+                            }
+                            
+                            @for (int i = Math.Max(1, Model.CurrentPage - 2); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 2); i++)
+                            {
+                                <a asp-page="BloodUnits" asp-route-page="@i" 
+                                   asp-route-bloodType="@Model.FilterBloodType" 
+                                   asp-route-status="@Model.FilterStatus" 
+                                   asp-route-search="@Model.SearchTerm"
+                                   class="px-3 py-2 border rounded-md text-sm @(i == Model.CurrentPage ? "bg-blue-500 text-white border-blue-500" : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50")">
+                                    @i
+                                </a>
+                            }
+                            
+                            @if (Model.CurrentPage < Model.TotalPages)
+                            {
+                                <a asp-page="BloodUnits" asp-route-page="@(Model.CurrentPage + 1)" 
+                                   asp-route-bloodType="@Model.FilterBloodType" 
+                                   asp-route-status="@Model.FilterStatus" 
+                                   asp-route-search="@Model.SearchTerm"
+                                   class="px-3 py-2 bg-white border border-gray-300 rounded-md text-sm text-gray-500 hover:bg-gray-50">
+                                    Sau
+                                </a>
+                            }
+                        </nav>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="px-6 py-12 text-center">
+                <i class="fas fa-box-open text-4xl text-gray-400 mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Không tìm thấy đơn vị máu</h3>
+                <p class="text-gray-500 mb-4">Không có đơn vị máu nào phù hợp với bộ lọc hiện tại.</p>
+                <a asp-page="Add" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                    <i class="fas fa-plus mr-2"></i>Thêm đơn vị máu mới
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    function removeUnit(unitId) {
+        if (confirm('Bạn có chắc chắn muốn xóa đơn vị máu này?')) {
+            // AJAX call to remove unit
+            fetch(`/api/inventory/${unitId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('[name="__RequestVerificationToken"]').value
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert('Có lỗi xảy ra khi xóa đơn vị máu!');
+                }
+            })
+            .catch(error => {
+                alert('Có lỗi xảy ra khi xóa đơn vị máu!');
+            });
+        }
+    }
+
+    function exportToExcel() {
+        window.location.href = '/Inventory/Export?bloodType=@Model.FilterBloodType&status=@Model.FilterStatus&search=@Model.SearchTerm';
+    }
+
+    function printList() {
+        window.print();
+    }
+</script>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

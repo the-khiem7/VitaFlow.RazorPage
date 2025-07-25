@@ -109,10 +109,11 @@ namespace VitaFlow.Infrastructure.Repositories.Implements
             await _dbSet.AddRangeAsync(entities);
         }
 
-        public void UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity)
         {
             _dbSet.Attach(entity);
             _dbContext.Entry(entity).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
         }
 
         public void UpdateRange(IEnumerable<T> entities)
@@ -135,4 +136,4 @@ namespace VitaFlow.Infrastructure.Repositories.Implements
             return await _dbSet.FindAsync(id);
         }
     }
-} 
+}

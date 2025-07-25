@@ -4,6 +4,7 @@ using VitaFlow.Core.Entities;
 using VitaFlow.Core.Enums;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
 
 namespace VitaFlow.Web.Pages.Inventory
 {
@@ -14,8 +15,9 @@ namespace VitaFlow.Web.Pages.Inventory
     {
         private readonly IBloodInventoryService _inventoryService;
 
-        public Dictionary<BloodType, double> InventorySummary { get; set; }
-        public IEnumerable<BloodInventory> ExpiringInventory { get; set; }
+        public Dictionary<BloodType, double> InventorySummary { get; set; } = new();
+        public IEnumerable<BloodInventory> ExpiringInventory { get; set; } = new List<BloodInventory>();
+        public IEnumerable<BloodInventory> CurrentInventory { get; set; } = new List<BloodInventory>();
 
         public OverviewModel(IBloodInventoryService inventoryService)
         {
@@ -24,7 +26,20 @@ namespace VitaFlow.Web.Pages.Inventory
 
         public async Task OnGetAsync()
         {
-            // Load inventory data for display
+            try
+            {
+                // Load inventory data for display
+                InventorySummary = await _inventoryService.GetInventorySummaryAsync();
+                ExpiringInventory = await _inventoryService.GetExpiringInventoryAsync();
+                CurrentInventory = await _inventoryService.GetCurrentInventoryAsync();
+            }
+            catch (Exception)
+            {
+                // Handle errors gracefully
+                InventorySummary = new Dictionary<BloodType, double>();
+                ExpiringInventory = new List<BloodInventory>();
+                CurrentInventory = new List<BloodInventory>();
+            }
         }
     }
 }
