@@ -8,9 +8,8 @@ using Microsoft.Extensions.Logging;
 using VitaFlow.Core.Entities;
 using VitaFlow.Core.Enums;
 using VitaFlow.Infrastructure.Repositories.Interfaces;
-using VitaFlow.Services.Interfaces;
-using System.Linq; // Added for .Where()
 using VitaFlow.Core.Common;
+using VitaFlow.Core.Interfaces.Services;
 
 namespace VitaFlow.Services.Services
 {
@@ -140,7 +139,7 @@ namespace VitaFlow.Services.Services
                 await _unitOfWork.ProcessInTransactionAsync(async () =>
                 {
                     var repo = _unitOfWork.GetRepository<Donor>();
-                    repo.UpdateAsync(donor);
+                    await repo.UpdateAsync(donor);
                 });
                 _cache.Remove(string.Format(DonorCacheKey, donor.Id));
                 _cache.Remove(AllDonorsCacheKey);
@@ -275,10 +274,10 @@ namespace VitaFlow.Services.Services
             {
                 // Since GetDonorHistoryAsync seems to be missing from the interface, use a placeholder.
                 // Assuming we'd need to implement this or extend the repository interface.
-                
+
                 // Using Task.Delay to make the method truly async
                 await Task.Delay(1); // Just to ensure the method is actually async
-                
+
                 var history = new List<BloodDonation>();
                 return history;
             }
@@ -291,6 +290,26 @@ namespace VitaFlow.Services.Services
             {
                 sw.Stop();
                 _logger.LogInformation($"GetDonorHistoryAsync executed in {sw.ElapsedMilliseconds} ms");
+            }
+        }
+
+        public Task<Donor> GetDonorByIdAsync(int id)
+        {
+            try
+            {
+                var repo = _unitOfWork.GetRepository<Donor>();
+                var donor = repo.GetByIdAsync(new Guid(id.ToString()));
+                if (donor == null)
+                {
+                    _logger.LogWarning($"Donor with id {id} not found.");
+                    throw new KeyNotFoundException($"Donor with id {id} not found.");
+                }
+                return donor;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error finding nearby donors");
+                throw;
             }
         }
     }

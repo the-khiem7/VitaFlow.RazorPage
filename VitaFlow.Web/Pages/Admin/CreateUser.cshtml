@@ -1,0 +1,171 @@
+@page
+@model VitaFlow.Web.Pages.Admin.CreateUserModel
+@{
+    ViewData["Title"] = "Tạo người dùng mới";
+}
+
+<div class="max-w-4xl mx-auto p-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900">👤 Tạo người dùng mới</h1>
+            <p class="text-gray-600 mt-2">Thêm tài khoản người dùng mới vào hệ thống</p>
+        </div>
+        <div>
+            <a asp-page="Users" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>Quay lại danh sách
+            </a>
+        </div>
+    </div>
+
+    <!-- Error Messages -->
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+            <i class="fas fa-exclamation-circle mr-2"></i>@Model.ErrorMessage
+        </div>
+    }
+
+    <!-- Form -->
+    <div class="bg-white p-8 rounded-lg shadow">
+        <form method="post">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- First Name -->
+                <div>
+                    <label asp-for="UserForm.FirstName" class="block text-sm font-medium text-gray-700 mb-2">
+                        Họ <span class="text-red-500">*</span>
+                    </label>
+                    <input asp-for="UserForm.FirstName" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           placeholder="Nhập họ..." />
+                    <span asp-validation-for="UserForm.FirstName" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Last Name -->
+                <div>
+                    <label asp-for="UserForm.LastName" class="block text-sm font-medium text-gray-700 mb-2">
+                        Tên <span class="text-red-500">*</span>
+                    </label>
+                    <input asp-for="UserForm.LastName" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           placeholder="Nhập tên..." />
+                    <span asp-validation-for="UserForm.LastName" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label asp-for="UserForm.Email" class="block text-sm font-medium text-gray-700 mb-2">
+                        Email <span class="text-red-500">*</span>
+                    </label>
+                    <input asp-for="UserForm.Email" type="email"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           placeholder="example@email.com" />
+                    <span asp-validation-for="UserForm.Email" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Phone Number -->
+                <div>
+                    <label asp-for="UserForm.PhoneNumber" class="block text-sm font-medium text-gray-700 mb-2">
+                        Số điện thoại <span class="text-red-500">*</span>
+                    </label>
+                    <input asp-for="UserForm.PhoneNumber" type="tel"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           placeholder="0123456789" />
+                    <span asp-validation-for="UserForm.PhoneNumber" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Date of Birth -->
+                <div>
+                    <label asp-for="UserForm.DateOfBirth" class="block text-sm font-medium text-gray-700 mb-2">
+                        Ngày sinh <span class="text-red-500">*</span>
+                    </label>
+                    <input asp-for="UserForm.DateOfBirth" type="date"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                    <span asp-validation-for="UserForm.DateOfBirth" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Role -->
+                <div>
+                    <label asp-for="UserForm.Role" class="block text-sm font-medium text-gray-700 mb-2">
+                        Vai trò <span class="text-red-500">*</span>
+                    </label>
+                    <select asp-for="UserForm.Role" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="">-- Chọn vai trò --</option>
+                        <option value="@VitaFlow.Core.Enums.UserRole.Admin">Quản trị viên</option>
+                        <option value="@VitaFlow.Core.Enums.UserRole.Staff">Nhân viên</option>
+                        <option value="@VitaFlow.Core.Enums.UserRole.Donor">Người hiến máu</option>
+                        <option value="@VitaFlow.Core.Enums.UserRole.Recipient">Người nhận máu</option>
+                    </select>
+                    <span asp-validation-for="UserForm.Role" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Address -->
+                <div class="md:col-span-2">
+                    <label asp-for="UserForm.Address" class="block text-sm font-medium text-gray-700 mb-2">
+                        Địa chỉ <span class="text-red-500">*</span>
+                    </label>
+                    <textarea asp-for="UserForm.Address" rows="3"
+                              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              placeholder="Nhập địa chỉ chi tiết..."></textarea>
+                    <span asp-validation-for="UserForm.Address" class="text-red-500 text-sm"></span>
+                </div>
+            </div>
+
+            <!-- Role Information -->
+            <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                <h4 class="text-sm font-semibold text-blue-900 mb-2">
+                    <i class="fas fa-info-circle mr-2"></i>Thông tin về vai trò
+                </h4>
+                <div class="text-sm text-blue-800 space-y-1">
+                    <p><strong>Quản trị viên:</strong> Có quyền truy cập và quản lý toàn bộ hệ thống</p>
+                    <p><strong>Nhân viên:</strong> Quản lý quy trình hiến máu, kho máu và yêu cầu máu</p>
+                    <p><strong>Người hiến máu:</strong> Đăng ký và tham gia các hoạt động hiến máu</p>
+                    <p><strong>Người nhận máu:</strong> Tạo yêu cầu máu và theo dõi trạng thái</p>
+                </div>
+            </div>
+
+            <!-- Form Buttons -->
+            <div class="flex justify-end space-x-4 mt-8">
+                <a asp-page="Users" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-times mr-2"></i>Hủy
+                </a>
+                <button type="submit" class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
+                    <i class="fas fa-save mr-2"></i>Tạo người dùng
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Validation Summary -->
+    <div asp-validation-summary="All" class="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700" style="display: none;"></div>
+</div>
+
+<!-- Include FontAwesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<!-- Validation Scripts -->
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+<script>
+    // Show validation summary if there are errors
+    document.addEventListener('DOMContentLoaded', function() {
+        const validationSummary = document.querySelector('[asp-validation-summary]');
+        const errors = document.querySelectorAll('.text-red-500');
+        
+        if (errors.length > 0) {
+            validationSummary.style.display = 'block';
+        }
+    });
+
+    // Real-time role information update
+    document.getElementById('UserForm_Role').addEventListener('change', function() {
+        const role = this.value;
+        const infoBox = document.querySelector('.bg-blue-50');
+        
+        // You could add specific information based on selected role
+        // For now, the general information is always shown
+    });
+</script>

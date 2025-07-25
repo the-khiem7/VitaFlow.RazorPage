@@ -57,9 +57,9 @@ namespace VitaFlow.Infrastructure.Repositories.Interfaces
 
         Task InsertAsync(T entity);
         Task InsertRangeAsync(IEnumerable<T> entities);
-        void UpdateAsync(T entity);
+        Task UpdateAsync(T entity);
         void UpdateRange(IEnumerable<T> entities);
         void DeleteAsync(T entity);
         void DeleteRangeAsync(IEnumerable<T> entities);
     }
-} 
+}

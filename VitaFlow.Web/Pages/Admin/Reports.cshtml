@@ -1,0 +1,299 @@
+@page
+@model VitaFlow.Web.Pages.Admin.ReportsModel
+@{
+    ViewData["Title"] = "Báo cáo tổng hợp";
+}
+
+<div class="max-w-7xl mx-auto p-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900">📊 Báo cáo tổng hợp</h1>
+            <p class="text-gray-600 mt-2">Thống kê và phân tích dữ liệu hệ thống VitaFlow</p>
+        </div>
+        <div class="flex space-x-3">
+            <a asp-page="Dashboard" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>Quay lại Dashboard
+            </a>
+            <button onclick="window.print()" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+                <i class="fas fa-print mr-2"></i>In báo cáo
+            </button>
+            <button onclick="exportToPDF()" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
+                <i class="fas fa-file-pdf mr-2"></i>Xuất PDF
+            </button>
+        </div>
+    </div>
+
+    <!-- Report Filters -->
+    <div class="bg-white p-6 rounded-lg shadow mb-8">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Bộ lọc báo cáo</h3>
+        <form method="get" class="flex flex-wrap gap-4 items-end">
+            <div>
+                <label for="year" class="block text-sm font-medium text-gray-700 mb-2">Năm</label>
+                <select id="year" name="year" class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    @for (int year = DateTime.Now.Year; year >= DateTime.Now.Year - 5; year--)
+                    {
+                        <option value="@year" @(Model.SelectedYear == year ? "selected" : "")>@year</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <label for="month" class="block text-sm font-medium text-gray-700 mb-2">Tháng</label>
+                <select id="month" name="month" class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    @for (int month = 1; month <= 12; month++)
+                    {
+                        <option value="@month" @(Model.SelectedMonth == month ? "selected" : "")>Tháng @month</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
+                <i class="fas fa-filter mr-2"></i>Áp dụng bộ lọc
+            </button>
+        </form>
+    </div>
+
+    <!-- Executive Summary -->
+    <div class="bg-white p-6 rounded-lg shadow mb-8">
+        <h3 class="text-xl font-semibold text-gray-900 mb-6">📋 Tóm tắt điều hành</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="text-center p-4 bg-blue-50 rounded-lg">
+                <div class="text-3xl font-bold text-blue-600">@Model.Statistics.TotalUsers</div>
+                <div class="text-sm font-medium text-gray-700">Tổng người dùng</div>
+                <div class="text-xs text-gray-500 mt-1">Tất cả tài khoản trong hệ thống</div>
+            </div>
+            <div class="text-center p-4 bg-green-50 rounded-lg">
+                <div class="text-3xl font-bold text-green-600">@Model.Statistics.TotalDonors</div>
+                <div class="text-sm font-medium text-gray-700">Người hiến máu</div>
+                <div class="text-xs text-gray-500 mt-1">Đã đăng ký hiến máu</div>
+            </div>
+            <div class="text-center p-4 bg-red-50 rounded-lg">
+                <div class="text-3xl font-bold text-red-600">@Model.Statistics.ActiveEmergencyRequests</div>
+                <div class="text-sm font-medium text-gray-700">Yêu cầu khẩn cấp</div>
+                <div class="text-xs text-gray-500 mt-1">Đang xử lý</div>
+            </div>
+            <div class="text-center p-4 bg-purple-50 rounded-lg">
+                <div class="text-3xl font-bold text-purple-600">@Model.Statistics.TotalBloodInventory.ToString("N0")</div>
+                <div class="text-sm font-medium text-gray-700">Tổng máu tồn kho</div>
+                <div class="text-xs text-gray-500 mt-1">Đơn vị: ml</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <!-- Blood Type Distribution Chart -->
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                <i class="fas fa-chart-pie mr-2 text-blue-600"></i>
+                Phân bố người hiến theo nhóm máu
+            </h3>
+            @if (Model.DashboardData.DonorCountsByBloodType?.Any() == true)
+            {
+                <div class="space-y-4">
+                    @foreach (var item in Model.DashboardData.DonorCountsByBloodType.OrderByDescending(x => x.Value))
+                    {
+                        var percentage = Model.Statistics.TotalDonors > 0 ? (double)item.Value / Model.Statistics.TotalDonors * 100 : 0;
+                        var barColor = item.Key switch
+                        {
+                            VitaFlow.Core.Enums.BloodType.O_Positive => "bg-red-500",
+                            VitaFlow.Core.Enums.BloodType.O_Negative => "bg-red-700",
+                            VitaFlow.Core.Enums.BloodType.A_Positive => "bg-blue-500",
+                            VitaFlow.Core.Enums.BloodType.A_Negative => "bg-blue-700",
+                            VitaFlow.Core.Enums.BloodType.B_Positive => "bg-green-500",
+                            VitaFlow.Core.Enums.BloodType.B_Negative => "bg-green-700",
+                            VitaFlow.Core.Enums.BloodType.AB_Positive => "bg-purple-500",
+                            VitaFlow.Core.Enums.BloodType.AB_Negative => "bg-purple-700",
+                            _ => "bg-gray-500"
+                        };
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <span class="font-medium text-gray-700 w-16">@item.Key.ToString().Replace("_", "")</span>
+                                <div class="flex-1 bg-gray-200 rounded-full h-4 w-48">
+                                    <div class="@barColor h-4 rounded-full transition-all duration-300" style="width: @percentage.ToString("F1")%"></div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-lg font-semibold text-gray-900">@item.Value</span>
+                                <span class="text-sm text-gray-500 ml-2">(@percentage.ToString("F1")%)</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-gray-500 text-center py-4">Chưa có dữ liệu</p>
+            }
+        </div>
+
+        <!-- Request Status Chart -->
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                <i class="fas fa-chart-bar mr-2 text-green-600"></i>
+                Trạng thái yêu cầu máu
+            </h3>
+            @if (Model.DashboardData.RequestStatusSummary?.Any() == true)
+            {
+                <div class="space-y-4">
+                    @foreach (var item in Model.DashboardData.RequestStatusSummary.OrderByDescending(x => x.Value))
+                    {
+                        var total = Model.DashboardData.RequestStatusSummary.Values.Sum();
+                        var percentage = total > 0 ? (double)item.Value / total * 100 : 0;
+                        var statusClass = item.Key switch
+                        {
+                            VitaFlow.Core.Enums.RequestStatus.New => "bg-yellow-500",
+                            VitaFlow.Core.Enums.RequestStatus.InProgress => "bg-blue-500",
+                            VitaFlow.Core.Enums.RequestStatus.Completed => "bg-green-500",
+                            VitaFlow.Core.Enums.RequestStatus.Cancelled => "bg-red-500",
+                            _ => "bg-gray-500"
+                        };
+                        var statusText = item.Key switch
+                        {
+                            VitaFlow.Core.Enums.RequestStatus.New => "Mới",
+                            VitaFlow.Core.Enums.RequestStatus.InProgress => "Đang xử lý",
+                            VitaFlow.Core.Enums.RequestStatus.Completed => "Hoàn thành",
+                            VitaFlow.Core.Enums.RequestStatus.Cancelled => "Đã hủy",
+                            _ => item.Key.ToString()
+                        };
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-4 h-4 rounded-full @statusClass"></div>
+                                <span class="font-medium text-gray-700">@statusText</span>
+                                <div class="flex-1 bg-gray-200 rounded-full h-3 w-32">
+                                    <div class="@statusClass h-3 rounded-full transition-all duration-300" style="width: @percentage.ToString("F1")%"></div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-lg font-semibold text-gray-900">@item.Value</span>
+                                <span class="text-sm text-gray-500 ml-2">(@percentage.ToString("F1")%)</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-gray-500 text-center py-4">Chưa có dữ liệu</p>
+            }
+        </div>
+    </div>
+
+    <!-- Inventory Report -->
+    <div class="bg-white p-6 rounded-lg shadow mb-8">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">
+            <i class="fas fa-tint mr-2 text-red-600"></i>
+            Báo cáo tồn kho máu (ml)
+        </h3>
+        @if (Model.InventorySummary?.Any() == true)
+        {
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nhóm máu</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Thể tích (ml)</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tỷ lệ</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach (var item in Model.InventorySummary.OrderByDescending(x => x.Value))
+                        {
+                            var percentage = Model.Statistics.TotalBloodInventory > 0 ? item.Value / Model.Statistics.TotalBloodInventory * 100 : 0;
+                            var statusClass = item.Value switch
+                            {
+                                > 1000 => "text-green-600 bg-green-100",
+                                > 500 => "text-yellow-600 bg-yellow-100",
+                                _ => "text-red-600 bg-red-100"
+                            };
+                            var statusText = item.Value switch
+                            {
+                                > 1000 => "Đủ",
+                                > 500 => "Thấp",
+                                _ => "Rất thấp"
+                            };
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    @item.Key.ToString().Replace("_", "")
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    @item.Value.ToString("N0")
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    @percentage.ToString("F1")%
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full @statusClass">
+                                        @statusText
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p class="text-gray-500 text-center py-4">Chưa có dữ liệu tồn kho</p>
+        }
+    </div>
+
+    <!-- Monthly Donations -->
+    @if (Model.DashboardData.DonationsPerMonth?.Any() == true)
+    {
+        <div class="bg-white p-6 rounded-lg shadow mb-8">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                <i class="fas fa-calendar-alt mr-2 text-orange-600"></i>
+                Báo cáo hiến máu theo tháng (@Model.SelectedYear)
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                @foreach (var item in Model.DashboardData.DonationsPerMonth)
+                {
+                    var isCurrentMonth = item.Key == new DateTime(Model.SelectedYear, Model.SelectedMonth, 1).ToString("MMMM");
+                    var cardClass = isCurrentMonth ? "bg-orange-100 border-orange-300" : "bg-orange-50";
+                    <div class="text-center p-4 @cardClass rounded-lg border">
+                        <div class="text-2xl font-bold text-orange-600">@item.Value</div>
+                        <div class="text-sm font-medium text-gray-700">@item.Key</div>
+                        @if (isCurrentMonth)
+                        {
+                            <div class="text-xs text-orange-600 mt-1">Tháng hiện tại</div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    <!-- Report Footer -->
+    <div class="bg-gray-50 p-6 rounded-lg text-center">
+        <p class="text-sm text-gray-600">
+            Báo cáo được tạo vào: @DateTime.Now.ToString("dd/MM/yyyy HH:mm")
+        </p>
+        <p class="text-xs text-gray-500 mt-2">
+            © @DateTime.Now.Year VitaFlow - Hệ thống quản lý hiến máu
+        </p>
+    </div>
+</div>
+
+<!-- Include FontAwesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<!-- Print styles -->
+<style>
+    @@media print {
+        .no-print {
+            display: none !important;
+        }
+        body {
+            print-color-adjust: exact;
+        }
+    }
+</style>
+
+<script>
+    function exportToPDF() {
+        // Simple implementation - in a real app, you'd use a PDF library
+        window.print();
+    }
+</script>

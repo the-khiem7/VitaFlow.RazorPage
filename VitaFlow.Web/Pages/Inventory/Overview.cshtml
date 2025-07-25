@@ -1,6 +1,155 @@
 @page
 @model VitaFlow.Web.Pages.Inventory.OverviewModel
+@{
+    ViewData["Title"] = "Tổng quan kho máu";
+}
 
-<h1>Inventory Overview</h1>
+<div class="max-w-6xl mx-auto p-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-blue-700">Tổng quan kho máu</h1>
+            <p class="text-gray-600 mt-2">Thông tin tổng quan về tình hình tồn kho máu</p>
+        </div>
+        <div class="flex space-x-3">
+            <a asp-page="Index" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                <i class="fas fa-warehouse mr-2"></i>Quản lý chi tiết
+            </a>
+            <a asp-page="Reports" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+                <i class="fas fa-chart-bar mr-2"></i>Báo cáo
+            </a>
+        </div>
+    </div>
 
-<!-- Display inventory summary and expiring items -->
+    <!-- Quick Stats -->
+    @if (Model.InventorySummary?.Any() == true)
+    {
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mb-8">
+            @foreach (var item in Model.InventorySummary)
+            {
+                var volume = item.Value;
+                var statusClass = volume > 1000 ? "border-green-400 bg-green-50" : 
+                                 volume > 500 ? "border-yellow-400 bg-yellow-50" : 
+                                 "border-red-400 bg-red-50";
+                var textClass = volume > 1000 ? "text-green-700" : 
+                               volume > 500 ? "text-yellow-700" : 
+                               "text-red-700";
+                
+                <div class="p-4 rounded-lg border-2 @statusClass text-center hover:shadow-lg transition-shadow">
+                    <div class="text-2xl font-bold @textClass mb-2">@item.Key</div>
+                    <div class="text-lg font-semibold text-gray-700">@volume.ToString("F0") ml</div>
+                    <div class="text-sm text-gray-500 mt-1">
+                        @(volume > 1000 ? "Đủ" : volume > 500 ? "Ít" : "Thiếu")
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <!-- Current Inventory and Expiring Items -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Current Inventory Summary -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-4">Tình hình tồn kho hiện tại</h3>
+            @if (Model.CurrentInventory?.Any() == true)
+            {
+                <div class="space-y-3">
+                    @foreach (var inventory in Model.CurrentInventory.Take(5))
+                    {
+                        var totalVolume = inventory.WholeBloodVolume + inventory.RedCellsVolume + 
+                                        inventory.PlasmaVolume + inventory.PlateletsVolume;
+                        var daysToExpiry = (inventory.ExpiryDate - DateTime.UtcNow).Days;
+                        var statusClass = daysToExpiry <= 3 ? "bg-yellow-50 border-yellow-200" : "bg-green-50 border-green-200";
+                        
+                        <div class="p-3 rounded border @statusClass">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <span class="font-bold text-red-500">@inventory.BloodType</span>
+                                    <span class="text-sm text-gray-600 ml-2">(@inventory.BatchNumber)</span>
+                                    <div class="text-sm text-gray-600">@totalVolume.ToString("F0") ml</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-sm font-medium">@daysToExpiry ngày</div>
+                                    <div class="text-xs text-gray-500">@inventory.ExpiryDate.ToString("dd/MM/yyyy")</div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                
+                @if (Model.CurrentInventory.Count() > 5)
+                {
+                    <div class="mt-4 text-center">
+                        <a asp-page="BloodUnits" class="text-blue-500 hover:text-blue-700 text-sm">
+                            Xem tất cả (@Model.CurrentInventory.Count() đơn vị)
+                        </a>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-gray-500 text-center py-8">Kho hiện tại không có máu</p>
+            }
+        </div>
+
+        <!-- Expiring Items -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-4">Máu sắp hết hạn</h3>
+            @if (Model.ExpiringInventory?.Any() == true)
+            {
+                <div class="space-y-3">
+                    @foreach (var item in Model.ExpiringInventory.Take(5))
+                    {
+                        var daysToExpiry = (item.ExpiryDate - DateTime.UtcNow).Days;
+                        var urgencyClass = daysToExpiry <= 1 ? "bg-red-100 border-red-200" : 
+                                          daysToExpiry <= 3 ? "bg-yellow-100 border-yellow-200" : 
+                                          "bg-orange-100 border-orange-200";
+                        var totalVolume = item.WholeBloodVolume + item.RedCellsVolume + 
+                                        item.PlasmaVolume + item.PlateletsVolume;
+                        
+                        <div class="p-3 rounded border @urgencyClass">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <span class="font-semibold text-gray-800">@item.BloodType</span>
+                                    <span class="text-sm text-gray-600 ml-2">(@item.BatchNumber)</span>
+                                    <div class="text-sm text-gray-600">@totalVolume.ToString("F0") ml</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-sm font-medium text-gray-800">
+                                        @if (daysToExpiry <= 0)
+                                        {
+                                            <span class="text-red-600">Đã hết hạn</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@daysToExpiry ngày</span>
+                                        }
+                                    </div>
+                                    <div class="text-xs text-gray-500">
+                                        @item.ExpiryDate.ToString("dd/MM/yyyy")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                
+                @if (Model.ExpiringInventory.Count() > 5)
+                {
+                    <div class="mt-4 text-center">
+                        <a asp-page="BloodUnits" asp-route-filter="expiring" class="text-yellow-600 hover:text-yellow-800 text-sm">
+                            Xem tất cả (@Model.ExpiringInventory.Count() đơn vị)
+                        </a>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-gray-500 text-center py-8">Không có máu sắp hết hạn</p>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
