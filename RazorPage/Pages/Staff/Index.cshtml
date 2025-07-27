@@ -1,0 +1,49 @@
+@page
+@model RazorPage.Pages.Staff.IndexModel
+@{
+    ViewData["Title"] = "Staff Dashboard";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4">Staff Dashboard</h1>
+            <p class="lead">Blood Donation Management - Staff Panel</p>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-header">Blood Requests</div>
+                <div class="card-body">
+                    <h5 class="card-title">Manage Requests</h5>
+                    <p class="card-text">Process and approve blood requests</p>
+                    <a href="/Staff/BloodRequests" class="btn btn-light">Go to Requests</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">Donations</div>
+                <div class="card-body">
+                    <h5 class="card-title">Donation Records</h5>
+                    <p class="card-text">Manage donation records and history</p>
+                    <a href="/Staff/Donations" class="btn btn-light">Go to Donations</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-header">Health Checks</div>
+                <div class="card-body">
+                    <h5 class="card-title">Health Assessments</h5>
+                    <p class="card-text">Manage donor health checks</p>
+                    <a href="/Staff/HealthChecks" class="btn btn-light">Go to Health Checks</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

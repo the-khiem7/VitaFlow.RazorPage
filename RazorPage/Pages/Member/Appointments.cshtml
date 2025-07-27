@@ -1,0 +1,118 @@
+@page
+@model RazorPage.Pages.Member.AppointmentsModel
+@{
+    ViewData["Title"] = "My Appointments";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-5">My Appointments</h1>
+            <p class="lead">Schedule and manage your blood donation appointments</p>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-calendar-alt"></i> Upcoming Appointments</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2024-01-15</td>
+                                    <td>10:00 AM</td>
+                                    <td>Main Blood Center</td>
+                                    <td><span class="badge bg-success">Confirmed</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-danger">Cancel</button>
+                                        <button class="btn btn-sm btn-outline-primary">Reschedule</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted">No upcoming appointments</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-plus-circle"></i> Schedule New Appointment</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        <div class="mb-3">
+                            <label for="appointmentDate" class="form-label">Preferred Date</label>
+                            <input type="date" class="form-control" id="appointmentDate" name="AppointmentDate" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="appointmentTime" class="form-label">Preferred Time</label>
+                            <select class="form-select" id="appointmentTime" name="AppointmentTime" required>
+                                <option value="">Select Time</option>
+                                <option value="09:00">9:00 AM</option>
+                                <option value="10:00">10:00 AM</option>
+                                <option value="11:00">11:00 AM</option>
+                                <option value="14:00">2:00 PM</option>
+                                <option value="15:00">3:00 PM</option>
+                                <option value="16:00">4:00 PM</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Location</label>
+                            <select class="form-select" id="location" name="Location" required>
+                                <option value="">Select Location</option>
+                                <option value="main">Main Blood Center</option>
+                                <option value="north">North Branch</option>
+                                <option value="south">South Branch</option>
+                                <option value="mobile">Mobile Unit</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="notes" class="form-label">Special Notes (Optional)</label>
+                            <textarea class="form-control" id="notes" name="Notes" rows="3" placeholder="Any special requirements or notes..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="fas fa-calendar-plus"></i> Schedule Appointment
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6><i class="fas fa-info-circle"></i> Donation Guidelines</h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled small">
+                        <li><i class="fas fa-check text-success"></i> Must be at least 17 years old</li>
+                        <li><i class="fas fa-check text-success"></i> Weigh at least 110 pounds</li>
+                        <li><i class="fas fa-check text-success"></i> Wait 56 days between donations</li>
+                        <li><i class="fas fa-check text-success"></i> Bring valid ID</li>
+                        <li><i class="fas fa-check text-success"></i> Eat well before donating</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,280 @@
+@page
+@model RazorPage.Pages.Member.HealthModel
+@{
+    ViewData["Title"] = "Health Status";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-5">Health Status</h1>
+            <p class="lead">Monitor your health records and donation eligibility</p>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body text-center">
+                    <i class="fas fa-heartbeat fa-3x mb-2"></i>
+                    <h4 class="card-title">Eligible</h4>
+                    <p class="card-text">You are eligible to donate blood</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-body text-center">
+                    <i class="fas fa-calendar-check fa-3x mb-2"></i>
+                    <h4 class="card-title">Jan 28, 2024</h4>
+                    <p class="card-text">Next eligible donation date</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-body text-center">
+                    <i class="fas fa-clock fa-3x mb-2"></i>
+                    <h4 class="card-title">14 Days</h4>
+                    <p class="card-text">Days until next donation</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-file-medical"></i> Recent Health Checks</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Blood Pressure</th>
+                                    <th>Hemoglobin</th>
+                                    <th>Weight</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2023-12-15</td>
+                                    <td>120/80 mmHg</td>
+                                    <td>14.5 g/dL</td>
+                                    <td>70 kg</td>
+                                    <td><span class="badge bg-success">Passed</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye"></i> View Details
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2023-10-20</td>
+                                    <td>118/78 mmHg</td>
+                                    <td>14.2 g/dL</td>
+                                    <td>69 kg</td>
+                                    <td><span class="badge bg-success">Passed</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye"></i> View Details
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2023-08-25</td>
+                                    <td>125/82 mmHg</td>
+                                    <td>13.8 g/dL</td>
+                                    <td>68 kg</td>
+                                    <td><span class="badge bg-warning">Borderline</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye"></i> View Details
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5><i class="fas fa-chart-line"></i> Health Trends</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="healthChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6><i class="fas fa-user-md"></i> Health Profile</h6>
+                </div>
+                <div class="card-body">
+                    <p><strong>Blood Type:</strong> <span class="badge bg-danger">O+</span></p>
+                    <p><strong>Age:</strong> 34 years</p>
+                    <p><strong>Weight:</strong> 70 kg</p>
+                    <p><strong>Height:</strong> 175 cm</p>
+                    <p><strong>BMI:</strong> 22.9 (Normal)</p>
+                    <hr>
+                    <p><strong>Medical Conditions:</strong></p>
+                    <ul class="list-unstyled small">
+                        <li><i class="fas fa-check text-success"></i> No known allergies</li>
+                        <li><i class="fas fa-check text-success"></i> No chronic conditions</li>
+                        <li><i class="fas fa-check text-success"></i> No current medications</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6><i class="fas fa-exclamation-triangle"></i> Health Alerts</h6>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info" role="alert">
+                        <i class="fas fa-info-circle"></i> 
+                        <small>Remember to stay hydrated before your next donation.</small>
+                    </div>
+                    <div class="alert alert-success" role="alert">
+                        <i class="fas fa-check-circle"></i> 
+                        <small>Your iron levels are excellent!</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6><i class="fas fa-clipboard-list"></i> Pre-Donation Checklist</h6>
+                </div>
+                <div class="card-body">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="check1" checked>
+                        <label class="form-check-label small" for="check1">
+                            Ate a healthy meal
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="check2" checked>
+                        <label class="form-check-label small" for="check2">
+                            Drank plenty of water
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="check3">
+                        <label class="form-check-label small" for="check3">
+                            Got adequate sleep
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="check4">
+                        <label class="form-check-label small" for="check4">
+                            Feeling well today
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="check5">
+                        <label class="form-check-label small" for="check5">
+                            No recent illness
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-notes-medical"></i> Health Recommendations</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <i class="fas fa-apple-alt fa-2x text-success mb-2"></i>
+                                <h6>Nutrition</h6>
+                                <p class="small">Maintain iron-rich diet with leafy greens, lean meats, and legumes.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <i class="fas fa-tint fa-2x text-info mb-2"></i>
+                                <h6>Hydration</h6>
+                                <p class="small">Drink at least 8 glasses of water daily, especially before donation.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <i class="fas fa-running fa-2x text-warning mb-2"></i>
+                                <h6>Exercise</h6>
+                                <p class="small">Regular moderate exercise helps maintain healthy blood circulation.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Health trends chart
+        const ctx = document.getElementById('healthChart').getContext('2d');
+        const healthChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'],
+                datasets: [{
+                    label: 'Hemoglobin (g/dL)',
+                    data: [13.8, 14.0, 14.2, 14.1, 14.5, 14.3],
+                    borderColor: 'rgb(220, 53, 69)',
+                    backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                    tension: 0.1
+                }, {
+                    label: 'Weight (kg)',
+                    data: [68, 68.5, 69, 69.2, 70, 70.1],
+                    borderColor: 'rgb(13, 110, 253)',
+                    backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                    tension: 0.1,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        min: 13,
+                        max: 15
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        min: 65,
+                        max: 75,
+                        grid: {
+                            drawOnChartArea: false,
+                        },
+                    }
+                }
+            }
+        });
+    </script>
+}

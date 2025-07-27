@@ -1,0 +1,60 @@
+@page
+@model RazorPage.Pages.Admin.IndexModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4">Admin Dashboard</h1>
+            <p class="lead">Welcome to the Blood Donation Management System - Admin Panel</p>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-header">User Management</div>
+                <div class="card-body">
+                    <h5 class="card-title">Manage Users</h5>
+                    <p class="card-text">View and manage all system users</p>
+                    <a href="/Admin/Users" class="btn btn-light">Go to Users</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">Blood Management</div>
+                <div class="card-body">
+                    <h5 class="card-title">Blood Inventory</h5>
+                    <p class="card-text">Manage blood units and inventory</p>
+                    <a href="/Admin/BloodManagement" class="btn btn-light">Go to Blood</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-header">Appointments</div>
+                <div class="card-body">
+                    <h5 class="card-title">Manage Appointments</h5>
+                    <p class="card-text">View and manage donation appointments</p>
+                    <a href="/Admin/Appointments" class="btn btn-light">Go to Appointments</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">Reports</div>
+                <div class="card-body">
+                    <h5 class="card-title">System Reports</h5>
+                    <p class="card-text">View system reports and analytics</p>
+                    <a href="/Admin/Reports" class="btn btn-light">Go to Reports</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

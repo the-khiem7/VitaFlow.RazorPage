@@ -1,0 +1,216 @@
+@page
+@model RazorPage.Pages.Member.ProfileModel
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-5">My Profile</h1>
+            <p class="lead">Manage your personal information and preferences</p>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-user-circle"></i> Profile Picture</h5>
+                </div>
+                <div class="card-body text-center">
+                    <img src="https://via.placeholder.com/150x150/dc3545/ffffff?text=User" 
+                         class="rounded-circle mb-3" alt="Profile Picture" width="150" height="150">
+                    <br>
+                    <button class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-camera"></i> Change Photo
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6><i class="fas fa-tint"></i> Blood Information</h6>
+                </div>
+                <div class="card-body">
+                    <p><strong>Blood Type:</strong> <span class="badge bg-danger">O+</span></p>
+                    <p><strong>Donor Status:</strong> <span class="badge bg-success">Active</span></p>
+                    <p><strong>Member Since:</strong> January 2022</p>
+                    <p><strong>Total Donations:</strong> 12</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-edit"></i> Personal Information</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="firstName" name="FirstName" 
+                                           value="John" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName" name="LastName" 
+                                           value="Doe" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="email" name="Email" 
+                                           value="john.doe@example.com" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" id="phone" name="Phone" 
+                                           value="+1 (555) 123-4567" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                                    <input type="date" class="form-control" id="dateOfBirth" name="DateOfBirth" 
+                                           value="1990-01-15" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="gender" class="form-label">Gender</label>
+                                    <select class="form-select" id="gender" name="Gender" required>
+                                        <option value="Male" selected>Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                        <option value="PreferNotToSay">Prefer not to say</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <textarea class="form-control" id="address" name="Address" rows="3" 
+                                      required>123 Main Street, Anytown, ST 12345</textarea>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="emergencyContact" class="form-label">Emergency Contact Name</label>
+                                    <input type="text" class="form-control" id="emergencyContact" name="EmergencyContact" 
+                                           value="Jane Doe">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="emergencyPhone" class="form-label">Emergency Contact Phone</label>
+                                    <input type="tel" class="form-control" id="emergencyPhone" name="EmergencyPhone" 
+                                           value="+1 (555) 987-6543">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <h6><i class="fas fa-bell"></i> Notification Preferences</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="emailNotifications" 
+                                           name="EmailNotifications" checked>
+                                    <label class="form-check-label" for="emailNotifications">
+                                        Email Notifications
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="smsNotifications" 
+                                           name="SmsNotifications" checked>
+                                    <label class="form-check-label" for="smsNotifications">
+                                        SMS Notifications
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="appointmentReminders" 
+                                           name="AppointmentReminders" checked>
+                                    <label class="form-check-label" for="appointmentReminders">
+                                        Appointment Reminders
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="donationEligibility" 
+                                           name="DonationEligibility" checked>
+                                    <label class="form-check-label" for="donationEligibility">
+                                        Donation Eligibility Alerts
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary ms-2">
+                                <i class="fas fa-undo"></i> Reset
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5><i class="fas fa-key"></i> Change Password</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-page-handler="ChangePassword">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="currentPassword" class="form-label">Current Password</label>
+                                    <input type="password" class="form-control" id="currentPassword" 
+                                           name="CurrentPassword" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="newPassword" class="form-label">New Password</label>
+                                    <input type="password" class="form-control" id="newPassword" 
+                                           name="NewPassword" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                    <input type="password" class="form-control" id="confirmPassword" 
+                                           name="ConfirmPassword" required>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-warning">
+                            <i class="fas fa-key"></i> Change Password
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
