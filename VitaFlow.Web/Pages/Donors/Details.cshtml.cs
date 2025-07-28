@@ -2,11 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using VitaFlow.Core.Entities;
 using VitaFlow.Core.Enums;
-using VitaFlow.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using VitaFlow.Core.Interfaces.Services;
 
 namespace VitaFlow.Web.Pages.Donors
 {
