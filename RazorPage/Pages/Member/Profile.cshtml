@@ -33,10 +33,10 @@
                     <h6><i class="fas fa-tint"></i> Blood Information</h6>
                 </div>
                 <div class="card-body">
-                    <p><strong>Blood Type:</strong> <span class="badge bg-danger">O+</span></p>
-                    <p><strong>Donor Status:</strong> <span class="badge bg-success">Active</span></p>
-                    <p><strong>Member Since:</strong> January 2022</p>
-                    <p><strong>Total Donations:</strong> 12</p>
+                    <p><strong>Blood Type:</strong> <span class="badge bg-danger">@(string.IsNullOrEmpty(Model.BloodType) ? "Unknown" : Model.BloodType)</span></p>
+                    <p><strong>Donor Status:</strong> <span class="badge @(Model.IsDonor ? "bg-success" : "bg-secondary")">@(Model.IsDonor ? "Active" : "Inactive")</span></p>
+                    <p><strong>Member Since:</strong> @Model.MemberSince.ToString("MMMM yyyy")</p>
+                    <p><strong>Total Donations:</strong> @Model.TotalDonations</p>
                 </div>
             </div>
         </div>
@@ -53,14 +53,14 @@
                                 <div class="mb-3">
                                     <label for="firstName" class="form-label">First Name</label>
                                     <input type="text" class="form-control" id="firstName" name="FirstName" 
-                                           value="John" required>
+                                           value="@Model.FirstName" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="lastName" class="form-label">Last Name</label>
                                     <input type="text" class="form-control" id="lastName" name="LastName" 
-                                           value="Doe" required>
+                                           value="@Model.LastName" required>
                                 </div>
                             </div>
                         </div>
@@ -70,14 +70,14 @@
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email Address</label>
                                     <input type="email" class="form-control" id="email" name="Email" 
-                                           value="john.doe@example.com" required>
+                                           value="@Model.Email" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="phone" class="form-label">Phone Number</label>
                                     <input type="tel" class="form-control" id="phone" name="Phone" 
-                                           value="+1 (555) 123-4567" required>
+                                           value="@Model.Phone" required>
                                 </div>
                             </div>
                         </div>
@@ -87,17 +87,17 @@
                                 <div class="mb-3">
                                     <label for="dateOfBirth" class="form-label">Date of Birth</label>
                                     <input type="date" class="form-control" id="dateOfBirth" name="DateOfBirth" 
-                                           value="1990-01-15" required>
+                                           value="@Model.DateOfBirth.ToString("yyyy-MM-dd")" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="gender" class="form-label">Gender</label>
                                     <select class="form-select" id="gender" name="Gender" required>
-                                        <option value="Male" selected>Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Other">Other</option>
-                                        <option value="PreferNotToSay">Prefer not to say</option>
+                                        <option value="Male" selected="@(Model.Gender == "Male")">Male</option>
+                                        <option value="Female" selected="@(Model.Gender == "Female")">Female</option>
+                                        <option value="Other" selected="@(Model.Gender == "Other")">Other</option>
+                                        <option value="PreferNotToSay" selected="@(Model.Gender == "PreferNotToSay")">Prefer not to say</option>
                                     </select>
                                 </div>
                             </div>
@@ -106,7 +106,7 @@
                         <div class="mb-3">
                             <label for="address" class="form-label">Address</label>
                             <textarea class="form-control" id="address" name="Address" rows="3" 
-                                      required>123 Main Street, Anytown, ST 12345</textarea>
+                                      required>@Model.Address</textarea>
                         </div>
                         
                         <div class="row">
@@ -114,14 +114,14 @@
                                 <div class="mb-3">
                                     <label for="emergencyContact" class="form-label">Emergency Contact Name</label>
                                     <input type="text" class="form-control" id="emergencyContact" name="EmergencyContact" 
-                                           value="Jane Doe">
+                                           value="@Model.EmergencyContact">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="emergencyPhone" class="form-label">Emergency Contact Phone</label>
                                     <input type="tel" class="form-control" id="emergencyPhone" name="EmergencyPhone" 
-                                           value="+1 (555) 987-6543">
+                                           value="@Model.EmergencyPhone">
                                 </div>
                             </div>
                         </div>
@@ -133,14 +133,14 @@
                             <div class="col-md-6">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="emailNotifications" 
-                                           name="EmailNotifications" checked>
+                                           name="EmailNotifications" @(Model.EmailNotifications ? "checked" : "")>
                                     <label class="form-check-label" for="emailNotifications">
                                         Email Notifications
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="smsNotifications" 
-                                           name="SmsNotifications" checked>
+                                           name="SmsNotifications" @(Model.SmsNotifications ? "checked" : "")>
                                     <label class="form-check-label" for="smsNotifications">
                                         SMS Notifications
                                     </label>
@@ -149,14 +149,14 @@
                             <div class="col-md-6">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="appointmentReminders" 
-                                           name="AppointmentReminders" checked>
+                                           name="AppointmentReminders" @(Model.AppointmentReminders ? "checked" : "")>
                                     <label class="form-check-label" for="appointmentReminders">
                                         Appointment Reminders
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="donationEligibility" 
-                                           name="DonationEligibility" checked>
+                                           name="DonationEligibility" @(Model.DonationEligibility ? "checked" : "")>
                                     <label class="form-check-label" for="donationEligibility">
                                         Donation Eligibility Alerts
                                     </label>
