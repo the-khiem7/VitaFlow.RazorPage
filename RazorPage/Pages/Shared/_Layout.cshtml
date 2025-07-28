@@ -28,6 +28,12 @@
                             </a>
                         </li>
                         
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-page="/Donation/BloodCompatibility">
+                                <i class="fas fa-search"></i> Blood Compatibility
+                            </a>
+                        </li>
+
                         @if (User.Identity?.IsAuthenticated == true)
                         {
                             @if (User.IsInRole("Admin"))
@@ -85,6 +91,7 @@
                                     <li><a class="dropdown-item" asp-page="/Donation/Schedule">Schedule Donation</a></li>
                                     <li><a class="dropdown-item" asp-page="/Donation/History">My History</a></li>
                                     <li><a class="dropdown-item" asp-page="/Donation/Certificates">Certificates</a></li>
+                                    <li><a class="dropdown-item" asp-page="/Donation/BloodCompatibility"><i class="fas fa-search"></i> Blood Type Compatibility</a></li>
                                 </ul>
                             </li>
                             

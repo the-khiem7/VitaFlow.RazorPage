@@ -1,0 +1,93 @@
+@page
+@model RazorPage.Pages.Donation.BloodCompatibilityModel
+@{
+    ViewData["Title"] = "Blood Type Compatibility";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Blood Type Compatibility Search</h2>
+    
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" class="needs-validation" novalidate>
+                        @Html.AntiForgeryToken()
+                        <div class="mb-3">
+                            <label for="bloodType" class="form-label">Select Blood Type</label>
+                            <select class="form-select" id="bloodType" asp-for="SelectedBloodType" required>
+                                <option value="">Choose blood type...</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a blood type.
+                            </div>
+                        </div>
+                        <script>
+                            // Enable form validation
+                            (function () {
+                                'use strict';
+                                var forms = document.querySelectorAll('.needs-validation');
+                                Array.prototype.slice.call(forms).forEach(function (form) {
+                                    form.addEventListener('submit', function (event) {
+                                        if (!form.checkValidity()) {
+                                            event.preventDefault();
+                                            event.stopPropagation();
+                                        }
+                                        form.classList.add('was-validated');
+                                    }, false);
+                                });
+                            })();
+                        </script>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Find Compatible Types</button>
+                        </div>
+                    </form>
+
+                    @if (Model.CanDonateTo != null || Model.CanReceiveFrom != null)
+                    {
+                        <div class="mt-4">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4 class="text-success">Can Donate To:</h4>
+                                    <div class="list-group">
+                                        @if (Model.CanDonateTo != null && Model.CanDonateTo.Any())
+                                        {
+                                            @foreach (var type in Model.CanDonateTo)
+                                            {
+                                                <div class="list-group-item list-group-item-success">
+                                                    <i class="fas fa-tint"></i> @type
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4 class="text-info">Can Receive From:</h4>
+                                    <div class="list-group">
+                                        @if (Model.CanReceiveFrom != null && Model.CanReceiveFrom.Any())
+                                        {
+                                            @foreach (var type in Model.CanReceiveFrom)
+                                            {
+                                                <div class="list-group-item list-group-item-info">
+                                                    <i class="fas fa-tint"></i> @type
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
