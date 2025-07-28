@@ -4,11 +4,11 @@
 INSERT INTO users (userID, username, password, email, fullName, dateOfBirth, phone, role, userIdCard) VALUES
 (NEWID(), 'admin1', 'admin1', 'admin1@bloodbank.com', 'Dr. Sarah Johnson', '1980-05-15', '0123456789', 'Admin', 'ID001234567'),
 (NEWID(), 'staff1', 'staff1', 'staff1@bloodbank.com', 'Nurse Mary Wilson', '1985-03-20', '0123456790', 'Staff', 'ID001234568'),
-(NEWID(), 'donor1', 'donor1', 'donor1@email.com', 'John Doe', '1990-08-12', '0123456791', 'Donor', 'ID001234569'),
-(NEWID(), 'donor2', 'donor2', 'donor2@email.com', 'Jane Smith', '1988-11-25', '0123456792', 'Donor', 'ID001234570'),
-(NEWID(), 'donor3', 'donor3', 'donor3@email.com', 'Mike Brown', '1992-02-14', '0123456793', 'Donor', 'ID001234571'),
-(NEWID(), 'recipient1', 'recipient1', 'recipient1@email.com', 'Alice Cooper', '1975-07-30', '0123456794', 'Recipient', 'ID001234572'),
-(NEWID(), 'recipient2', 'recipient2', 'recipient2@email.com', 'Bob Miller', '1982-12-05', '0123456795', 'Recipient', 'ID001234573');
+(NEWID(), 'donor1', 'donor1', 'donor1@email.com', 'John Doe', '1990-08-12', '0123456791', 'Member', 'ID001234569'),
+(NEWID(), 'donor2', 'donor2', 'donor2@email.com', 'Jane Smith', '1988-11-25', '0123456792', 'Member', 'ID001234570'),
+(NEWID(), 'donor3', 'donor3', 'donor3@email.com', 'Mike Brown', '1992-02-14', '0123456793', 'Member', 'ID001234571'),
+(NEWID(), 'recipient1', 'recipient1', 'recipient1@email.com', 'Alice Cooper', '1975-07-30', '0123456794', 'Member', 'ID001234572'),
+(NEWID(), 'recipient2', 'recipient2', 'recipient2@email.com', 'Bob Miller', '1982-12-05', '0123456795', 'Member', 'ID001234573');
 
 -- 2. Insert Blood Types
 INSERT INTO BloodType (bloodTypeID, aboType, rhFactor, description) VALUES
