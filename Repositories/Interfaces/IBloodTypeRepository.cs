@@ -1,4 +1,4 @@
-﻿using Models;
+using Models;
 
 namespace Repositories.Interfaces
 {
@@ -8,5 +8,6 @@ namespace Repositories.Interfaces
         Task<BloodType> GetByIdAsync(Guid id);
         Task<int> GetAvailableUnitsCountAsync(Guid bloodTypeId);
         Task<int> GetTotalUnitsCountAsync(Guid bloodTypeId);
+        Task<bool> UpdateAvailableUnitsAsync(Guid bloodTypeId, int availableUnits);
     }
 }

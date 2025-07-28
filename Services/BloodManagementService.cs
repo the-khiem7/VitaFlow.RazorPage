@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Models;
 using Models.DTOs;
 using Models.Enums;
@@ -11,12 +11,12 @@ namespace Services.Implementations
     {
         private readonly IBloodTypeRepository _bloodTypeRepository;
         private readonly IBloodComponentRepository _bloodComponentRepository;
-        private readonly ILogger<BloodManagementService> _logger; // Thêm ILogger
+        private readonly ILogger<BloodManagementService> _logger;
 
         public BloodManagementService(
             IBloodTypeRepository bloodTypeRepository,
             IBloodComponentRepository bloodComponentRepository,
-            ILogger<BloodManagementService> logger) // Thêm logger parameter
+            ILogger<BloodManagementService> logger)
         {
             _bloodTypeRepository = bloodTypeRepository;
             _bloodComponentRepository = bloodComponentRepository;
@@ -295,6 +295,60 @@ namespace Services.Implementations
                 default:
                     _logger.LogWarning("Unhandled component type: {ComponentType}", componentType);
                     return new List<string>();
+            }
+        }
+
+        public async Task<bool> UpdateBloodTypeInventoryAsync(Guid id, int availableUnits)
+        {
+            try
+            {
+                var bloodType = await _bloodTypeRepository.GetByIdAsync(id);
+                if (bloodType == null)
+                {
+                    _logger.LogWarning("Blood type not found with ID: {Id}", id);
+                    return false;
+                }
+
+                var result = await _bloodTypeRepository.UpdateAvailableUnitsAsync(id, availableUnits);
+                if (!result)
+                {
+                    _logger.LogWarning("Failed to update blood type inventory. ID: {Id}, Units: {Units}", id, availableUnits);
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating blood type inventory. ID: {Id}, Units: {Units}", id, availableUnits);
+                throw;
+            }
+        }
+
+        public async Task<bool> UpdateComponentInventoryAsync(Guid id, int availableUnits)
+        {
+            try
+            {
+                var component = await _bloodComponentRepository.GetByIdAsync(id);
+                if (component == null)
+                {
+                    _logger.LogWarning("Blood component not found with ID: {Id}", id);
+                    return false;
+                }
+
+                var result = await _bloodComponentRepository.UpdateAvailableUnitsAsync(id, availableUnits);
+                if (!result)
+                {
+                    _logger.LogWarning("Failed to update blood component inventory. ID: {Id}, Units: {Units}", id, availableUnits);
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating blood component inventory. ID: {Id}, Units: {Units}", id, availableUnits);
+                throw;
             }
         }
     }

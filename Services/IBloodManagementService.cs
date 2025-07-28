@@ -11,5 +11,7 @@ namespace Services.Interfaces
         Task<BloodComponentResponseDTO> GetBloodComponentByIdAsync(Guid id);
         Task<BloodCompatibilityDTO> GetBloodTypeCompatibilityAsync(string bloodType);
         Task<IEnumerable<ComponentCompatibilityDTO>> GetComponentCompatibilityAsync(BloodComponentEnum componentType);
+        Task<bool> UpdateBloodTypeInventoryAsync(Guid id, int availableUnits);
+        Task<bool> UpdateComponentInventoryAsync(Guid id, int availableUnits);
     }
 }

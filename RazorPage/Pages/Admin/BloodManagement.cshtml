@@ -1,0 +1,168 @@
+@page
+@model RazorPage.Pages.Admin.BloodManagementModel
+@{
+    ViewData["Title"] = "Blood Inventory Management";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4">Blood Inventory Management</h1>
+            <p class="lead">Manage blood types and components inventory</p>
+
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["Success"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @TempData["Error"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-tint"></i> Blood Types Inventory</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Blood Type</th>
+                                    <th>Description</th>
+                                    <th>Available Units</th>
+                                    <th>Total Units</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var bloodType in Model.BloodTypes)
+                                {
+                                    <tr>
+                                        <td>
+                                            <span class="badge bg-danger">@bloodType.AboType@bloodType.RhFactor</span>
+                                        </td>
+                                        <td>@bloodType.Description</td>
+                                        <td>@bloodType.AvailableUnits</td>
+                                        <td>@bloodType.TotalUnits</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editBloodTypeModal" data-id="@bloodType.BloodTypeId">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-vials"></i> Blood Components Inventory</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Component</th>
+                                    <th>Storage Requirements</th>
+                                    <th>Available Units</th>
+                                    <th>Total Units</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var component in Model.BloodComponents)
+                                {
+                                    <tr>
+                                        <td>@component.ComponentName</td>
+                                        <td>@component.StorageRequirements</td>
+                                        <td>@component.AvailableUnits</td>
+                                        <td>@component.TotalUnits</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#editComponentModal" data-id="@component.ComponentId">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Blood Type Modal -->
+<div class="modal fade" id="editBloodTypeModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Blood Type Inventory</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="updateBloodTypeForm" method="post">
+                <div class="modal-body">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" id="bloodTypeId" />
+                    <div class="mb-3">
+                        <label for="availableUnits" class="form-label">Available Units</label>
+                        <input type="number" class="form-control" id="availableUnits" name="availableUnits" required min="0" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Component Modal -->
+<div class="modal fade" id="editComponentModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Component Inventory</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="updateComponentForm" method="post">
+                <div class="modal-body">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" id="componentId" />
+                    <div class="mb-3">
+                        <label for="availableUnits" class="form-label">Available Units</label>
+                        <input type="number" class="form-control" id="availableUnits" name="availableUnits" required min="0" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/bloodManagement.js"></script>
+}
