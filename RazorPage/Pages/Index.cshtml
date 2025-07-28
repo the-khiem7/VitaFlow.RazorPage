@@ -31,7 +31,7 @@
                     <p class="card-text">Schedule your blood donation appointment and help save lives in your community.</p>
                     @if (User.Identity?.IsAuthenticated == true)
                     {
-                        <a href="/Donation/Schedule" class="btn btn-danger">Schedule Donation</a>
+                        <a href="/Donation/Register" class="btn btn-danger">Register Donation</a>
                     }
                     else
                     {
@@ -137,7 +137,7 @@
                     <hr>
                     <p class="mb-0">
                         <a href="/Donation/History" class="btn btn-info">View My History</a>
-                        <a href="/Donation/Schedule" class="btn btn-outline-info ms-2">Schedule New Donation</a>
+                        <a href="/Donation/Register" class="btn btn-outline-info ms-2">Register New Donation</a>
                     </p>
                 </div>
             </div>

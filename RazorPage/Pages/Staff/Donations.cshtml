@@ -1,0 +1,259 @@
+@page
+@model RazorPage.Pages.Staff.DonationsModel
+@{
+    ViewData["Title"] = "Donation Process Management";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2>Donation Process Management</h2>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="input-group">
+                <input type="text" class="form-control" id="searchDonor" placeholder="Search donor...">
+                <button class="btn btn-outline-secondary" type="button" onclick="searchDonations()">Search</button>
+            </div>
+        </div>
+        <div class="col-md-6 text-end">
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline-primary" onclick="filterDonations('all')">All</button>
+                <button type="button" class="btn btn-outline-info" onclick="filterDonations('scheduled')">Scheduled</button>
+                <button type="button" class="btn btn-outline-warning" onclick="filterDonations('in-progress')">In Progress</button>
+                <button type="button" class="btn btn-outline-success" onclick="filterDonations('completed')">Completed</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Donation ID</th>
+                    <th>Donor Name</th>
+                    <th>Blood Type</th>
+                    <th>Appointment Date</th>
+                    <th>Status</th>
+                    <th>Health Check</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var donation in Model.DonationProcesses)
+                {
+                    <tr>
+                        <td>@donation.DonationId</td>
+                        <td>@donation.DonorName</td>
+                        <td>@donation.BloodType</td>
+                        <td>@(donation.AppointmentDate.HasValue ? donation.AppointmentDate.Value.ToString("MM/dd/yyyy") : "Not scheduled")</td>
+                        <td>
+                            <span class="badge @GetStatusBadgeClass(donation.Status)">@donation.Status</span>
+                        </td>
+                        <td>
+                            @if (donation.HealthCheckStatus == "Passed")
+                            {
+                                <span class="badge bg-success">Passed</span>
+                            }
+                            else if (donation.HealthCheckStatus == "Failed")
+                            {
+                                <span class="badge bg-danger">Failed</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Pending</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-info" onclick="viewDonationDetails('@donation.DonationId')">Details</button>
+                                @if (donation.Status == "Scheduled")
+                                {
+                                    <button class="btn btn-sm btn-primary" onclick="startDonation('@donation.DonationId')">Start Process</button>
+                                }
+                                @if (donation.Status == "InProgress")
+                                {
+                                    <button class="btn btn-sm btn-success" onclick="completeDonation('@donation.DonationId')">Complete</button>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Donation Details Modal -->
+<div class="modal fade" id="donationDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Donation Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Details will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function searchDonations() {
+            const searchText = document.getElementById('searchDonor').value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const donorName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                if (donorName.includes(searchText)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        // Add event listener for Enter key on search input
+        document.getElementById('searchDonor').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                searchDonations();
+            }
+        });
+        
+        function filterDonations(status) {
+            const rows = document.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const statusCell = row.querySelector('td:nth-child(5) .badge');
+                const statusText = statusCell.textContent.trim();
+                
+                if (status === 'all') {
+                    row.style.display = '';
+                } else if (status === 'scheduled' && statusText === 'Scheduled') {
+                    row.style.display = '';
+                } else if (status === 'in-progress' && statusText === 'InProgress') {
+                    row.style.display = '';
+                } else if (status === 'completed' && statusText === 'Completed') {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        function viewDonationDetails(donationId) {
+            $.ajax({
+                url: '?handler=DonationDetails',
+                data: { donationId: donationId },
+                type: 'GET',
+                success: function (result) {
+                    // Create HTML content for the modal
+                    let content = `
+                        <div class="container-fluid">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <h6>Donor Information</h6>
+                                    <p><strong>Name:</strong> ${result.fullName || result.donorName}</p>
+                                    <p><strong>Blood Type:</strong> ${result.bloodType}</p>
+                                    <p><strong>Phone:</strong> ${result.phoneNumber}</p>
+                                    <p><strong>Email:</strong> ${result.email}</p>
+                                    <p><strong>Date of Birth:</strong> ${result.dateOfBirth ? new Date(result.dateOfBirth).toLocaleDateString() : 'Not available'}</p>
+                                    <p><strong>Address:</strong> ${result.address || 'Not available'}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>Donation Information</h6>
+                                    <p><strong>Donation ID:</strong> ${result.donationId}</p>
+                                    <p><strong>Date:</strong> ${result.donationDate ? new Date(result.donationDate).toLocaleDateString() : 'Not scheduled'}</p>
+                                    <p><strong>Quantity:</strong> ${result.quantity} ml</p>
+                                    <p><strong>Status:</strong> ${result.status}</p>
+                                    <p><strong>Last Donation:</strong> ${result.lastDonationDate ? new Date(result.lastDonationDate).toLocaleDateString() : 'None'}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6>Notes</h6>
+                                    <p>${result.notes || 'No notes available'}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6>Medical Information</h6>
+                                    <p><strong>Current Medications:</strong> ${result.currentMedications || 'None'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Set the content and show the modal
+                    $('#donationDetailsModal .modal-body').html(content);
+                    $('#donationDetailsModal').modal('show');
+                },
+                error: function (error) {
+                    console.error('Error fetching donation details:', error);
+                    alert('Error loading donation details. Please try again.');
+                }
+            });
+        }
+
+        function startDonation(donationId) {
+            if (confirm('Are you sure you want to start this donation process?')) {
+                $.ajax({
+                    url: '/api/blooddonation/updatestatus',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        donationId: donationId,
+                        status: 'InProgress'
+                    }),
+                    success: function(result) {
+                        alert('Donation process started successfully!');
+                        location.reload();
+                    },
+                    error: function(error) {
+                        console.error('Error starting donation process:', error);
+                        alert('Error starting donation process. Please try again.');
+                    }
+                });
+            }
+        }
+
+        function completeDonation(donationId) {
+            if (confirm('Are you sure you want to complete this donation process?')) {
+                $.ajax({
+                    url: '/api/blooddonation/updatestatus',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        donationId: donationId,
+                        status: 'Completed'
+                    }),
+                    success: function(result) {
+                        alert('Donation process completed successfully!');
+                        location.reload();
+                    },
+                    error: function(error) {
+                        console.error('Error completing donation process:', error);
+                        alert('Error completing donation process. Please try again.');
+                    }
+                });
+            }
+        }
+    </script>
+}
+
+@functions {
+    private string GetStatusBadgeClass(string status)
+    {
+        return status switch
+        {
+            "Completed" => "bg-success",
+            "InProgress" => "bg-warning",
+            "Scheduled" => "bg-info",
+            _ => "bg-secondary"
+        };
+    }
+}

@@ -1,0 +1,108 @@
+@page
+@model RazorPage.Pages.Staff.BloodRequestsModel
+@{
+    ViewData["Title"] = "Blood Request Management";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2>Blood Request Management</h2>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="input-group">
+                <input type="text" class="form-control" id="searchInput" placeholder="Search requests...">
+                <button class="btn btn-outline-secondary" type="button">Search</button>
+            </div>
+        </div>
+        <div class="col-md-6 text-end">
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline-primary" onclick="filterRequests('all')">All</button>
+                <button type="button" class="btn btn-outline-warning" onclick="filterRequests('pending')">Pending</button>
+                <button type="button" class="btn btn-outline-success" onclick="filterRequests('approved')">Approved</button>
+                <button type="button" class="btn btn-outline-danger" onclick="filterRequests('rejected')">Rejected</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>Patient Name</th>
+                    <th>Blood Type</th>
+                    <th>Components</th>
+                    <th>Urgency Level</th>
+                    <th>Request Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var request in Model.BloodRequests)
+                {
+                    <tr>
+                        <td>@request.RequestId</td>
+                        <td>@request.PatientName</td>
+                        <td>@request.BloodType</td>
+                        <td>@request.Components</td>
+                        <td>
+                            <span class="badge @(request.UrgencyLevel == "Emergency" ? "bg-danger" : "bg-warning")">@request.UrgencyLevel</span>
+                        </td>
+                        <td>@(request.RequestDate.HasValue ? request.RequestDate.Value.ToString("MM/dd/yyyy") : "Not specified")</td>
+                        <td>
+                            <span class="badge @GetStatusBadgeClass(request.Status)">@request.Status</span>
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-info" onclick="viewDetails('@request.RequestId')">Details</button>
+                                @if (request.Status == "Pending")
+                                {
+                                    <button class="btn btn-sm btn-success" onclick="approveRequest('@request.RequestId')">Approve</button>
+                                    <button class="btn btn-sm btn-danger" onclick="rejectRequest('@request.RequestId')">Reject</button>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function filterRequests(status) {
+            // Implement filter logic
+        }
+
+        function viewDetails(requestId) {
+            // Implement view details logic
+        }
+
+        function approveRequest(requestId) {
+            // Implement approve logic
+        }
+
+        function rejectRequest(requestId) {
+            // Implement reject logic
+        }
+    </script>
+}
+
+@functions {
+    private string GetStatusBadgeClass(string status)
+    {
+        return status switch
+        {
+            "Approved" => "bg-success",
+            "Rejected" => "bg-danger",
+            "Pending" => "bg-warning",
+            _ => "bg-secondary"
+        };
+    }
+}

@@ -1,7 +1,7 @@
 -- Insert mock data for Blood Donation Support System
 
 -- 1. Insert Users (Staff, Donors, Recipients)
-INSERT INTO users (userID, username, password, email, fullName, dateOfBirth, phone, role, userIdCard) VALUES
+INSERT INTO users (userID, username, password, email, fullName, dateOfBirth, phone, role, userIdCard, status) VALUES
 (NEWID(), 'admin1', 'admin1', 'admin1@bloodbank.com', 'Dr. Sarah Johnson', '1980-05-15', '0123456789', 'Admin', 'ID001234567', 'Active'),
 (NEWID(), 'staff1', 'staff1', 'staff1@bloodbank.com', 'Nurse Mary Wilson', '1985-03-20', '0123456790', 'Staff', 'ID001234568', 'Active'),
 (NEWID(), 'donor1', 'donor1', 'donor1@email.com', 'John Doe', '1990-08-12', '0123456791', 'Member', 'ID001234569', 'Active'),

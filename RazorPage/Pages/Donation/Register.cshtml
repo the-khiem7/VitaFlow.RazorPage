@@ -1,0 +1,80 @@
+@page
+@model RazorPage.Pages.Donation.RegisterModel
+@{
+    ViewData["Title"] = "Register for Blood Donation";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Register for Blood Donation</h2>
+    
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" class="needs-validation" novalidate>
+                        @Html.AntiForgeryToken()
+                        
+                        <div class="mb-3">
+                            <label asp-for="Input.BloodType" class="form-label">Blood Type</label>
+                            <select asp-for="Input.BloodType" class="form-select" required>
+                                <option value="">Select Blood Type</option>
+                                <option value="A+">A Positive (A+)</option>
+                                <option value="A-">A Negative (A-)</option>
+                                <option value="B+">B Positive (B+)</option>
+                                <option value="B-">B Negative (B-)</option>
+                                <option value="O+">O Positive (O+)</option>
+                                <option value="O-">O Negative (O-)</option>
+                                <option value="AB+">AB Positive (AB+)</option>
+                                <option value="AB-">AB Negative (AB-)</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select your blood type.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.DonationDate" class="form-label">Preferred Donation Date</label>
+                            <input type="date" asp-for="Input.DonationDate" class="form-control" required min="@DateTime.Now.ToString("yyyy-MM-dd")">
+                            <div class="invalid-feedback">
+                                Please select a valid donation date.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.CurrentMedications" class="form-label">Current Medications</label>
+                            <textarea asp-for="Input.CurrentMedications" class="form-control" rows="3" placeholder="List any current medications or write 'None'"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.Notes" class="form-label">Additional Notes</label>
+                            <textarea asp-for="Input.Notes" class="form-control" rows="3" placeholder="Any additional information you would like to share"></textarea>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Register for Donation</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Form validation
+        (function () {
+            'use strict';
+            var forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+}

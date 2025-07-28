@@ -1,0 +1,150 @@
+@page
+@model RazorPage.Pages.Staff.InventoryModel
+@{
+    ViewData["Title"] = "Donation Management";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2>Donation Management</h2>
+        </div>
+    </div>
+
+    <!-- Donation Management Tools -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="input-group">
+                <input type="text" class="form-control" id="searchDonation" placeholder="Search donations...">
+                <button class="btn btn-outline-secondary" type="button">Search</button>
+            </div>
+        </div>
+        <div class="col-md-6 text-end">
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline-primary" onclick="filterDonations('all')">All</button>
+                <button type="button" class="btn btn-outline-info" onclick="filterDonations('scheduled')">Scheduled</button>
+                <button type="button" class="btn btn-outline-warning" onclick="filterDonations('in-progress')">In Progress</button>
+                <button type="button" class="btn btn-outline-success" onclick="filterDonations('completed')">Completed</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Donations Table -->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Donation ID</th>
+                    <th>Donor Name</th>
+                    <th>Blood Type</th>
+                    <th>Donation Date</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var donation in Model.Donations)
+                {
+                    <tr>
+                        <td>@donation.DonationId</td>
+                        <td>@donation.DonorName</td>
+                        <td>@donation.BloodType</td>
+                        <td>@(donation.DonationDate.HasValue ? donation.DonationDate.Value.ToString("yyyy-MM-dd") : "Not scheduled")</td>
+                        <td>@donation.Quantity ml</td>
+                        <td>
+                            <span class="badge @GetStatusBadgeClass(donation.Status)">@donation.Status</span>
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-info" onclick="viewDonationDetails('@donation.DonationId')">Details</button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Donation Details Modal -->
+<div class="modal fade" id="donationDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Donation Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Details will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function filterDonations(status) {
+            // Implement filter logic
+        }
+
+        function viewDonationDetails(donationId) {
+            $.ajax({
+                url: '?handler=DonationDetails',
+                data: { donationId: donationId },
+                type: 'GET',
+                success: function (result) {
+                    // Create HTML content for the modal
+                    let content = `
+                        <div class="container-fluid">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <h6>Donor Information</h6>
+                                    <p><strong>Name:</strong> ${result.donorName}</p>
+                                    <p><strong>Blood Type:</strong> ${result.bloodType}</p>
+                                    <p><strong>Phone:</strong> ${result.phoneNumber}</p>
+                                    <p><strong>Email:</strong> ${result.email}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>Donation Information</h6>
+                                    <p><strong>Donation ID:</strong> ${result.donationId}</p>
+                                    <p><strong>Date:</strong> ${result.donationDate ? new Date(result.donationDate).toLocaleDateString() : 'Not scheduled'}</p>
+                                    <p><strong>Quantity:</strong> ${result.quantity} ml</p>
+                                    <p><strong>Status:</strong> ${result.status}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6>Notes</h6>
+                                    <p>${result.notes || 'No notes available'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Set the content and show the modal
+                    $('#donationDetailsModal .modal-body').html(content);
+                    $('#donationDetailsModal').modal('show');
+                },
+                error: function (error) {
+                    console.error('Error fetching donation details:', error);
+                    alert('Error loading donation details. Please try again.');
+                }
+            });
+        }
+    </script>
+}
+
+@functions {
+    private string GetStatusBadgeClass(string status)
+    {
+        return status switch
+        {
+            "Completed" => "bg-success",
+            "InProgress" => "bg-warning",
+            "Scheduled" => "bg-info",
+            "Rejected" => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+}
