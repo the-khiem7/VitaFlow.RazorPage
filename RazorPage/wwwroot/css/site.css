@@ -1,5 +1,6 @@
 html {
   font-size: 14px;
+  scroll-behavior: smooth;
 }
 
 @media (min-width: 768px) {
@@ -19,4 +20,660 @@ html {
 
 body {
   margin-bottom: 60px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+}
+
+/* Hero Section Enhancements */
+.hero-section {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 50%, #bd2130 100%) !important;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(220, 53, 69, 0.3);
+  border: none !important;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="hearts" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M10,6 C10,3 7,1 5,3 C3,1 0,3 0,6 C0,8 10,16 10,16 C10,16 20,8 20,6 C20,3 17,1 15,3 C13,1 10,3 10,6 Z" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23hearts)"/></svg>') repeat;
+  opacity: 0.1;
+  animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.hero-section .display-4 {
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  animation: fadeInUp 1s ease-out;
+}
+
+.hero-section .lead {
+  font-size: 1.4rem;
+  font-weight: 300;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  animation: fadeInUp 1s ease-out 0.3s both;
+}
+
+.hero-section .btn {
+  animation: fadeInUp 1s ease-out 0.6s both;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.hero-section .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Card Enhancements */
+.card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  position: relative;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.card:hover::before {
+  left: 100%;
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+.card .fas {
+  transition: all 0.3s ease;
+}
+
+.card:hover .fas {
+  transform: scale(1.2) rotate(5deg);
+}
+
+.card-title {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.card-text {
+  color: #6c757d;
+  line-height: 1.6;
+}
+
+/* Button Enhancements */
+.btn {
+  border-radius: 25px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s;
+}
+
+.btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn-danger {
+  background: linear-gradient(45deg, #dc3545, #c82333);
+  border: none;
+  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+}
+
+.btn-primary {
+  background: linear-gradient(45deg, #007bff, #0056b3);
+  border: none;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+}
+
+.btn-success {
+  background: linear-gradient(45deg, #28a745, #1e7e34);
+  border: none;
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.btn-info {
+  background: linear-gradient(45deg, #17a2b8, #117a8b);
+  border: none;
+  box-shadow: 0 4px 15px rgba(23, 162, 184, 0.3);
+}
+
+/* Icon Animations */
+.fas {
+  transition: all 0.3s ease;
+}
+
+.fa-heart {
+  animation: heartbeat 2s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  14% { transform: scale(1.1); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.1); }
+  70% { transform: scale(1); }
+}
+
+/* Feature Section Enhancements */
+.d-flex {
+  transition: all 0.3s ease;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.d-flex:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: translateX(10px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Alert Enhancements */
+.alert {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+  border-left: 5px solid #17a2b8;
+}
+
+/* Scroll Animations */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive Enhancements */
+@media (max-width: 768px) {
+  .hero-section .display-4 {
+    font-size: 2rem;
+  }
+  
+  .hero-section .lead {
+    font-size: 1.1rem;
+  }
+  
+  .card {
+    margin-bottom: 2rem;
+  }
+}
+
+/* Loading Animation */
+.loading {
+  position: relative;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #dc3545;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Navbar Enhancements */
+.navbar {
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+/* Footer Enhancements */
+.footer {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  border-top: 3px solid #dc3545 !important;
+  box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+}
+
+/* Hero Statistics */
+.hero-stats {
+  margin: 2rem 0;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 1rem;
+}
+
+.stat-number {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.9);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0;
+}
+
+/* Action Cards */
+.action-card {
+  transition: all 0.4s ease;
+}
+
+.icon-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.card-footer-custom {
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+.btn-action {
+  min-width: 180px;
+  font-weight: 600;
+}
+
+/* Blood Types Grid */
+.blood-types-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.blood-type-card {
+  background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+  border-radius: 15px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.blood-type-card:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  border-color: #dc3545;
+}
+
+.blood-type-icon {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #dc3545;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.blood-type-label {
+  font-size: 1rem;
+  color: #6c757d;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Feature Items */
+.feature-item {
+  transition: all 0.3s ease;
+  padding: 1.5rem;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(5px);
+}
+
+.feature-item:hover {
+  background: rgba(255,255,255,0.9);
+  transform: translateX(10px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.feature-icon {
+  width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-content h5 {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.feature-content p {
+  color: #6c757d;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.feature-stats {
+  margin-top: 0.5rem;
+}
+
+.feature-stats small {
+  font-weight: 500;
+}
+
+/* Emergency Banner */
+.emergency-banner {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+  border-radius: 15px;
+  padding: 2rem;
+  color: white;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.emergency-banner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(255,255,255,0.05) 10px,
+    rgba(255,255,255,0.05) 20px
+  );
+  animation: slide 20s linear infinite;
+}
+
+@keyframes slide {
+  0% { transform: translateX(-50px); }
+  100% { transform: translateX(50px); }
+}
+
+.emergency-content {
+  position: relative;
+  z-index: 1;
+}
+
+.emergency-content h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.blood-need-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.need-item {
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.3);
+  transition: all 0.3s ease;
+}
+
+.need-item:hover {
+  transform: scale(1.05);
+  background: rgba(255,255,255,0.3);
+}
+
+.need-item.urgent {
+  animation: pulse-urgent 2s infinite;
+}
+
+@keyframes pulse-urgent {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.7); }
+  50% { box-shadow: 0 0 0 10px rgba(255,255,255,0); }
+}
+
+.need-item .blood-type {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.need-item .need-level {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Welcome Card */
+.welcome-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  padding: 2rem;
+  color: white;
+  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 50%;
+  transform: translate(30px, -30px);
+}
+
+.welcome-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.welcome-avatar {
+  margin-right: 1.5rem;
+  opacity: 0.9;
+}
+
+.welcome-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+.welcome-subtitle {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin-bottom: 0;
+}
+
+.welcome-content p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  opacity: 0.95;
+}
+
+.welcome-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-welcome {
+  border-radius: 25px;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.btn-welcome:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* CTA Section */
+.cta-section {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  border-radius: 20px;
+  padding: 3rem 2rem;
+  color: white;
+  box-shadow: 0 15px 35px rgba(245, 87, 108, 0.3);
+}
+
+.cta-section h3 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.cta-section .lead {
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+  opacity: 0.95;
+}
+
+.cta-buttons {
+  margin-top: 2rem;
+}
+
+.cta-buttons .btn {
+  font-size: 1.1rem;
+  padding: 1rem 2rem;
+  margin: 0.5rem;
+}
+
+/* Pulse Button Animation */
+.pulse-btn {
+  animation: pulse-glow 3s infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+  50% {
+    box-shadow: 0 4px 25px rgba(255,255,255,0.4), 0 0 30px rgba(255,255,255,0.3);
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .hero-stats {
+    margin: 1rem 0;
+  }
+  
+  .stat-number {
+    font-size: 2rem;
+  }
+  
+  .blood-types-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+  
+  .blood-need-indicators {
+    gap: 1rem;
+  }
+  
+  .welcome-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .welcome-avatar {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+  
+  .welcome-actions {
+    justify-content: center;
+  }
+  
+  .cta-section h3 {
+    font-size: 2rem;
+  }
+  
+  .emergency-content h3 {
+    font-size: 1.5rem;
+  }
 }
