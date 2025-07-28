@@ -23,8 +23,6 @@ namespace RazorPage
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            var googleSection = builder.Configuration.GetSection("Authentication:Google");
-
             // Add Entity Framework
             builder.Services.AddDbContext<BloodDonationSupportContext>(options =>
             {
@@ -83,13 +81,14 @@ namespace RazorPage
                 options.ExpireTimeSpan = TimeSpan.FromDays(1);
                 options.SlidingExpiration = true;
             })
-            .AddGoogle(options =>
-            {
-                options.ClientId = googleSection["ClientId"];
-                options.ClientSecret = googleSection["ClientSecret"];
-                options.Scope.Add("email");
-                options.Scope.Add("profile");
-            })
+            // Google authentication is commented out until proper configuration is provided
+            // .AddGoogle(options =>
+            // {
+            //     options.ClientId = googleSection["ClientId"];
+            //     options.ClientSecret = googleSection["ClientSecret"];
+            //     options.Scope.Add("email");
+            //     options.Scope.Add("profile");
+            // })
             .AddJwtBearer(options =>
             {
                 options.SaveToken = true;
@@ -129,6 +128,8 @@ namespace RazorPage
                 // Allow anonymous access to login and register pages
                 options.Conventions.AllowAnonymousToPage("/Account/Login");
                 options.Conventions.AllowAnonymousToPage("/Account/Register");
+                // Allow anonymous access to BlogPosts page
+                options.Conventions.AllowAnonymousToPage("/Member/BlogPosts");
             });
 
             // Add controllers for API endpoints (hybrid approach)
