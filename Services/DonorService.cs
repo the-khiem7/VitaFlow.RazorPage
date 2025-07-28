@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,10 +17,12 @@ namespace Services
     public class DonorService : IDonorService
     {
         private readonly IGenericRepository<Donor> _repository;
+        private readonly IGenericRepository<BloodType> _bloodTypeRepository;
 
-        public DonorService(IGenericRepository<Donor> repository)
+        public DonorService(IGenericRepository<Donor> repository, IGenericRepository<BloodType> bloodTypeRepository)
         {
             _repository = repository;
+            _bloodTypeRepository = bloodTypeRepository;
         }
 
         public async Task<IEnumerable<DonorDto>> GetAllAsync()
@@ -111,6 +113,11 @@ namespace Services
 
             _repository.Remove(donor);
             return await _repository.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<BloodType>> GetBloodTypesAsync()
+        {
+            return await _bloodTypeRepository.GetAllAsync();
         }
     }
 }

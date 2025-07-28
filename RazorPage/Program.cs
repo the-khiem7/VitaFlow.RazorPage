@@ -117,7 +117,7 @@ namespace RazorPage
                 options.AddPolicy("RequireStaffRole", policy => policy.RequireRole("Staff"));
                 options.AddPolicy("RequireAdminOrStaffRole", policy => policy.RequireRole("Admin", "Staff"));
                 options.AddPolicy("RequireCustomerRole", policy => policy.RequireRole("Customer"));
-                options.AddPolicy("RequireMemberRole", policy => policy.RequireRole("Member", "Customer"));
+                options.AddPolicy("RequireMemberRole", policy => policy.RequireRole("Member", "Customer", "Admin", "Staff"));
             });
 
             // Add services to the container.

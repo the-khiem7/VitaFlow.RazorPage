@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +15,7 @@ namespace Services
         Task<DonorDto> CreateAsync(CreateDonorDto dto);
         Task<bool> UpdateAsync(Guid id, UpdateDonorDto dto);
         Task<bool> DeleteAsync(Guid id);
+        Task<IEnumerable<Models.BloodType>> GetBloodTypesAsync();
         //Task<DonorHealthCheckDto> HealthCheckAsync(Guid donorId);
     }
 
