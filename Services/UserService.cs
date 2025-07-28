@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Models;
 using Models.DTOs;
 using Repositories.Interfaces;
@@ -147,6 +147,49 @@ namespace Services.Implementations
                 throw;
             }
         }
+        public async Task<bool> UpdateUserAsync(UserUpdateDTO updateDto)
+        {
+            try
+            {
+                var user = await _userRepository.GetByIdAsync(updateDto.Id);
+                if (user == null)
+                {
+                    return false;
+                }
+
+                if (!string.IsNullOrWhiteSpace(updateDto.Email) && updateDto.Email != user.Email)
+                {
+                    var emailExists = await _userRepository.IsEmailExistsAsync(updateDto.Email);
+                    if (emailExists)
+                    {
+                        return false;
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(updateDto.FullName))
+                    user.FullName = updateDto.FullName;
+
+                if (!string.IsNullOrWhiteSpace(updateDto.Email))
+                    user.Email = updateDto.Email;
+
+                if (!string.IsNullOrWhiteSpace(updateDto.Role))
+                    user.Role = updateDto.Role;
+
+                if (!string.IsNullOrWhiteSpace(updateDto.Status))
+                    user.Status = updateDto.Status;
+
+                _userRepository.UpdateAsync(user);
+                await _userRepository.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating user {UserId}", updateDto.Id);
+                return false;
+            }
+        }
+
         public async Task<User> GetCurrentUserAsync(Guid userId)
         {
             try

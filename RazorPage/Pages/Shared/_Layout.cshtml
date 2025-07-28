@@ -34,6 +34,12 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-page="/Donation/LocationSearch">
+                                <i class="fas fa-map-marker-alt"></i> Find Nearby Donors
+                            </a>
+                        </li>
+
                         @if (User.Identity?.IsAuthenticated == true)
                         {
                             @if (User.IsInRole("Admin"))
@@ -92,6 +98,7 @@
                                     <li><a class="dropdown-item" asp-page="/Donation/History">My History</a></li>
                                     <li><a class="dropdown-item" asp-page="/Donation/Certificates">Certificates</a></li>
                                     <li><a class="dropdown-item" asp-page="/Donation/BloodCompatibility"><i class="fas fa-search"></i> Blood Type Compatibility</a></li>
+                                    <li><a class="dropdown-item" asp-page="/Donation/LocationSearch"><i class="fas fa-map-marker-alt"></i> Find Nearby Donors</a></li>
                                 </ul>
                             </li>
                             

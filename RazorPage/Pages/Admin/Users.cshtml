@@ -1,0 +1,194 @@
+@page
+@model RazorPage.Pages.Admin.UsersModel
+@{
+    ViewData["Title"] = "User Management";
+}
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @Model.ErrorMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @Model.SuccessMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">User Management</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/Admin">Dashboard</a></li>
+        <li class="breadcrumb-item active">Users</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+                <i class="fas fa-users me-1"></i>
+                User List
+            </div>
+            <div class="d-flex gap-2">
+                <form method="get" class="d-flex">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="searchTerm" placeholder="Search users...">
+                        <button class="btn btn-outline-secondary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                    <i class="fas fa-plus me-1"></i>Add User
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model.Users)
+                        {
+                            <tr>
+                                <td>@user.UserId</td>
+                                <td>@user.FullName</td>
+                                <td>@user.Email</td>
+                                <td>@user.Role</td>
+                                <td>
+                                    <span class="badge bg-@(user.Status == "Active" ? "success" : "danger")">@user.Status</span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" onclick="editUser('@user.UserId', '@user.FullName', '@user.Email', '@user.Role', '@user.Status')" data-bs-toggle="modal" data-bs-target="#editUserModal">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add User Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-page-handler="Create">
+                    <div class="mb-3">
+                        <label asp-for="NewUser.FullName" class="form-label">Full Name</label>
+                        <input asp-for="NewUser.FullName" class="form-control" required>
+                        <span asp-validation-for="NewUser.FullName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="NewUser.Email" class="form-label">Email</label>
+                        <input asp-for="NewUser.Email" class="form-control" required>
+                        <span asp-validation-for="NewUser.Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="NewUser.Password" class="form-label">Password</label>
+                        <input asp-for="NewUser.Password" class="form-control" type="password" required>
+                        <span asp-validation-for="NewUser.Password" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="NewUser.Role" class="form-label">Role</label>
+                        <select asp-for="NewUser.Role" class="form-select" required>
+                            <option value="Member">Member</option>
+                            <option value="Staff">Staff</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                        <span asp-validation-for="NewUser.Role" class="text-danger"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save User</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Edit User Modal -->
+<div class="modal fade" id="editUserModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-page-handler="Update">
+                    <input type="hidden" asp-for="UpdateUser.Id">
+                    <div class="mb-3">
+                        <label asp-for="UpdateUser.FullName" class="form-label">Full Name</label>
+                        <input asp-for="UpdateUser.FullName" class="form-control" required>
+                        <span asp-validation-for="UpdateUser.FullName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="UpdateUser.Email" class="form-label">Email</label>
+                        <input asp-for="UpdateUser.Email" class="form-control" required>
+                        <span asp-validation-for="UpdateUser.Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="UpdateUser.Role" class="form-label">Role</label>
+                        <select asp-for="UpdateUser.Role" class="form-select" required>
+                            <option value="Member">Member</option>
+                            <option value="Staff">Staff</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                        <span asp-validation-for="UpdateUser.Role" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="UpdateUser.Status" class="form-label">Status</label>
+                        <select asp-for="UpdateUser.Status" class="form-select" required>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                        <span asp-validation-for="UpdateUser.Status" class="text-danger"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update User</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function editUser(id, fullName, email, role, status) {
+            document.getElementById('UpdateUser_Id').value = id;
+            document.getElementById('UpdateUser_FullName').value = fullName;
+            document.getElementById('UpdateUser_Email').value = email;
+            document.getElementById('UpdateUser_Role').value = role;
+            document.getElementById('UpdateUser_Status').value = status;
+        }
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

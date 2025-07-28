@@ -1,4 +1,4 @@
-﻿
+
 #nullable disable
 using System;
 using System.Collections.Generic;
@@ -24,6 +24,8 @@ public partial class User
     public DateOnly? DateOfBirth { get; set; }
 
     public string Role { get; set; }
+
+    public string Status { get; set; } = "Active";
 
     public virtual ICollection<Blog> Blogs { get; set; } = new List<Blog>();
 

@@ -1,4 +1,4 @@
-﻿using Models;
+using Models;
 using Models.DTOs;
 
 public interface IUserService
@@ -7,6 +7,7 @@ public interface IUserService
     Task<IEnumerable<User>> GetUsersByRoleAsync(string role);
     Task<IEnumerable<User>> SearchUsersByNameAsync(string searchTerm);
     Task<(bool success, string message)> UpdateUserAsync(Guid userId, UserUpdateDTO updateDto);
+    Task<bool> UpdateUserAsync(UserUpdateDTO updateDto);
     Task<User> GetUserDetailAsync(Guid id);
     Task<User> GetCurrentUserAsync(Guid userId);
     Task<IEnumerable<User>> GetUsersByFullNameAsync(string fullName);

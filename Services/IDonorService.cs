@@ -16,7 +16,15 @@ namespace Services
         Task<bool> UpdateAsync(Guid id, UpdateDonorDto dto);
         Task<bool> DeleteAsync(Guid id);
         Task<IEnumerable<Models.BloodType>> GetBloodTypesAsync();
+        Task<IEnumerable<NearbyDonorDto>> GetNearbyDonorsAsync(double latitude, double longitude, double radiusInKm);
         //Task<DonorHealthCheckDto> HealthCheckAsync(Guid donorId);
     }
 
+    public class NearbyDonorDto
+    {
+        public string FullName { get; set; }
+        public string BloodType { get; set; }
+        public double Distance { get; set; }
+        public string Address { get; set; }
+    }
 }

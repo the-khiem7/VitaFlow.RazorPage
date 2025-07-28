@@ -30,5 +30,7 @@ namespace Models.DTOs
 
 
         public DateOnly? DateOfBirth { get; set; }
+
+        public string Role { get; set; } = "Member";
     }
-} 
+}

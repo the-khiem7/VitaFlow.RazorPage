@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
@@ -124,7 +124,7 @@ namespace Services
                     Phone = registerDto.Phone,
                     UserIdCard = registerDto.UserIdCard,
                     DateOfBirth = registerDto.DateOfBirth,
-                    Role = UserRoles.Member.ToString()
+                    Role = string.IsNullOrEmpty(registerDto.Role) ? UserRoles.Member.ToString() : registerDto.Role
                 };
 
                 _context.Users.Add(user);
