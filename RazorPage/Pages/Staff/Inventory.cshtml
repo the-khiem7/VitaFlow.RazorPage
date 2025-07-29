@@ -4,75 +4,256 @@
     ViewData["Title"] = "Donation Management";
 }
 
-<div class="container-fluid">
-    <div class="row mb-4">
-        <div class="col-12">
-            <h2>Donation Management</h2>
-        </div>
-    </div>
+<style>
+    .admin-container {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        min-height: 100vh;
+        padding: 2rem 0;
+    }
 
-    <!-- Donation Management Tools -->
-    <div class="row mb-4">
-        <div class="col-md-6">
-            <div class="input-group">
-                <input type="text" class="form-control" id="searchDonation" placeholder="Search donations...">
-                <button class="btn btn-outline-secondary" type="button">Search</button>
+    .page-header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        border-radius: 20px;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .header-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        box-shadow: 0 8px 16px rgba(239, 68, 68, 0.2);
+    }
+
+    .modern-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        border-radius: 16px;
+        transition: all 0.3s ease;
+    }
+
+    .search-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1.5px solid #e2e8f0;
+        border-radius: 50px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-control {
+        border: none;
+        background: transparent;
+        padding: 12px 16px;
+    }
+
+    .form-control:focus {
+        box-shadow: none;
+        background: transparent;
+    }
+
+    .btn-modern {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        border: none;
+        color: white;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-modern:hover {
+        background: linear-gradient(135deg, #1d4ed8, #1e40af);
+        transform: translateY(-1px);
+        color: white;
+    }
+
+    .btn-filter {
+        background: #ffffff;
+        border: 1.5px solid #e2e8f0;
+        color: #374151;
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        margin: 0 2px;
+    }
+
+    .btn-filter:hover {
+        background: #f9fafb;
+        border-color: #d1d5db;
+        color: #374151;
+        transform: translateY(-1px);
+    }
+
+    .table-modern {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+    }
+
+    .table-modern thead th {
+        background: rgba(248, 250, 252, 0.95);
+        border: none;
+        color: #374151;
+        font-weight: 600;
+        padding: 16px;
+    }
+
+    .table-modern tbody td {
+        border: none;
+        padding: 16px;
+        vertical-align: middle;
+    }
+
+    .table-modern tbody tr {
+        border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+    }
+
+    .table-modern tbody tr:hover {
+        background: rgba(248, 250, 252, 0.5);
+    }
+
+    .btn-action {
+        width: 35px;
+        height: 35px;
+        border-radius: 8px;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        margin: 0 2px;
+    }
+
+    .btn-action:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-info-modern {
+        background: linear-gradient(135deg, #06b6d4, #0891b2);
+        color: white;
+    }
+
+    .modal-modern .modal-content {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .subtle-pattern {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.03;
+        background-image: radial-gradient(circle at 20% 20%, #ef4444 1px, transparent 1px);
+        background-size: 30px 30px;
+    }
+
+    .badge {
+        font-size: 0.85rem;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+</style>
+
+<div class="admin-container position-relative">
+    <div class="subtle-pattern"></div>
+
+    <div class="container position-relative">
+        <div class="page-header">
+            <div class="header-icon">
+                <i class="fas fa-boxes text-white" style="font-size: 2rem;"></i>
+            </div>
+            <h1 class="fw-bold text-dark mb-2" style="font-size: 2.8rem;">Donation Management</h1>
+            <p class="text-muted mb-0" style="font-size: 1.2rem;">Manage and track all blood donations in inventory</p>
+        </div>
+
+        <!-- Donation Management Tools -->
+        <div class="row mb-4 g-3">
+            <div class="col-md-6">
+                <div class="search-container">
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-0"><i class="fas fa-search text-muted"></i></span>
+                        <input type="text" class="form-control" id="searchDonation" placeholder="Search donations...">
+                        <button class="btn btn-modern" type="button" onclick="searchDonations()">Search</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 text-end">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-filter" onclick="filterDonations('all')">All</button>
+                    <button type="button" class="btn btn-filter" onclick="filterDonations('scheduled')">Scheduled</button>
+                    <button type="button" class="btn btn-filter" onclick="filterDonations('in-progress')">In Progress</button>
+                    <button type="button" class="btn btn-filter" onclick="filterDonations('completed')">Completed</button>
+                </div>
             </div>
         </div>
-        <div class="col-md-6 text-end">
-            <div class="btn-group">
-                <button type="button" class="btn btn-outline-primary" onclick="filterDonations('all')">All</button>
-                <button type="button" class="btn btn-outline-info" onclick="filterDonations('scheduled')">Scheduled</button>
-                <button type="button" class="btn btn-outline-warning" onclick="filterDonations('in-progress')">In Progress</button>
-                <button type="button" class="btn btn-outline-success" onclick="filterDonations('completed')">Completed</button>
+
+        <!-- Donations Table -->
+        <div class="modern-card">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-modern align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Donation ID</th>
+                                <th>Donor Name</th>
+                                <th>Blood Type</th>
+                                <th>Donation Date</th>
+                                <th>Quantity</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var donation in Model.Donations)
+                            {
+                                <tr>
+                                    <td class="fw-semibold text-dark">@donation.DonationId</td>
+                                    <td class="text-dark">@donation.DonorName</td>
+                                    <td>
+                                        <span class="badge bg-danger">@donation.BloodType</span>
+                                    </td>
+                                    <td class="text-dark">@(donation.DonationDate.HasValue? donation.DonationDate.Value.ToString("yyyy-MM-dd") : "Not scheduled")</td>
+                                    <td class="text-dark">@donation.Quantity ml</td>
+                                    <td>
+                                        <span class="badge @GetStatusBadgeClass(donation.Status) text-uppercase">@donation.Status</span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-action btn-info-modern" onclick="viewDonationDetails('@donation.DonationId')" title="View Details">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-
-    <!-- Donations Table -->
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th>Donation ID</th>
-                    <th>Donor Name</th>
-                    <th>Blood Type</th>
-                    <th>Donation Date</th>
-                    <th>Quantity</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var donation in Model.Donations)
-                {
-                    <tr>
-                        <td>@donation.DonationId</td>
-                        <td>@donation.DonorName</td>
-                        <td>@donation.BloodType</td>
-                        <td>@(donation.DonationDate.HasValue ? donation.DonationDate.Value.ToString("yyyy-MM-dd") : "Not scheduled")</td>
-                        <td>@donation.Quantity ml</td>
-                        <td>
-                            <span class="badge @GetStatusBadgeClass(donation.Status)">@donation.Status</span>
-                        </td>
-                        <td>
-                            <div class="btn-group">
-                                <button class="btn btn-sm btn-info" onclick="viewDonationDetails('@donation.DonationId')">Details</button>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
     </div>
 </div>
 
 <!-- Donation Details Modal -->
-<div class="modal fade" id="donationDetailsModal" tabindex="-1">
+<div class="modal fade modal-modern" id="donationDetailsModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Donation Details</h5>
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title text-dark"><i class="fas fa-info-circle text-primary me-2"></i>Donation Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -84,29 +265,47 @@
 
 @section Scripts {
     <script>
-        function filterDonations(status) {
-            // Implement filter logic
+        function searchDonations() {
+            const searchText = document.getElementById('searchDonation').value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const donorName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                row.style.display = donorName.includes(searchText) ? '' : 'none';
+            });
         }
-
+        document.getElementById('searchDonation').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') searchDonations();
+        });
+        function filterDonations(status) {
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const statusCell = row.querySelector('td:nth-child(6) .badge');
+                const statusText = statusCell.textContent.trim();
+                if (status === 'all') row.style.display = '';
+                else if (status === 'scheduled' && statusText === 'Scheduled') row.style.display = '';
+                else if (status === 'in-progress' && statusText === 'InProgress') row.style.display = '';
+                else if (status === 'completed' && statusText === 'Completed') row.style.display = '';
+                else row.style.display = 'none';
+            });
+        }
         function viewDonationDetails(donationId) {
             $.ajax({
                 url: '?handler=DonationDetails',
                 data: { donationId: donationId },
                 type: 'GET',
                 success: function (result) {
-                    // Create HTML content for the modal
                     let content = `
                         <div class="container-fluid">
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <h6>Donor Information</h6>
+                                    <h6 class="fw-bold">Donor Information</h6>
                                     <p><strong>Name:</strong> ${result.donorName}</p>
                                     <p><strong>Blood Type:</strong> ${result.bloodType}</p>
                                     <p><strong>Phone:</strong> ${result.phoneNumber}</p>
                                     <p><strong>Email:</strong> ${result.email}</p>
                                 </div>
                                 <div class="col-md-6">
-                                    <h6>Donation Information</h6>
+                                    <h6 class="fw-bold">Donation Information</h6>
                                     <p><strong>Donation ID:</strong> ${result.donationId}</p>
                                     <p><strong>Date:</strong> ${result.donationDate ? new Date(result.donationDate).toLocaleDateString() : 'Not scheduled'}</p>
                                     <p><strong>Quantity:</strong> ${result.quantity} ml</p>
@@ -115,14 +314,12 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <h6>Notes</h6>
+                                    <h6 class="fw-bold">Notes</h6>
                                     <p>${result.notes || 'No notes available'}</p>
                                 </div>
                             </div>
                         </div>
                     `;
-                    
-                    // Set the content and show the modal
                     $('#donationDetailsModal .modal-body').html(content);
                     $('#donationDetailsModal').modal('show');
                 },
@@ -141,8 +338,8 @@
         return status switch
         {
             "Completed" => "bg-success",
-            "InProgress" => "bg-warning",
-            "Scheduled" => "bg-info",
+            "InProgress" => "bg-warning text-dark",
+            "Scheduled" => "bg-info text-dark",
             "Rejected" => "bg-danger",
             _ => "bg-secondary"
         };

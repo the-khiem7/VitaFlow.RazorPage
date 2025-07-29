@@ -4,95 +4,220 @@
     ViewData["Title"] = "Member Dashboard";
 }
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="display-4">Member Dashboard</h1>
-            <p class="lead">Welcome to your Blood Donation Portal</p>
-        </div>
-    </div>
-    
-    <div class="row mt-4">
-        <div class="col-md-4">
-            <div class="card text-white bg-success mb-3">
-                <div class="card-header">
-                    <i class="fas fa-calendar-plus"></i> Schedule Donation
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Book Appointment</h5>
-                    <p class="card-text">Schedule your next blood donation appointment</p>
-                    <a href="/Member/Appointments" class="btn btn-light">Schedule Now</a>
-                </div>
+<style>
+    .admin-container {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        min-height: 100vh;
+        padding: 2rem 0;
+    }
+
+    .page-header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        border-radius: 20px;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .header-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        box-shadow: 0 8px 16px rgba(239, 68, 68, 0.2);
+    }
+
+    .dashboard-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        border-radius: 16px;
+        transition: all 0.3s ease;
+        overflow: hidden;
+        height: 100%;
+    }
+
+    .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    .card-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        font-size: 1.8rem;
+        color: white;
+    }
+
+    .card-appointments .card-icon { background: linear-gradient(135deg, #10b981, #059669); }
+    .card-history .card-icon { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+    .card-certificates .card-icon { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .card-profile .card-icon { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+    .card-health .card-icon { background: linear-gradient(135deg, #6b7280, #4b5563); }
+
+    .card-body-modern {
+        padding: 2rem;
+    }
+
+    .btn-card {
+        background: #ffffff;
+        border: 1.5px solid #e2e8f0;
+        color: #374151;
+        font-weight: 600;
+        padding: 12px 24px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+    }
+
+    .btn-card:hover {
+        background: #f9fafb;
+        border-color: #d1d5db;
+        color: #374151;
+        transform: translateY(-1px);
+        text-decoration: none;
+    }
+
+    .notification-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        border-radius: 16px;
+    }
+
+    .subtle-pattern {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.03;
+        background-image: radial-gradient(circle at 20% 20%, #ef4444 1px, transparent 1px);
+        background-size: 30px 30px;
+    }
+</style>
+
+<div class="admin-container position-relative">
+    <div class="subtle-pattern"></div>
+
+    <div class="container position-relative">
+        <div class="page-header">
+            <div class="header-icon">
+                <i class="fas fa-heart text-white" style="font-size: 2rem;"></i>
             </div>
+            <h1 class="fw-bold text-dark mb-2" style="font-size: 2.8rem;">Member Dashboard</h1>
+            <p class="text-muted mb-0" style="font-size: 1.2rem;">Welcome to your Blood Donation Portal</p>
         </div>
-        
-        <div class="col-md-4">
-            <div class="card text-white bg-info mb-3">
-                <div class="card-header">
-                    <i class="fas fa-history"></i> Donation History
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">My Donations</h5>
-                    <p class="card-text">View your donation history and records</p>
-                    <a href="/Member/History" class="btn btn-light">View History</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-4">
-            <div class="card text-white bg-warning mb-3">
-                <div class="card-header">
-                    <i class="fas fa-certificate"></i> Certificates
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">My Certificates</h5>
-                    <p class="card-text">Download your donation certificates</p>
-                    <a href="/Member/Certificates" class="btn btn-light">View Certificates</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="row mt-4">
-        <div class="col-md-6">
-            <div class="card text-white bg-primary mb-3">
-                <div class="card-header">
-                    <i class="fas fa-user-edit"></i> Profile Management
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Update Profile</h5>
-                    <p class="card-text">Manage your personal information and preferences</p>
-                    <a href="/Member/Profile" class="btn btn-light">Edit Profile</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-6">
-            <div class="card text-white bg-secondary mb-3">
-                <div class="card-header">
-                    <i class="fas fa-heartbeat"></i> Health Status
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Health Records</h5>
-                    <p class="card-text">View your health check results and eligibility</p>
-                    <a href="/Member/Health" class="btn btn-light">View Health Status</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5><i class="fas fa-bell"></i> Recent Notifications</h5>
-                </div>
-                <div class="card-body">
-                    <div class="alert alert-info" role="alert">
-                        <i class="fas fa-info-circle"></i> Your next eligible donation date is in 2 weeks.
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="dashboard-card card-appointments">
+                    <div class="card-body-modern">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar-plus"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-3">Book Appointment</h5>
+                        <p class="text-muted mb-4">Schedule your next blood donation appointment</p>
+                        <a href="/Member/Appointments" class="btn-card">
+                            <i class="fas fa-arrow-right me-2"></i>Schedule Now
+                        </a>
                     </div>
-                    <div class="alert alert-success" role="alert">
-                        <i class="fas fa-check-circle"></i> Thank you for your last donation! You've helped save lives.
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="dashboard-card card-history">
+                    <div class="card-body-modern">
+                        <div class="card-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-3">My Donations</h5>
+                        <p class="text-muted mb-4">View your donation history and records</p>
+                        <a href="/Member/History" class="btn-card">
+                            <i class="fas fa-arrow-right me-2"></i>View History
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="dashboard-card card-certificates">
+                    <div class="card-body-modern">
+                        <div class="card-icon">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-3">My Certificates</h5>
+                        <p class="text-muted mb-4">Download your donation certificates</p>
+                        <a href="/Member/Certificates" class="btn-card">
+                            <i class="fas fa-arrow-right me-2"></i>View Certificates
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="dashboard-card card-profile">
+                    <div class="card-body-modern">
+                        <div class="card-icon">
+                            <i class="fas fa-user-edit"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-3">Update Profile</h5>
+                        <p class="text-muted mb-4">Manage your personal information and preferences</p>
+                        <a href="/Member/Profile" class="btn-card">
+                            <i class="fas fa-arrow-right me-2"></i>Edit Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="dashboard-card card-health">
+                    <div class="card-body-modern">
+                        <div class="card-icon">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-3">Health Records</h5>
+                        <p class="text-muted mb-4">View your health check results and eligibility</p>
+                        <a href="/Member/Health" class="btn-card">
+                            <i class="fas fa-arrow-right me-2"></i>View Health Status
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="notification-card">
+                    <div class="card-header bg-transparent border-0 py-3">
+                        <h5 class="mb-0 text-dark"><i class="fas fa-bell text-primary me-2"></i> Recent Notifications</h5>
+                    </div>
+                    <div class="card-body py-3">
+                        <div class="alert alert-info d-flex align-items-center mb-2 border-0 rounded-3" role="alert" style="background: rgba(59, 130, 246, 0.1);">
+                            <i class="fas fa-info-circle me-2 text-info"></i>
+                            <span>Your next eligible donation date is in 2 weeks.</span>
+                        </div>
+                        <div class="alert alert-success d-flex align-items-center mb-0 border-0 rounded-3" role="alert" style="background: rgba(16, 185, 129, 0.1);">
+                            <i class="fas fa-check-circle me-2 text-success"></i>
+                            <span>Thank you for your last donation! You've helped save lives.</span>
+                        </div>
                     </div>
                 </div>
             </div>

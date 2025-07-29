@@ -4,106 +4,303 @@
     ViewData["Title"] = "Blood Inventory Management";
 }
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="display-4">Blood Inventory Management</h1>
-            <p class="lead">Manage blood types and components inventory</p>
+<style>
+    /* Modern Admin Theme */
+    .admin-container {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        min-height: 100vh;
+        padding: 2rem 0;
+    }
 
-            @if (TempData["Success"] != null)
-            {
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    @TempData["Success"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            }
+    .page-header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        border-radius: 20px;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
 
-            @if (TempData["Error"] != null)
-            {
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    @TempData["Error"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            }
+    .header-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        box-shadow: 0 8px 16px rgba(59, 130, 246, 0.2);
+    }
+
+    .admin-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    .card-header-modern {
+        padding: 1.5rem;
+        border: none;
+        color: white;
+    }
+
+    .card-header-blood {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    .card-header-component {
+        background: linear-gradient(135deg, #10b981, #059669);
+    }
+
+    .table-modern {
+        background: white;
+        border-radius: 0 0 12px 12px;
+        overflow: hidden;
+        border: none;
+    }
+
+        .table-modern th {
+            background: #f8fafc;
+            border: none;
+            font-weight: 600;
+            color: #374151;
+            padding: 1rem;
+        }
+
+        .table-modern td {
+            border: none;
+            padding: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+    .badge-blood {
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        color: white;
+    }
+
+    .btn-modern {
+        border-radius: 10px;
+        padding: 12px 20px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+    }
+
+        .btn-modern:hover {
+            transform: translateY(-2px);
+        }
+
+    .btn-modern-edit {
+        background: #ffffff;
+        border: 1.5px solid #e2e8f0;
+        color: #374151;
+        font-weight: 500;
+        padding: 8px 16px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-modern-edit:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            color: #374151;
+            transform: translateY(-1px);
+        }
+
+    .modal-modern .modal-content {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .modal-modern .modal-header {
+        color: white;
+        border: none;
+        border-radius: 16px 16px 0 0;
+    }
+
+    .modal-blood .modal-header {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    .modal-component .modal-header {
+        background: linear-gradient(135deg, #10b981, #059669);
+    }
+
+    .form-input-modern {
+        background: #ffffff;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 12px 16px;
+        transition: all 0.3s ease;
+    }
+
+        .form-input-modern:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            background: #ffffff;
+        }
+
+    .btn-save-primary {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        border: none;
+        color: white;
+        font-weight: 600;
+        padding: 12px 20px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-save-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(239, 68, 68, 0.25);
+            color: white;
+        }
+
+    .btn-save-success {
+        background: linear-gradient(135deg, #10b981, #059669);
+        border: none;
+        color: white;
+        font-weight: 600;
+        padding: 12px 20px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-save-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(16, 185, 129, 0.25);
+            color: white;
+        }
+
+    .subtle-pattern {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.03;
+        background-image: radial-gradient(circle at 20% 20%, #3b82f6 1px, transparent 1px);
+        background-size: 30px 30px;
+    }
+</style>
+
+<div class="admin-container position-relative">
+    <div class="subtle-pattern"></div>
+
+    <div class="container-fluid position-relative">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="header-icon">
+                <i class="fas fa-tint text-white" style="font-size: 2rem;"></i>
+            </div>
+            <h1 class="fw-bold text-dark mb-2" style="font-size: 2.8rem;">Blood Inventory Management</h1>
+            <p class="text-muted mb-0" style="font-size: 1.2rem;">Manage blood types and components inventory</p>
         </div>
-    </div>
 
-    <div class="row mt-4">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0"><i class="fas fa-tint"></i> Blood Types Inventory</h5>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Blood Type</th>
-                                    <th>Description</th>
-                                    <th>Available Units</th>
-                                    <th>Total Units</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var bloodType in Model.BloodTypes)
-                                {
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show rounded-3 mb-4" role="alert">
+                @TempData["Success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show rounded-3 mb-4" role="alert">
+                @TempData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="admin-card">
+                    <div class="card-header-modern card-header-blood">
+                        <h5 class="mb-0 fw-bold"><i class="fas fa-tint me-2"></i>Blood Types Inventory</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-modern mb-0">
+                                <thead>
                                     <tr>
-                                        <td>
-                                            <span class="badge bg-danger">@bloodType.AboType@bloodType.RhFactor</span>
-                                        </td>
-                                        <td>@bloodType.Description</td>
-                                        <td>@bloodType.AvailableUnits</td>
-                                        <td>@bloodType.TotalUnits</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editBloodTypeModal" data-id="@bloodType.BloodTypeId">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                        </td>
+                                        <th>Blood Type</th>
+                                        <th>Description</th>
+                                        <th>Available</th>
+                                        <th>Total</th>
+                                        <th>Actions</th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach (var bloodType in Model.BloodTypes)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <span class="badge-blood">@bloodType.AboType@bloodType.RhFactor</span>
+                                            </td>
+                                            <td class="text-muted">@bloodType.Description</td>
+                                            <td class="fw-semibold">@bloodType.AvailableUnits</td>
+                                            <td class="text-muted">@bloodType.TotalUnits</td>
+                                            <td>
+                                                <button class="btn btn-modern-edit btn-sm" data-bs-toggle="modal" data-bs-target="#editBloodTypeModal" data-id="@bloodType.BloodTypeId">
+                                                    <i class="fas fa-edit me-1"></i>Edit
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header bg-success text-white">
-                    <h5 class="mb-0"><i class="fas fa-vials"></i> Blood Components Inventory</h5>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Component</th>
-                                    <th>Storage Requirements</th>
-                                    <th>Available Units</th>
-                                    <th>Total Units</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var component in Model.BloodComponents)
-                                {
+            <div class="col-md-6">
+                <div class="admin-card">
+                    <div class="card-header-modern card-header-component">
+                        <h5 class="mb-0 fw-bold"><i class="fas fa-vials me-2"></i>Blood Components Inventory</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-modern mb-0">
+                                <thead>
                                     <tr>
-                                        <td>@component.ComponentName</td>
-                                        <td>@component.StorageRequirements</td>
-                                        <td>@component.AvailableUnits</td>
-                                        <td>@component.TotalUnits</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#editComponentModal" data-id="@component.ComponentId">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                        </td>
+                                        <th>Component</th>
+                                        <th>Storage</th>
+                                        <th>Available</th>
+                                        <th>Total</th>
+                                        <th>Actions</th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach (var component in Model.BloodComponents)
+                                    {
+                                        <tr>
+                                            <td class="fw-semibold">@component.ComponentName</td>
+                                            <td class="text-muted small">@component.StorageRequirements</td>
+                                            <td class="fw-semibold">@component.AvailableUnits</td>
+                                            <td class="text-muted">@component.TotalUnits</td>
+                                            <td>
+                                                <button class="btn btn-modern-edit btn-sm" data-bs-toggle="modal" data-bs-target="#editComponentModal" data-id="@component.ComponentId">
+                                                    <i class="fas fa-edit me-1"></i>Edit
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -112,11 +309,11 @@
 </div>
 
 <!-- Edit Blood Type Modal -->
-<div class="modal fade" id="editBloodTypeModal" tabindex="-1">
+<div class="modal fade modal-modern modal-blood" id="editBloodTypeModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Edit Blood Type Inventory</h5>
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold">Edit Blood Type Inventory</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form id="updateBloodTypeForm" method="post">
@@ -124,13 +321,13 @@
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="id" id="bloodTypeId" />
                     <div class="mb-3">
-                        <label for="availableUnits" class="form-label">Available Units</label>
-                        <input type="number" class="form-control" id="availableUnits" name="availableUnits" required min="0" />
+                        <label for="availableUnits" class="form-label fw-semibold">Available Units</label>
+                        <input type="number" class="form-control form-input-modern" id="availableUnits" name="availableUnits" required min="0" />
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                <div class="modal-footer border-0 pt-3">
+                    <button type="button" class="btn btn-modern-edit" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-save-primary">Save Changes</button>
                 </div>
             </form>
         </div>
@@ -138,11 +335,11 @@
 </div>
 
 <!-- Edit Component Modal -->
-<div class="modal fade" id="editComponentModal" tabindex="-1">
+<div class="modal fade modal-modern modal-component" id="editComponentModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Edit Component Inventory</h5>
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold">Edit Component Inventory</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form id="updateComponentForm" method="post">
@@ -150,13 +347,13 @@
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="id" id="componentId" />
                     <div class="mb-3">
-                        <label for="availableUnits" class="form-label">Available Units</label>
-                        <input type="number" class="form-control" id="availableUnits" name="availableUnits" required min="0" />
+                        <label for="availableUnits" class="form-label fw-semibold">Available Units</label>
+                        <input type="number" class="form-control form-input-modern" id="availableUnits" name="availableUnits" required min="0" />
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success">Save changes</button>
+                <div class="modal-footer border-0 pt-3">
+                    <button type="button" class="btn btn-modern-edit" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-save-success">Save Changes</button>
                 </div>
             </form>
         </div>

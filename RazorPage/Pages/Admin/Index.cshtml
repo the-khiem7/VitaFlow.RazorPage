@@ -4,55 +4,212 @@
     ViewData["Title"] = "Admin Dashboard";
 }
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="display-4">Admin Dashboard</h1>
-            <p class="lead">Welcome to the Blood Donation Management System - Admin Panel</p>
-        </div>
-    </div>
+<style>
+    /* Modern Admin Theme */
+    .admin-container {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        min-height: 100vh;
+        padding: 2rem 0;
+    }
 
-    <div class="row mt-4">
-        <div class="col-md-3">
-            <div class="card text-white bg-primary mb-3">
-                <div class="card-header">User Management</div>
-                <div class="card-body">
-                    <h5 class="card-title">Manage Users</h5>
-                    <p class="card-text">View and manage all system users</p>
-                    <a href="/Admin/Users" class="btn btn-light">Go to Users</a>
+    .page-header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        border-radius: 20px;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .header-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        box-shadow: 0 8px 16px rgba(59, 130, 246, 0.2);
+    }
+
+    .dashboard-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        border-radius: 16px;
+        transition: all 0.3s ease;
+        overflow: hidden;
+        height: 100%;
+    }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+
+    .card-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        font-size: 1.8rem;
+        color: white;
+    }
+
+    .card-users .card-icon {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    }
+
+    .card-blood .card-icon {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    .card-appointments .card-icon {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+
+    .card-reports .card-icon {
+        background: linear-gradient(135deg, #10b981, #059669);
+    }
+
+    .card-body-modern {
+        padding: 2rem;
+    }
+
+    .btn-card {
+        background: #ffffff;
+        border: 1.5px solid #e2e8f0;
+        color: #374151;
+        font-weight: 600;
+        padding: 12px 24px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+    }
+
+        .btn-card:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            color: #374151;
+            transform: translateY(-1px);
+            text-decoration: none;
+        }
+
+    .subtle-pattern {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.03;
+        background-image: radial-gradient(circle at 20% 20%, #3b82f6 1px, transparent 1px);
+        background-size: 30px 30px;
+    }
+
+    .stats-text {
+        color: #6b7280;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .stats-number {
+        color: #374151;
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+</style>
+
+<div class="admin-container position-relative">
+    <div class="subtle-pattern"></div>
+
+    <div class="container-fluid position-relative">
+        <!-- Dashboard Header -->
+        <div class="page-header">
+            <div class="header-icon">
+                <i class="fas fa-shield-alt text-white" style="font-size: 2rem;"></i>
+            </div>
+            <h1 class="fw-bold text-dark mb-2" style="font-size: 2.8rem;">Admin Dashboard</h1>
+            <p class="text-muted mb-0" style="font-size: 1.2rem;">Welcome to VitaFlow Blood Donation Management System</p>
+        </div>
+
+        <!-- Dashboard Cards -->
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="dashboard-card card-users">
+                    <div class="card-body-modern">
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-3">User Management</h5>
+                        <div class="stats-text">Total Users</div>
+                        <div class="stats-number">1,234</div>
+                        <p class="text-muted mb-4">Manage all system users, roles, and permissions</p>
+                        <a href="/Admin/Users" class="btn-card">
+                            <i class="fas fa-arrow-right me-2"></i>Manage Users
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-3">
-            <div class="card text-white bg-success mb-3">
-                <div class="card-header">Blood Management</div>
-                <div class="card-body">
-                    <h5 class="card-title">Blood Inventory</h5>
-                    <p class="card-text">Manage blood units and inventory</p>
-                    <a href="/Admin/BloodManagement" class="btn btn-light">Go to Blood</a>
+            <div class="col-lg-3 col-md-6">
+                <div class="dashboard-card card-blood">
+                    <div class="card-body-modern">
+                        <div class="card-icon">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-3">Blood Inventory</h5>
+                        <div class="stats-text">Units Available</div>
+                        <div class="stats-number">567</div>
+                        <p class="text-muted mb-4">Monitor blood types and component inventory</p>
+                        <a href="/Admin/BloodManagement" class="btn-card">
+                            <i class="fas fa-arrow-right me-2"></i>View Inventory
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-3">
-            <div class="card text-white bg-warning mb-3">
-                <div class="card-header">Donations</div>
-                <div class="card-body">
-                    <h5 class="card-title">Donation Records</h5>
-                    <p class="card-text">Manage donation records and processes</p>
-                    <a href="/Staff/Donations" class="btn btn-light">Go to Donations</a>
+            <div class="col-lg-3 col-md-6">
+                <div class="dashboard-card card-appointments">
+                    <div class="card-body-modern">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-3">Appointments</h5>
+                        <div class="stats-text">Pending Today</div>
+                        <div class="stats-number">89</div>
+                        <p class="text-muted mb-4">Schedule and manage donation appointments</p>
+                        <a href="/Admin/Appointments" class="btn-card">
+                            <i class="fas fa-arrow-right me-2"></i>View Schedule
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-3">
-            <div class="card text-white bg-info mb-3">
-                <div class="card-header">Blood Requests</div>
-                <div class="card-body">
-                    <h5 class="card-title">Manage Requests</h5>
-                    <p class="card-text">Process and approve blood requests</p>
-                    <a href="/Staff/BloodRequests" class="btn btn-light">Go to Requests</a>
+            <div class="col-lg-3 col-md-6">
+                <div class="dashboard-card card-reports">
+                    <div class="card-body-modern">
+                        <div class="card-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-3">Reports</h5>
+                        <div class="stats-text">This Month</div>
+                        <div class="stats-number">234</div>
+                        <p class="text-muted mb-4">Generate reports and view system analytics</p>
+                        <a href="/Admin/Reports" class="btn-card">
+                            <i class="fas fa-arrow-right me-2"></i>View Reports
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
