@@ -1,7 +1,11 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Models;
+using RazorPage.Helpers;
+using RazorPage.Middleware;
 using Repositories.Implementations;
 using Repositories.Interfaces;
 using Services;
@@ -10,10 +14,6 @@ using Services.Interfaces;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
-using RazorPage.Helpers;
-using RazorPage.Middleware;
 
 namespace RazorPage
 {
@@ -124,22 +124,12 @@ namespace RazorPage
             {
                 // Configure authorization for specific page folders
                 options.Conventions.AuthorizeFolder("/Admin", "RequireAdminRole");
-                options.Conventions.AuthorizeFolder("/Staff", "RequireStaffRole");
+                options.Conventions.AuthorizeFolder("/Staff", "RequireAdminOrStaffRole");
                 options.Conventions.AuthorizeFolder("/Member", "RequireMemberRole");
                 // Allow anonymous access to login and register pages
                 options.Conventions.AllowAnonymousToPage("/Account/Login");
                 options.Conventions.AllowAnonymousToPage("/Account/Register");
             });
-
-            // Add controllers for API endpoints (hybrid approach)
-            builder.Services.AddControllers()
-                .AddJsonOptions(options =>
-                {
-                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-                    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-                    options.JsonSerializerOptions.WriteIndented = true;
-                });
 
             var app = builder.Build();
 
@@ -163,7 +153,6 @@ namespace RazorPage
             app.UseAuthorization();
 
             app.MapRazorPages();
-            app.MapControllers(); // Support for API controllers
 
             app.Run();
         }
