@@ -4,55 +4,177 @@
     ViewData["Title"] = "Staff Dashboard";
 }
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="display-4">Staff Dashboard</h1>
-            <p class="lead">Blood Donation Management - Staff Panel</p>
-        </div>
-    </div>
-    
-    <div class="row mt-4">
-        <div class="col-md-3">
-            <div class="card text-white bg-primary mb-3">
-                <div class="card-header">Blood Requests</div>
-                <div class="card-body">
-                    <h5 class="card-title">Manage Requests</h5>
-                    <p class="card-text">Process and approve blood requests</p>
-                    <a href="/Staff/BloodRequests" class="btn btn-light">Go to Requests</a>
-                </div>
+<style>
+    .admin-container {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        min-height: 100vh;
+        padding: 2rem 0;
+    }
+
+    .page-header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        border-radius: 20px;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .header-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        box-shadow: 0 8px 16px rgba(59, 130, 246, 0.2);
+    }
+
+    .dashboard-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        border-radius: 16px;
+        transition: all 0.3s ease;
+        overflow: hidden;
+        height: 100%;
+    }
+
+    .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    .card-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        font-size: 1.8rem;
+        color: white;
+    }
+
+    .card-requests .card-icon { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+    .card-donations .card-icon { background: linear-gradient(135deg, #10b981, #059669); }
+    .card-health .card-icon { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .card-inventory .card-icon { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+
+    .card-body-modern {
+        padding: 2rem;
+    }
+
+    .btn-card {
+        background: #ffffff;
+        border: 1.5px solid #e2e8f0;
+        color: #374151;
+        font-weight: 600;
+        padding: 12px 24px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+    }
+
+    .btn-card:hover {
+        background: #f9fafb;
+        border-color: #d1d5db;
+        color: #374151;
+        transform: translateY(-1px);
+        text-decoration: none;
+    }
+
+    .subtle-pattern {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.03;
+        background-image: radial-gradient(circle at 20% 20%, #3b82f6 1px, transparent 1px);
+        background-size: 30px 30px;
+    }
+</style>
+
+<div class="admin-container position-relative">
+    <div class="subtle-pattern"></div>
+
+    <div class="container position-relative">
+        <div class="page-header">
+            <div class="header-icon">
+                <i class="fas fa-user-md text-white" style="font-size: 2rem;"></i>
             </div>
-        </div>
-        
-        <div class="col-md-3">
-            <div class="card text-white bg-success mb-3">
-                <div class="card-header">Donations</div>
-                <div class="card-body">
-                    <h5 class="card-title">Donation Records</h5>
-                    <p class="card-text">Manage donation records and history</p>
-                    <a href="/Staff/Donations" class="btn btn-light">Go to Donations</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-3">
-            <div class="card text-white bg-warning mb-3">
-                <div class="card-header">Health Checks</div>
-                <div class="card-body">
-                    <h5 class="card-title">Health Assessments</h5>
-                    <p class="card-text">Manage donor health checks</p>
-                    <a href="/Staff/HealthChecks" class="btn btn-light">Go to Health Checks</a>
-                </div>
-            </div>
+            <h1 class="fw-bold text-dark mb-2" style="font-size: 2.8rem;">Staff Dashboard</h1>
+            <p class="text-muted mb-0" style="font-size: 1.2rem;">Blood Donation Management - Staff Panel</p>
         </div>
 
-        <div class="col-md-3">
-            <div class="card text-white bg-info mb-3">
-                <div class="card-header">Inventory</div>
-                <div class="card-body">
-                    <h5 class="card-title">Blood Inventory</h5>
-                    <p class="card-text">Manage blood units and stock</p>
-                    <a href="/Staff/Inventory" class="btn btn-light">Go to Inventory</a>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="dashboard-card card-requests">
+                    <div class="card-body-modern">
+                        <div class="card-icon">
+                            <i class="fas fa-briefcase-medical"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-3">Blood Requests</h5>
+                        <p class="text-muted mb-4">Process and approve blood requests</p>
+                        <a href="/Staff/BloodRequests" class="btn-card">
+                            <i class="fas fa-arrow-right me-2"></i>Go to Requests
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="dashboard-card card-donations">
+                    <div class="card-body-modern">
+                        <div class="card-icon">
+                            <i class="fas fa-hand-holding-medical"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-3">Donations</h5>
+                        <p class="text-muted mb-4">Manage donation records and history</p>
+                        <a href="/Staff/Donations" class="btn-card">
+                            <i class="fas fa-arrow-right me-2"></i>Go to Donations
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="dashboard-card card-health">
+                    <div class="card-body-modern">
+                        <div class="card-icon">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-3">Health Checks</h5>
+                        <p class="text-muted mb-4">Manage donor health checks</p>
+                        <a href="/Staff/HealthChecks" class="btn-card">
+                            <i class="fas fa-arrow-right me-2"></i>Go to Health Checks
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="dashboard-card card-inventory">
+                    <div class="card-body-modern">
+                        <div class="card-icon">
+                            <i class="fas fa-boxes"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-3">Inventory</h5>
+                        <p class="text-muted mb-4">Manage blood units and stock</p>
+                        <a href="/Staff/Inventory" class="btn-card">
+                            <i class="fas fa-arrow-right me-2"></i>Go to Inventory
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

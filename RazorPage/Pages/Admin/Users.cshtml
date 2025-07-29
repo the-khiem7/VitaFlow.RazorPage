@@ -5,7 +5,8 @@
 }
 
 <style>
-    .users-container {
+    /* Modern Admin Theme */
+    .admin-container {
         background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
         min-height: 100vh;
         padding: 2rem 0;
@@ -22,7 +23,7 @@
         text-align: center;
     }
 
-    .users-icon {
+    .header-icon {
         width: 80px;
         height: 80px;
         background: linear-gradient(135deg, #3b82f6, #1d4ed8);
@@ -34,7 +35,7 @@
         box-shadow: 0 8px 16px rgba(59, 130, 246, 0.2);
     }
 
-    .main-card {
+    .admin-card {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.8);
@@ -150,13 +151,25 @@
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
             background: #ffffff;
         }
+
+    .subtle-pattern {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.03;
+        background-image: radial-gradient(circle at 20% 20%, #3b82f6 1px, transparent 1px);
+        background-size: 30px 30px;
+    }
 </style>
 
-<div class="users-container">
-    <div class="container-fluid">
+<div class="admin-container position-relative">
+    <div class="subtle-pattern"></div>
+    <div class="container-fluid position-relative">
         <!-- Page Header -->
         <div class="page-header">
-            <div class="users-icon">
+            <div class="header-icon">
                 <i class="fas fa-users text-white" style="font-size: 2rem;"></i>
             </div>
             <h1 class="fw-bold text-dark mb-2" style="font-size: 2.8rem;">User Management</h1>
@@ -179,7 +192,7 @@
             </div>
         }
 
-        <div class="main-card">
+        <div class="admin-card">
             <div class="card-header-modern d-flex justify-content-between align-items-center">
                 <h5 class="mb-0 fw-bold">
                     <i class="fas fa-users me-2"></i>User List
