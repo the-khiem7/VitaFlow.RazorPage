@@ -12,7 +12,7 @@ using Models;
 namespace Models.Migrations
 {
     [DbContext(typeof(BloodDonationSupportContext))]
-    [Migration("20250727142759_InitDb")]
+    [Migration("20250728184753_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -823,6 +823,9 @@ namespace Models.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("role");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserIdCard")
                         .HasMaxLength(20)

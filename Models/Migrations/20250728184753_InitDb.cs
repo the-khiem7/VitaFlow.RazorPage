@@ -84,7 +84,8 @@ namespace Models.Migrations
                     fullName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     dateOfBirth = table.Column<DateOnly>(type: "date", nullable: true),
-                    role = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true)
+                    role = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
