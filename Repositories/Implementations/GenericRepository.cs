@@ -62,5 +62,10 @@ namespace Repositories.Implementations
             _context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IQueryable<T>> GetQueryableAsync()
+        {
+            return await Task.FromResult(_dbSet.AsQueryable());
+        }
     }
 }

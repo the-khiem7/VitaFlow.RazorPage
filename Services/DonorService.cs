@@ -122,14 +122,13 @@ namespace Services
 
         public async Task<IEnumerable<NearbyDonorDto>> GetNearbyDonorsAsync(double latitude, double longitude, double radiusInKm)
         {
-            // Get all donors with their locations and blood types
-            var donors = await ((DbContext)_repository.GetType()
-                .GetProperty("Context")
-                .GetValue(_repository))
-                .Set<Donor>()
+            // Use repository method instead of reflection
+            var query = await _repository.GetQueryableAsync();
+            var donors = await query
                 .Include(d => d.Location)
                 .Include(d => d.BloodType)
                 .Include(d => d.User)
+                .Where(d => d.Location != null && d.Location.Latitude != null && d.Location.Longitude != null)
                 .ToListAsync();
 
             var nearbyDonors = new List<NearbyDonorDto>();
