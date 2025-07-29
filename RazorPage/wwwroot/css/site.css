@@ -23,6 +23,23 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   min-height: 100vh;
+  padding-top: 80px; /* Adjust based on your navbar height */
+}
+
+/* Navbar Enhancements */
+.navbar {
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030; /* Bootstrap's navbar z-index */
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
 }
 
 /* Hero Section Enhancements */
@@ -32,6 +49,8 @@ body {
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(220, 53, 69, 0.3);
   border: none !important;
+  margin-top: 0;
+  padding-top: 2rem;
 }
 
 .hero-section::before {
@@ -277,24 +296,6 @@ body {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
-}
-
-/* Navbar Enhancements */
-.navbar {
-  backdrop-filter: blur(10px);
-  box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-}
-
-.navbar-brand {
-  font-weight: 700;
-  font-size: 1.5rem;
-}
-
-/* Footer Enhancements */
-.footer {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
-  border-top: 3px solid #dc3545 !important;
-  box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
 }
 
 /* Hero Statistics */

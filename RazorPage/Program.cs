@@ -124,7 +124,7 @@ namespace RazorPage
             {
                 // Configure authorization for specific page folders
                 options.Conventions.AuthorizeFolder("/Admin", "RequireAdminRole");
-                options.Conventions.AuthorizeFolder("/Staff", "RequireStaffRole");
+                options.Conventions.AuthorizeFolder("/Staff", "RequireAdminOrStaffRole");
                 options.Conventions.AuthorizeFolder("/Member", "RequireMemberRole");
                 // Allow anonymous access to login and register pages
                 options.Conventions.AllowAnonymousToPage("/Account/Login");
