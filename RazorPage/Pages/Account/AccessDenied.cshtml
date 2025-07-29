@@ -4,24 +4,119 @@
     ViewData["Title"] = "Access Denied";
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-body text-center">
-                    <h1 class="text-danger mb-4"><i class="fas fa-exclamation-triangle"></i> Access Denied</h1>
-                    <p class="lead">You do not have permission to access this resource.</p>
-                    <p>Please contact the administrator if you believe this is an error.</p>
-                    
-                    @if (!string.IsNullOrEmpty(Model.ReturnUrl))
-                    {
-                        <p class="text-muted">You were trying to access: @Model.ReturnUrl</p>
-                    }
-                    
-                    <hr />
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                        <a asp-page="/Index" class="btn btn-primary"><i class="fas fa-home"></i> Home</a>
-                        <a asp-page="/Account/Login" class="btn btn-outline-secondary"><i class="fas fa-sign-in-alt"></i> Login</a>
+<style>
+    .access-denied-container {
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+        min-height: 100vh;
+        position: relative;
+    }
+    
+    .denied-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        border-radius: 20px;
+    }
+    
+    .warning-icon {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        box-shadow: 0 8px 16px rgba(239, 68, 68, 0.2);
+    }
+    
+    .btn-action {
+        border-radius: 12px;
+        padding: 14px 24px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+    }
+    
+    .btn-action:hover {
+        transform: translateY(-2px);
+    }
+    
+    .btn-primary-custom {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        color: white;
+    }
+    
+    .btn-primary-custom:hover {
+        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.25);
+        color: white;
+    }
+    
+    .btn-secondary-custom {
+        background: #ffffff;
+        border: 1.5px solid #e2e8f0;
+        color: #374151;
+    }
+    
+    .btn-secondary-custom:hover {
+        background: #f9fafb;
+        border-color: #d1d5db;
+        color: #374151;
+    }
+    
+    .url-display {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 16px;
+    }
+</style>
+
+<div class="access-denied-container d-flex align-items-center">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-xl-5">
+                <div class="denied-card">
+                    <div class="text-center p-5">
+                        <!-- Warning Icon -->
+                        <div class="warning-icon">
+                            <i class="fas fa-shield-alt text-white" style="font-size: 2.5rem;"></i>
+                        </div>
+                        
+                        <!-- Header -->
+                        <h1 class="fw-bold text-dark mb-3" style="font-size: 2.5rem;">Access Denied</h1>
+                        <p class="text-muted mb-4" style="font-size: 1.1rem;">You don't have permission to view this resource</p>
+                        
+                        <!-- Message -->
+                        <div class="mb-4">
+                            <div class="p-4 rounded-3 bg-light">
+                                <p class="text-dark mb-2">
+                                    <i class="fas fa-exclamation-circle me-2 text-warning"></i>
+                                    This area is restricted
+                                </p>
+                                <p class="text-muted mb-0 small">Please contact your administrator if you believe this is an error</p>
+                            </div>
+                        </div>
+
+                        <!-- Action buttons -->
+                        <div class="d-grid gap-3 mb-4">
+                            <a asp-page="/Index" class="btn btn-action btn-primary-custom">
+                                <i class="fas fa-home me-2"></i>Go to Homepage
+                            </a>
+                            
+                            <a asp-page="/Account/Login" class="btn btn-action btn-secondary-custom">
+                                <i class="fas fa-user-shield me-2"></i>Login with Different Account
+                            </a>
+                        </div>
+                        
+                        <!-- Support link -->
+                        <div class="mt-4">
+                            <p class="small text-muted mb-0">
+                                <i class="fas fa-life-ring me-2"></i>
+                                Need help? <a href="/Contact" class="text-primary text-decoration-none fw-semibold">Contact Administrator</a>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
